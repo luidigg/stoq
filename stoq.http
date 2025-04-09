@@ -1,0 +1,6 @@
+@stoq_HostAddress = http://localhost:5144
+
+GET {{stoq_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
