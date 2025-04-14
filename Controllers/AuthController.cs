@@ -24,7 +24,7 @@ namespace stoq.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = _authService.Authenticate(loginRequest.Email, loginRequest.Password);
+            var result = _authService.Authenticate(loginRequest.Email, loginRequest.Senha);
 
             if (result == null)
                 return Unauthorized(new { message = "Invalid username or password" });

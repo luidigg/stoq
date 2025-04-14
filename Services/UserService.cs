@@ -25,13 +25,15 @@ namespace Stoq.Services
                 };
             }
 
-            var senhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
+            string senhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
 
-            var novoUsuario = new Usuario
+            Usuario novoUsuario = new()
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Senha = senhaHash
+                Senha = senhaHash,
+                Role = dto.Role,
+                CriadoEm = DateTime.Now
             };
 
             _context.Usuarios.Add(novoUsuario);

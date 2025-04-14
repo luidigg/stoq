@@ -1,16 +1,27 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Stoq.Context;
+using Stoq.IServices;
+using Stoq.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Injeção de dependências
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 // Add services to the container.
-builder.Services.AddControllers(); // Adiciona suporte a controladores
-builder.Services.AddEndpointsApiExplorer(); // Para documentação de endpoints
-builder.Services.AddSwaggerGen(); // Adiciona suporte ao Swagger para documentação da API
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Configuração de autenticação JWT
-var key = Encoding.ASCII.GetBytes("SuaChaveSecretaSuperSegura"); // Substitua por uma chave segura
+string? jwtSecret = builder.Configuration["Jwt:Secret"];
+if (string.IsNullOrEmpty(jwtSecret)) throw new InvalidOperationException("JWT secret is not configured.");
+
+var key = Encoding.ASCII.GetBytes(jwtSecret);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -25,6 +36,10 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false
     };
 });
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 var app = builder.Build();
 
@@ -43,5 +58,7 @@ app.UseAuthorization();
 
 // Mapeia os controladores
 app.MapControllers();
+
+app.MapGet("/", () => Results.Redirect("/swagger")); // Adicionado para redirecionar diretamente para o swagger ao iniciar
 
 app.Run();

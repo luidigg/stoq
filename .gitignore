@@ -1,2 +1,4 @@
 bin/
 obj/
+stoq-database.db-shm
+stoq-database.db-wal

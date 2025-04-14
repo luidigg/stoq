@@ -7,10 +7,11 @@ namespace Stoq.Models
         public Alimento Alimento { get; set; }
 
         public int Quantidade { get; set; }
-        public DateTime Validade { get; set; }
+        public DateTime? Validade { get; set; }
         public string Lote { get; set; }
 
         public int? DoacaoId { get; set; }
         public Doacao Doacao { get; set; }
     }
+
 }

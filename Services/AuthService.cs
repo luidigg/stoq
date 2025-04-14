@@ -44,14 +44,9 @@ namespace Stoq.Services
 
         public string GenerateJwtToken(string userId, string name)
         {
-            var secret = _configuration["Jwt:Secret"];
-            if (string.IsNullOrEmpty(secret))
-            {
-                throw new InvalidOperationException("JWT secret is not configured.");
-            }
-
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[]? key = Encoding.ASCII.GetBytes(secret);
+            var signingKey = GetSigningKey();
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
@@ -59,8 +54,8 @@ namespace Stoq.Services
                     new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim(ClaimTypes.Name, name)
                 ]),
-                Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -69,18 +64,13 @@ namespace Stoq.Services
 
         public ClaimsPrincipal ValidateJwtToken(string token)
         {
-            var secret = _configuration["Jwt:Secret"];
-            if (string.IsNullOrEmpty(secret))
-            {
-                throw new InvalidOperationException("JWT secret is not configured.");
-            }
-
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[]? key = Encoding.ASCII.GetBytes(secret);
+            var signingKey = GetSigningKey();
+
             var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
+                IssuerSigningKey = signingKey,
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
@@ -93,8 +83,20 @@ namespace Stoq.Services
             }
             catch
             {
-                throw new SecurityTokenException("Invalid token.");
+                throw new SecurityTokenException("Token inválido.");
             }
+        }
+
+        private SymmetricSecurityKey GetSigningKey()
+        {
+            var secret = _configuration["Jwt:Secret"];
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new InvalidOperationException("A chave JWT não está configurada.");
+            }
+
+            byte[] key = Encoding.ASCII.GetBytes(secret);
+            return new SymmetricSecurityKey(key);
         }
     }
 }
