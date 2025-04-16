@@ -1,10 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Stoq.DTOs
 {
     public class RegisterRequest
     {
+        [Required(ErrorMessage = "Nome é obrigatório.")]
         public string Nome { get; set; }
+
+        [Required(ErrorMessage = "Email é obrigatório.")]
+        [EmailAddress(ErrorMessage = "Email inválido.")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Senha é obrigatória.")]
         public string Senha { get; set; }
+
+        [Required(ErrorMessage = "Role é obrigatório.")]
         public string Role { get; set; }
     }
 }

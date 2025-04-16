@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Stoq.Context;
+using Stoq.Data;
 using Stoq.IServices;
 using Stoq.Services;
 using System.Text;
@@ -12,16 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configuração de autenticação JWT
 string? jwtSecret = builder.Configuration["Jwt:Secret"];
-if (string.IsNullOrEmpty(jwtSecret)) throw new InvalidOperationException("JWT secret is not configured.");
-
+if (string.IsNullOrEmpty(jwtSecret)) throw new InvalidOperationException("A chave JWT não foi configurada.");
 var key = Encoding.ASCII.GetBytes(jwtSecret);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,7 +42,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -56,7 +54,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Mapeia os controladores
 app.MapControllers();
 
 app.MapGet("/", () => Results.Redirect("/swagger")); // Adicionado para redirecionar diretamente para o swagger ao iniciar

@@ -5,8 +5,8 @@ namespace Stoq.IServices
 {
     public interface IAuthService
     {
-        AuthResult Authenticate(string username, string password);
-        string GenerateJwtToken(string userId, string name);
+        AuthResult Authenticate(LoginRequest dto);
         ClaimsPrincipal ValidateJwtToken(string token);
+        //string GenerateJwtToken(string userId, string name);
     }
 }

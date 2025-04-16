@@ -1,21 +1,29 @@
-using Stoq.Context;
+using System.ComponentModel.DataAnnotations;
+using Stoq.Data;
 using Stoq.DTOs;
 using Stoq.IServices;
 using Stoq.Models;
 
 namespace Stoq.Services
 {
-    public class UserService : IUserService
+    public class UserService(DataContext context) : IUserService
     {
-        private readonly DataContext _context;
-
-        public UserService(DataContext context)
-        {
-            _context = context;
-        }
+        private readonly DataContext _context = context;
 
         public async Task<AuthResult> RegisterAsync(RegisterRequest dto)
         {
+            // Validar o formulario com DataAnnotations
+            List<ValidationResult> validationResults = [];
+            bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true);
+            if (!isValid)
+            {
+                return new AuthResult
+                {
+                    Sucesso = false,
+                    Mensagem = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage))
+                };
+            }
+
             if (_context.Usuarios.Any(u => u.Email == dto.Email))
             {
                 return new AuthResult

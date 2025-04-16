@@ -1,33 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Stoq.IServices;
-using Stoq.DTO;
 using Stoq.DTOs;
 
 namespace stoq.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService, IUserService userService) : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IUserService _userService;
-
-        public AuthController(IAuthService authService, IUserService userService)
-        {
-            _authService = authService;
-            _userService = userService;
-        }
+        private readonly IAuthService _authService = authService;
+        private readonly IUserService _userService = userService;
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
+            }
 
-            var result = _authService.Authenticate(loginRequest.Email, loginRequest.Senha);
+            AuthResult result = _authService.Authenticate(loginRequest);
 
-            if (result == null)
-                return Unauthorized(new { message = "Invalid username or password" });
+            if (result.Sucesso == false) {
+                return Unauthorized(result);
+            }
 
             return Ok(result);
         }
@@ -39,14 +34,13 @@ namespace stoq.Controllers
                 return BadRequest(ModelState);
             }
 
-            AuthResult? result = await _userService.RegisterAsync(registerRequest);
+            AuthResult result = await _userService.RegisterAsync(registerRequest);
 
-            if (!result.Sucesso)
-            {
-                return BadRequest(new { message = result.Mensagem });
+            if (result.Sucesso == false) {
+                return BadRequest(result);
             }
 
-            return Ok(new { message = "Usuário registrado com sucesso" });
+            return Ok(result);
         }
     }
 }

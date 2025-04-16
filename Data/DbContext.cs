@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Stoq.Models;
 
-namespace Stoq.Context
+namespace Stoq.Data
 {
     public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
     {
