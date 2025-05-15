@@ -1,4 +1,1 @@
-bin/
-obj/
-stoq-database.db-shm
-stoq-database.db-wal
+# arquivo global do repositório
