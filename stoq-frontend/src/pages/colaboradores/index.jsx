@@ -1,26 +1,26 @@
-import Header from "../../components/header"
-import Sidebar from "../../components/sidebar"
-import {Container,Main,Content } from './style'
+// import Header from "../../components/header"
+// import Sidebar from "../../components/sidebar"
+// import {Container,Main,Content } from './style'
 
-function Colaboradores() {
-    const title = document.querySelector('title')
-    title.innerHTML = 'Colaboradores'
+// function Colaboradores() {
+//     const title = document.querySelector('title')
+//     title.innerHTML = 'Colaboradores'
 
-    return (
-        <>
-        <Container>
-            <Header/>
-            <Content>
-                <Sidebar/> 
+//     return (
+//         <>
+//         <Container>
+//             <Header/>
+//             <Content>
+//                 <Sidebar/> 
                 
-                <Main>
+//                 <Main>
 
-                </Main>
-            </Content>
+//                 </Main>
+//             </Content>
             
-        </Container>
-        </>
-    )
-}
+//         </Container>
+//         </>
+//     )
+// }
 
-export default Colaboradores
+// export default Colaboradores

@@ -20,8 +20,8 @@ function Estoque() {
                             <Button>Próximos do Vencimento</Button>
                             <Button>Gráficos</Button>
                         </Texts>
-
-                        <DivTable>
+                        <div style={{display:"flex",justifyContent:"center", height:"100%"}}>
+                            <DivTable>
                             <Table>
                                 <Coluna>
                                     <LinhaColuna>
@@ -47,6 +47,8 @@ function Estoque() {
                                 </Dados>
                             </Table>
                         </DivTable>
+                        </div>
+                        
 
                     </Main>
 

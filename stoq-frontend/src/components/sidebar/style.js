@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const SideBar = styled.div`
     width: 18vw;
     height: 90vh;
-    background:rgba(162, 162, 162, 0.40);
+    background: #C7DAD4;
 `
 
 export const Button = styled.button`

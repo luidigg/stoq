@@ -1,26 +1,26 @@
-import Header from "../../components/header"
-import Sidebar from "../../components/sidebar"
-import {Container,Main,Content } from './style'
+// import Header from "../../components/header"
+// import Sidebar from "../../components/sidebar"
+// import {Container,Main,Content } from './style'
 
-function Config() {
-    const title = document.querySelector('title')
-    title.innerHTML = 'Configurações'
+// function Config() {
+//     const title = document.querySelector('title')
+//     title.innerHTML = 'Configurações'
 
-    return (
-        <>
-        <Container>
-            <Header/>
-            <Content>
-                <Sidebar/> 
+//     return (
+//         <>
+//         <Container>
+//             <Header/>
+//             <Content>
+//                 <Sidebar/> 
                 
-                <Main>
+//                 <Main>
 
-                </Main>
-            </Content>
+//                 </Main>
+//             </Content>
             
-        </Container>
-        </>
-    )
-}
+//         </Container>
+//         </>
+//     )
+// }
 
-export default Config
+// export default Config

@@ -15,7 +15,7 @@ import styled from 'styled-components'
     height: 90vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center;  */
   `
 
   export const H1 = styled.h1`
@@ -30,6 +30,8 @@ import styled from 'styled-components'
     justify-content: flex-start;
     width: 78vw;
     padding-bottom: 1.5vh;
+    display: flex;
+    justify-content: space-around;
   `
   export const Button = styled.button`
     background-color: transparent;
@@ -48,7 +50,7 @@ import styled from 'styled-components'
   export const DivTable = styled.div`
     background-color: #fff;
     width: 78vw;
-    height: 75%;
+    height: 100%;
     border-radius:10px;
     overflow:hidden;
   `
