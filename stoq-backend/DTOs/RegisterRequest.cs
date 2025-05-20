@@ -14,7 +14,7 @@ namespace Stoq.DTOs
         [Required(ErrorMessage = "Senha é obrigatória.")]
         public string Senha { get; set; }
 
-        [Required(ErrorMessage = "Role é obrigatório.")]
-        public string Role { get; set; }
+        [Required(ErrorMessage = "Cargo é obrigatório.")]
+        public int CargoId { get; set; }
     }
 }

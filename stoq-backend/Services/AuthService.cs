@@ -20,8 +20,8 @@ namespace Stoq.Services
             List<ValidationResult> validationResults = [];
             bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true);
 
-            Usuario? user = _context.Usuarios.FirstOrDefault(u => u.Email == dto.Email);
-            bool validPassword = IsValidBcryptHash(user?.Senha) && BCrypt.Net.BCrypt.Verify(dto.Senha, user?.Senha);
+            Usuario? user = _context.Usuario.FirstOrDefault(u => u.Email == dto.Email);
+            bool validPassword = IsValidBcryptHash(user?.SenhaHash) && BCrypt.Net.BCrypt.Verify(dto.Senha, user?.SenhaHash);
 
             if (user == null || validPassword == false)
             {

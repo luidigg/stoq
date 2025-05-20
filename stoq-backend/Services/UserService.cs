@@ -24,7 +24,7 @@ namespace Stoq.Services
                 };
             }
 
-            if (_context.Usuarios.Any(u => u.Email == dto.Email))
+            if (_context.Usuario.Any(u => u.Email == dto.Email))
             {
                 return new AuthResult
                 {
@@ -39,12 +39,12 @@ namespace Stoq.Services
             {
                 Nome = dto.Nome,
                 Email = dto.Email,
-                Senha = senhaHash,
-                Role = dto.Role,
-                CriadoEm = DateTime.Now
+                SenhaHash = senhaHash,
+                CargoId = dto.CargoId,
+                CriadoEm = DateTime.Now.ToUniversalTime(),
             };
 
-            _context.Usuarios.Add(novoUsuario);
+            _context.Usuario.Add(novoUsuario);
             await _context.SaveChangesAsync();
 
             return new AuthResult
