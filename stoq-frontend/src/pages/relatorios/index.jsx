@@ -3,7 +3,7 @@ import Sidebar from "../../components/sidebar"
 import { useState } from "react"
 import {
     Container, Main, Content, Box, H2, DivFiltros, Select, Label, SelectMovimento
-    , SelectProduto, SelectCategoria, SelectData, InputData, Button, DivResultado, Span, Table, Tbody, Thead, Td, Th, Tr
+    , SelectProduto, SelectCategoria, SelectData, InputData, Button, DivResultado, Span, Table, Tbody, Thead, Td, Th, Tr,DivTable
 } from './style'
 
 
@@ -13,13 +13,23 @@ function Relatorio() {
 
     // Arrays com as opções
     const tiposMovimentos = ['Entrada', 'Saída']
-    const produtos = ['Produtos A', 'Produto B']
+    const produtos = ['Produto A', 'Produto B']
     const categorias = ['Categoria 1', 'Categoria 2']
 
     // dados ficticios para relatorio
     const dadosRelatorio = [
-        { data: '19-05-2025', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg' },
-        { data: '19-05-2025', tipo: 'Entrada', produto: 'Produto B', quantidade: ' 15 Kg' }
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' }
     ]
 
     // Estados dos filtros
@@ -28,6 +38,22 @@ function Relatorio() {
     const [categoria, setCategoria] = useState('')
     const [dataInicial, setDataInicial] = useState('')
     const [dataFinal, setDataFinal] = useState('')
+
+    // implementando a lógica de filtro dos dados
+    const [filtrosAplicado, setFiltrosAplicados] = useState(dadosRelatorio)
+    const aplicarFiltros = () => {
+        const dadosFiltrados = dadosRelatorio.filter((item) => {
+            const dataValida =(!dataInicial || item.data >= dataInicial) && 
+                              (!dataFinal || item.data <= dataFinal)
+            const tipoValido = !tipoMovimento || item.tipo.toLowerCase() === tipoMovimento
+            const produtoValido = !produto || item.produto.toLowerCase() === produto
+            const categoriaValida = !categoria || item.categoria.toLowerCase() === categoria
+            return dataValida && tipoValido && produtoValido && categoriaValida
+        })
+        
+        setFiltrosAplicados(dadosFiltrados)
+        
+    }
 
     return (
         <>
@@ -65,7 +91,7 @@ function Relatorio() {
                                     <Select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
                                         <option value="">Todos</option>
                                         {categorias.map((cat, index) => (
-                                            <option key={index} value={cat}>{cat}</option>
+                                            <option key={index} value={cat.toLowerCase()}>{cat}</option>
                                         ))}
                                     </Select>
                                 </SelectCategoria>
@@ -81,32 +107,37 @@ function Relatorio() {
 
                             </DivFiltros>
 
-                            <Button>Aplicar Filtros</Button>
+                            <Button onClick={aplicarFiltros}>Aplicar Filtros</Button>
 
                             <DivResultado>
                                 <H2>Resultado do Relatório</H2>
                                 <Span>Data do relatório 19/05/2025</Span>
-                                <Table>
+                                <DivTable>
+                                    <Table>
                                     <Thead>
                                         <Tr>
                                             <Th>Data</Th>
                                             <Th>Tipo</Th>
                                             <Th>Produto</Th>
                                             <Th>Quantidade</Th>
+                                            <Th>Categoria</Th>
                                         </Tr>
                                     </Thead>
                                     <Tbody>
-                                        {dadosRelatorio.map((item, index) => (
+                                        {filtrosAplicado.map((item, index) => (
                                             <Tr key={index}>
                                                 <Td>{item.data}</Td>
                                                 <Td>{item.tipo}</Td>
                                                 <Td>{item.produto}</Td>
                                                 <Td>{item.quantidade}</Td>
+                                                <Td>{item.categoria}</Td>
                                             </Tr>
                                         ))}
                                     </Tbody>
                                 </Table>
 
+                                </DivTable>
+                                
                             </DivResultado>
                         </Box>
                     </Main>

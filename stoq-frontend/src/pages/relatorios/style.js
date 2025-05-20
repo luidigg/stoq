@@ -103,6 +103,7 @@ import styled from 'styled-components'
     border-radius: 10px;
     border-collapse: collapse;
     overflow:hidden;
+    width: 100%;
   `
   export const Thead = styled.thead``
   export const Tr = styled.tr`
@@ -112,7 +113,13 @@ import styled from 'styled-components'
   export const Th = styled.th`
     padding: 7px 0;
   `
-  export const Tbody = styled.tbody``
+  export const Tbody = styled.tbody`
+  `
   export const Td = styled.td`
     padding: 7px 0;
+  `
+  export const DivTable = styled.div`
+    max-height: 35vh;
+    overflow-y: auto;
+    width: 100%;
   `
