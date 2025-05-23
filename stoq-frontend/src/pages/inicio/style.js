@@ -51,11 +51,9 @@ import {
     height: 20vh;
     display:flex;
     justify-content:center;
-    box-shadow: #1E8673  5px 5px 10px; 
   `
   export const Card2 = styled.div`
     background-color: #fff;
-    box-shadow: #1E8673  5px 5px 30px; 
     width: 79vw; 
     border-radius: 10px;
     padding: 15px;
