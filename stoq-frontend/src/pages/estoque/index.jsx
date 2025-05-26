@@ -1,130 +1,120 @@
-import { Container, Main, Content, H1, Texts, Button, DivTable, Table, Coluna, LinhaColuna, LinhaDados, Nome, Dados, Item } from './style'
+import {
+  Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
+  Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
+  Datas,ButtonClose,DivClose,InputAdd,Label,ButtonSalvar,ButtonCancelar,ModalButtons,Select
+} from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
-import { UilEdit, UilTrashAlt } from '@iconscout/react-unicons'
-import { useState } from 'react'
-import { Form } from 'react-router-dom'
-
-function Modal({ isOpen, onClose, children }) {
-  if (!isOpen) return null
-
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-      }}
-    >
-      <div
-        style={{
-          background: '#fff',
-          borderRadius: '12px',
-          padding: '24px',
-          minWidth: '300px',
-          position: 'relative',
-        }}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: '8px',
-            right: '12px',
-            background: 'transparent',
-            border: 'none',
-            fontSize: '20px',
-            cursor: 'pointer',
-          }}
-        >
-          &times;
-        </button>
-        {children}
-      </div>
-    </div>
-  )
-}
+import { UilEdit, UilTrashAlt, UilPlus,UilTimes  } from '@iconscout/react-unicons'
+import { useState, useEffect } from 'react'
 
 function Estoque() {
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const title = document.querySelector('title')
-    title.innerHTML = 'Estoque'
+  useEffect(() => {
+    document.title = 'Estoque'
+  }, [])
 
-    return (
-        <>
-            <Container>
-                <Header />
-                <Content>
-                    <Sidebar />
-                    <Main>
-                        <H1>Estoque</H1>
-                        <Texts>
-                            <Button>Todos os Produtos</Button>
-                            <Button>Próximos do Vencimento</Button>
-                            <Button onClick={() => setIsModalOpen(true)}>Adicionar Produto</Button>
-                        </Texts>
-                        <div style={{display:"flex",justifyContent:"center", height:"100%"}}>
-                            <DivTable>
-                            <Table>
-                                <Coluna>
-                                    <LinhaColuna>
-                                        <Nome></Nome>
-                                        <Nome>Produto</Nome>
-                                        <Nome>Quantidade</Nome>
-                                        <Nome>Dias restantes(validade)</Nome>
-                                    </LinhaColuna>
-                                </Coluna>
-                                <Dados>
-                                    <LinhaDados>
-                                        <Item>
-                                            <div style={{display:"flex",gap:"8px",alignItems:"center",justifyContent:"center"}}>
-                                                <Button><UilEdit size="30px" /></Button>
-                                                <Button><UilTrashAlt size="30px" /></Button>
-                                                
-                                            </div>
-                                        </Item>
-                                        <Item>Arroz</Item>      {/*td */}
-                                        <Item>50 pacotes(5 kg)</Item>
-                                        <Item>2 semana</Item>
-                                    </LinhaDados>
-                                </Dados>
-                            </Table>
-                        </DivTable>
-                        </div>
-                        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                        <h2 style={{ fontSize: '20px', marginBottom: '16px' }}>Adicionar Produto</h2>
-                        <Form>
-                            <label>Produto:
-                                <select value="produto">
-                                    <option value="farinha_de_milho">Farinha de milho</option>
-                                    <option value="maca_fuji">Maçã Fuji</option>
-                                    <option value="rucula">Rúcula</option>
-                                    <option value="feijao">Feijão</option>
-                                </select>
-                            </label>
-                            <input name="quantidade" placeholder="Quantidade" required="true"></input>
-                            <input name="data_recebimento" type="date" defaultValue={new Date().toISOString().split('T')[0]} required="true"></input>
-                            <input name="data_validade" placeholder="Data de validade (opcional)" type="date"></input>
-                            <input name="nome_doador" placeholder="Nome do doador (opcional)" type="text"></input>
-                            <input name="valor_compra" placeholder="Valor da compra (opcional)" type="number"></input>
-                        </Form>
-                        <Button onClick={() => setIsModalOpen(false)} style={{ marginTop: '16px' }}>Fechar</Button>
-                        </Modal>
+  const produtos = [
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
+    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' }
+  ]
 
-                    </Main>
+  const [modal, setModal] = useState(false)
 
-                </Content>
+  return (
+    <>
+      <Container>
+        <Header />
+        <Content>
+          <Sidebar />
+          <Main>
+            <H2>Estoque</H2>
 
-            </Container>
-        </>
-    )
+            <DivTable>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th>Produto</Th>
+                    <Th>Quantidade</Th>
+                    <Th>Validade</Th>
+                    <Th>Icon</Th>
+                    <Th>Icon</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {produtos.map((item, index) => (
+                    <Tr key={index}>
+                      <Td>{item.nome}</Td>
+                      <Td>{item.quantidade}</Td>
+                      <Td>{item.validade}</Td>
+                      <Td><ButtonIcon><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
+                      <Td><ButtonIcon><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+
+              </Table>
+            </DivTable>
+
+            <DivButtons>
+              <ButtonAdd onClick={() => setModal(true)}> <UilPlus size='24' color='#fff' />Adicionar Produtos</ButtonAdd>
+            </DivButtons>
+
+            {modal && (
+              <ModalOverlay>
+                <ModalContent>
+                  <DivClose>
+                    <ButtonClose onClick={() => setModal(false)}><UilTimes size='24'/></ButtonClose>
+                  </DivClose>
+                  
+                  <h3 style={{fontSize:'24px'}}>Adicionar Produto</h3>
+                  <Label>
+                    Produto:
+                    <Select name="produto">
+                      <option value="feijao">Feijão</option>
+                      <option value="feijao">Maçã</option>
+                    </Select>
+                  </Label>
+                  {/* <InputAdd name ='produto' type="text" placeholder='Nome do Produto' required='true' /> */}
+                  <InputAdd name='quantidade' type="text" placeholder='Quantidade'  />
+                  <InputAdd name='categoria' type="text" placeholder='Categoria'  />
+                  <Datas>
+                    <Label>
+                      Data de Cadastro:
+                      <InputAdd name='data_recebimento' type="date" defaultValue={new Date().toISOString().split('T')[0]}/>
+                    </Label>
+                    <Label>
+                      Data de Validade:
+                      <InputAdd name='data_validade' type="date"/>
+                    </Label>
+                  </Datas>
+                  <InputAdd name='valor_compra' type="number" placeholder='R$ Valor da Compra (OPCIONAL)'/>
+                  <InputAdd name='nome_doador' type="text" placeholder='Nome do Doador (OPCIONAL)'/>
+                  <ModalButtons>
+                    
+                    <ButtonSalvar type='submit'>Salvar</ButtonSalvar>
+                    <ButtonCancelar>Cancelar</ButtonCancelar>
+                  </ModalButtons>
+                </ModalContent>
+              </ModalOverlay>
+            )}
+          </Main>
+
+        </Content>
+
+      </Container>
+    </>
+  )
 }
 
 export default Estoque
