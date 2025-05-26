@@ -1,43 +1,78 @@
-import {Container,Form,DivTexts,H2,P,DivInput,Input,ButtonEntrar,ButtonRegister, IconEmail,IconPass, DivII,ImgTop,ImgBottom,ImgVetor} from './style'
+import { Container, Form, DivTexts, H2, P, DivInput, Input, ButtonEntrar, ButtonRegister, IconEmail, IconPass, DivII, ImgTop, ImgBottom, ImgVetor } from './style'
 import circle from '../../assets/circulo.png'
 import elipse from '../../assets/elipse.png'
 import vetor from '../../assets/vetor.png'
-import {useNavigate} from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../../services/authService';
 
 function Login() {
 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [error, setError] = useState('');
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        try {
+            const response = await login(email, senha);
+            //localStorage.setItem('token', response.token); // Salva o token
+            console.log('Login realizado com sucesso!');
+            navigate('/inicio');
+        } catch (err) {
+            setError(err);
+        }
+    };
+
+
     const navigate = useNavigate()
-         const title = document.querySelector('title')
-         title.innerHTML = 'Tela de Login'
+    const title = document.querySelector('title')
+    title.innerHTML = 'Login'
     return (
         <>
-          <Container>
-            <ImgTop> <img src={circle} alt="circle"/> </ImgTop>
-            <ImgBottom> <img src={elipse} alt="elipse"/> </ImgBottom>
-            <ImgVetor> <img src={vetor} alt="vetor" /> </ImgVetor>
+            <Container>
+                <ImgTop> <img src={circle} alt="circle" /> </ImgTop>
+                <ImgBottom> <img src={elipse} alt="elipse" /> </ImgBottom>
+                <ImgVetor> <img src={vetor} alt="vetor" /> </ImgVetor>
 
-            <Form>
+                <Form onSubmit={handleLogin}>
 
-                <DivTexts>
-                    <H2>Entrar</H2>
-                    <P>Por favor, insira seu email e senha para entrar</P>
-                </DivTexts>
+                    <DivTexts>
+                        <H2>Entrar</H2>
+                        <P>Por favor, insira seu email e senha para entrar</P>
+                    </DivTexts>
 
-                <DivInput>
-                    <DivII>
-                        <IconEmail size="28"/>
-                        <Input type="email" placeholder="Digite seu email"/>
-                    </DivII>
-                    <DivII>
-                    <IconPass size="28"/>
-                    <Input type="password" placeholder="Senha"/>
-                    </DivII>
-                </DivInput>
+                    <DivInput>
+                        <DivII>
+                            <IconEmail size="28" />
+                            <Input
+                                type="email"
+                                placeholder="Digite seu email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </DivII>
+                        <DivII>
+                            <IconPass size="28" />
+                            <Input
+                                type="password"
+                                placeholder="Senha"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                                required
+                            />
+                        </DivII>
+                    </DivInput>
 
-                <ButtonEntrar>Entrar</ButtonEntrar>
-                <P>Ainda não possui cadastro? <ButtonRegister onClick={() => navigate('/')}>Registre-se</ButtonRegister></P>    
-            </Form>
-          </Container>
+                    {error && <P style={{ color: 'red' }}>{error}</P>}
+
+                    <ButtonEntrar type="submit">Entrar</ButtonEntrar>
+                    <P>Ainda não possui cadastro? <ButtonRegister onClick={() => navigate('/')}>Registre-se</ButtonRegister></P>
+                </Form>
+            </Container>
         </>
     )
 }
