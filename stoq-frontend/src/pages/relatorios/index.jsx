@@ -1,5 +1,6 @@
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar"
+import ConvertDate from "../../components/convertDate"
 import { useState } from "react"
 import {
     Container, Main, Content, Box, H2, DivFiltros, Select, Label, SelectMovimento
@@ -18,18 +19,16 @@ function Relatorio() {
 
     // dados ficticios para relatorio
     const dadosRelatorio = [
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' },
-        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto B', quantidade: ' 15 Kg', categoria: 'Categoria 2' }
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+
     ]
 
     // Estados dos filtros
@@ -121,16 +120,18 @@ function Relatorio() {
                                             <Th>Produto</Th>
                                             <Th>Quantidade</Th>
                                             <Th>Categoria</Th>
+                                            <Th>Válidade</Th>
                                         </Tr>
                                     </Thead>
                                     <Tbody>
                                         {filtrosAplicado.map((item, index) => (
                                             <Tr key={index}>
-                                                <Td>{item.data}</Td>
+                                                <Td><ConvertDate data={item.data}/></Td>
                                                 <Td>{item.tipo}</Td>
                                                 <Td>{item.produto}</Td>
                                                 <Td>{item.quantidade}</Td>
                                                 <Td>{item.categoria}</Td>
+                                                <Td><ConvertDate data={item.validade}/></Td>
                                             </Tr>
                                         ))}
                                     </Tbody>
