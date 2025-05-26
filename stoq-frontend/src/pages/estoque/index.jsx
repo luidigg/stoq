@@ -15,7 +15,7 @@ function Estoque() {
   }, [])
 
   const [produtos, setProdutos] = useState([
-    { entrada: '2025-05-25', nome: 'Arroz', quantidade: '10 kg', categoria: 'Cereal', validade: '2025-05-30', doador: "unijui", valor: 10 }
+    { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Cereal', validade: '2025-05-30', doador: "unijui", valor: 10 }
   ])
 
   const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
@@ -36,8 +36,12 @@ function Estoque() {
     setCategoriaProduto('')
     setValorProduto('')
     setNomeDoador('')
+
+    setModoEdicao(false)
+    setIndiceEdicao(null)
   }
 
+  //adiciona o novo produto a lista
   const cadastrar = () => {
     const novoProduto = {
       entrada: dataEntrada,
@@ -49,10 +53,42 @@ function Estoque() {
       doador: nomeDoador
     }
 
-    //adiciona o novo produto a lista
-    setProdutos([...produtos, novoProduto])
+    if (modoEdicao) {
+      const novaLista = [...produtos] // copia a lista original
+      novaLista[indiceEdicao] = novoProduto // substitui o item no indice certo
+      setProdutos(novaLista) // atualiza a lista com o item editado
+    }else {
+      setProdutos([...produtos, novoProduto])
+    }
 
     limparInputs()
+  }
+
+  // Função para editar os produtos que ja estao na tabela
+  const [modoEdicao, setModoEdicao] = useState(false)
+  const [indiceEdicao, setIndiceEdicao] = useState(null)
+
+  const editarProduto = (index) => {
+    const produto = produtos[index] // produto recebe o objeto com as infos do alimento de acordo com o index
+
+    // coloca os dados do produto nos inputs
+    setNomeProduto(produto.nome)
+    setQuantidadeProduto(produto.quantidade)
+    setCategoriaProduto(produto.categoria)
+    setDataEntrada(produto.entrada)
+    setValidadeProduto(produto.validade)
+    setValorProduto(produto.valor)
+    setNomeDoador(produto.doador)
+
+    setIndiceEdicao(index)
+    setModoEdicao(true)
+    setModal(true)
+  }
+
+  // função para excluir um item da tabela
+  const deletar = (index) => {
+    const novaLista = produtos.filter((_,i) => i !== index)
+    setProdutos(novaLista)
   }
 
   return (
@@ -83,8 +119,8 @@ function Estoque() {
                       <Td>{item.nome}</Td>
                       <Td>{item.quantidade}</Td>
                       <Td><ConvertDate data={item.validade}/></Td>
-                      <Td><ButtonIcon><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
-                      <Td><ButtonIcon><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
+                      <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
+                      <Td><ButtonIcon onClick={() => deletar(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -100,15 +136,16 @@ function Estoque() {
               <ModalOverlay>
                 <ModalContent>
                   <DivClose>
-                    <ButtonClose onClick={() => setModal(false)}><UilTimes size='24' /></ButtonClose>
+                    <ButtonClose onClick={() => {setModal(false); limparInputs()}}><UilTimes size='24' /></ButtonClose>
                   </DivClose>
 
-                  <h3 style={{ fontSize: '24px' }}>Adicionar Produto</h3>
+                  <h3 style={{ fontSize: '24px' }}>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</h3>
                   <Label>
                     Produto:
                     <Select value={nomeProduto} onChange={(e) => setNomeProduto(e.target.value)}>
-                      <option value="feijao">Feijão</option>
-                      <option value="maca">Maçã</option>
+                      <option value="">Selecione algum produto</option>
+                      <option value="Feijão">Feijão</option>
+                      <option value="Maçã">Maçã</option>
                     </Select>
                   </Label>
                   <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
