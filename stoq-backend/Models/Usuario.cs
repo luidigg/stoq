@@ -12,7 +12,5 @@ namespace Stoq.Models
 
         public DateTime CriadoEm { get; set; }
         public DateTime? AtualizadoEm { get; set; }
-
-        public ICollection<Log> Logs { get; set; }
     }
 }
