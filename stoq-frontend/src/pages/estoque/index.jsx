@@ -1,35 +1,59 @@
 import {
   Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
-  Datas,ButtonClose,DivClose,InputAdd,Label,ButtonSalvar,ButtonCancelar,ModalButtons,Select
+  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select
 } from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
-import { UilEdit, UilTrashAlt, UilPlus,UilTimes  } from '@iconscout/react-unicons'
+import { UilEdit, UilTrashAlt, UilPlus, UilTimes } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
+import ConvertDate from '../../components/convertDate'
 
 function Estoque() {
   useEffect(() => {
     document.title = 'Estoque'
   }, [])
 
-  const produtos = [
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' },
-    { nome: 'Arroz', quantidade: '10 kg', validade: '2025-05-30', entrada: '2025-05-25' }
-  ]
+  const [produtos, setProdutos] = useState([
+    { entrada: '2025-05-25', nome: 'Arroz', quantidade: '10 kg', categoria: 'Cereal', validade: '2025-05-30', doador: "unijui", valor: 10 }
+  ])
+
+  const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
+  const [nomeProduto, setNomeProduto] = useState('')
+  const [quantidadeProduto, setQuantidadeProduto] = useState('')
+  const [validadeProduto, setValidadeProduto] = useState('')
+  const [categoriaProduto, setCategoriaProduto] = useState('')
+  const [valorProduto, setValorProduto] = useState('')
+  const [nomeDoador, setNomeDoador] = useState('')
 
   const [modal, setModal] = useState(false)
+
+  // função para limpar os inputs do modal
+  const limparInputs = () => {
+    setNomeProduto('')
+    setQuantidadeProduto('')
+    setValidadeProduto('')
+    setCategoriaProduto('')
+    setValorProduto('')
+    setNomeDoador('')
+  }
+
+  const cadastrar = () => {
+    const novoProduto = {
+      entrada: dataEntrada,
+      nome: nomeProduto,
+      quantidade: quantidadeProduto,
+      categoria: categoriaProduto,
+      validade: validadeProduto,
+      valor: valorProduto,
+      doador: nomeDoador
+    }
+
+    //adiciona o novo produto a lista
+    setProdutos([...produtos, novoProduto])
+
+    limparInputs()
+  }
 
   return (
     <>
@@ -44,19 +68,21 @@ function Estoque() {
               <Table>
                 <Thead>
                   <Tr>
+                    <Th>Entrada</Th>
                     <Th>Produto</Th>
                     <Th>Quantidade</Th>
                     <Th>Validade</Th>
-                    <Th>Icon</Th>
-                    <Th>Icon</Th>
+                    <Th></Th>
+                    <Th></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {produtos.map((item, index) => (
                     <Tr key={index}>
+                      <Td><ConvertDate data = {item.entrada} /></Td>
                       <Td>{item.nome}</Td>
                       <Td>{item.quantidade}</Td>
-                      <Td>{item.validade}</Td>
+                      <Td><ConvertDate data={item.validade}/></Td>
                       <Td><ButtonIcon><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
                       <Td><ButtonIcon><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
                     </Tr>
@@ -74,36 +100,61 @@ function Estoque() {
               <ModalOverlay>
                 <ModalContent>
                   <DivClose>
-                    <ButtonClose onClick={() => setModal(false)}><UilTimes size='24'/></ButtonClose>
+                    <ButtonClose onClick={() => setModal(false)}><UilTimes size='24' /></ButtonClose>
                   </DivClose>
-                  
-                  <h3 style={{fontSize:'24px'}}>Adicionar Produto</h3>
+
+                  <h3 style={{ fontSize: '24px' }}>Adicionar Produto</h3>
                   <Label>
                     Produto:
-                    <Select name="produto">
+                    <Select value={nomeProduto} onChange={(e) => setNomeProduto(e.target.value)}>
                       <option value="feijao">Feijão</option>
-                      <option value="feijao">Maçã</option>
+                      <option value="maca">Maçã</option>
                     </Select>
                   </Label>
-                  {/* <InputAdd name ='produto' type="text" placeholder='Nome do Produto' required='true' /> */}
-                  <InputAdd name='quantidade' type="text" placeholder='Quantidade'  />
-                  <InputAdd name='categoria' type="text" placeholder='Categoria'  />
+                  <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
+
+                  <InputAdd type="text" placeholder='Categoria' value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)} />
+
                   <Datas>
+
                     <Label>
                       Data de Cadastro:
-                      <InputAdd name='data_recebimento' type="date" defaultValue={new Date().toISOString().split('T')[0]}/>
+                      <InputAdd
+                        type="date"
+                        value={dataEntrada}
+                        onChange={(e) => setDataEntrada(e.target.value)} />
                     </Label>
+
                     <Label>
                       Data de Validade:
-                      <InputAdd name='data_validade' type="date"/>
+                      <InputAdd
+                        type="date"
+                        value={validadeProduto}
+                        onChange={(e) => setValidadeProduto(e.target.value)}
+                      />
                     </Label>
+
                   </Datas>
-                  <InputAdd name='valor_compra' type="number" placeholder='R$ Valor da Compra (OPCIONAL)'/>
-                  <InputAdd name='nome_doador' type="text" placeholder='Nome do Doador (OPCIONAL)'/>
+
+                  <InputAdd
+                    type="number"
+                    placeholder='R$ Valor da Compra (OPCIONAL)'
+                    value={valorProduto}
+                    onChange={(e) => setValorProduto(e.target.value)}
+                  />
+
+                  <InputAdd
+                    type="text"
+                    placeholder='Nome do Doador (OPCIONAL)'
+                    value={nomeDoador}
+                    onChange={(e) => setNomeDoador(e.target.value)}
+                  />
+
                   <ModalButtons>
-                    
-                    <ButtonSalvar type='submit'>Salvar</ButtonSalvar>
-                    <ButtonCancelar>Cancelar</ButtonCancelar>
+
+                    <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
+                    <ButtonCancelar onClick={limparInputs}>Cancelar</ButtonCancelar>
+
                   </ModalButtons>
                 </ModalContent>
               </ModalOverlay>
