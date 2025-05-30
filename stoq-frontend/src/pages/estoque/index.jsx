@@ -1,7 +1,7 @@
 import {
   Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
-  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select
+  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select,ButtonExcluir
 } from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
@@ -17,6 +17,8 @@ function Estoque() {
   const [produtos, setProdutos] = useState([
     { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Cereal', validade: '2025-05-30', doador: "unijui", valor: 10 }
   ])
+
+  const arrayCategorias = ['Cereal', 'Bebida', 'Fruta', 'Legume', 'Higiene', 'Outros']
 
   const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
   const [nomeProduto, setNomeProduto] = useState('')
@@ -57,7 +59,7 @@ function Estoque() {
       const novaLista = [...produtos] // copia a lista original
       novaLista[indiceEdicao] = novoProduto // substitui o item no indice certo
       setProdutos(novaLista) // atualiza a lista com o item editado
-    }else {
+    } else {
       setProdutos([...produtos, novoProduto])
     }
 
@@ -86,9 +88,20 @@ function Estoque() {
   }
 
   // função para excluir um item da tabela
+
+  const [modalConfirmacao, setModalConfirmacao] = useState(false)
+  const [indiceExclusao, setIndiceExclusao] = useState(null)
+
+  const confirmarExclusao = (index) => {
+    setIndiceExclusao(index)
+    setModalConfirmacao(true)
+  }
+
   const deletar = (index) => {
-    const novaLista = produtos.filter((_,i) => i !== index)
+    const novaLista = produtos.filter((_, i) => i !== indiceExclusao)
     setProdutos(novaLista)
+    setModalConfirmacao(false)
+    setIndiceExclusao(null)
   }
 
   return (
@@ -115,12 +128,12 @@ function Estoque() {
                 <Tbody>
                   {produtos.map((item, index) => (
                     <Tr key={index}>
-                      <Td><ConvertDate data = {item.entrada} /></Td>
+                      <Td><ConvertDate data={item.entrada} /></Td>
                       <Td>{item.nome}</Td>
                       <Td>{item.quantidade}</Td>
-                      <Td><ConvertDate data={item.validade}/></Td>
+                      <Td><ConvertDate data={item.validade} /></Td>
                       <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
-                      <Td><ButtonIcon onClick={() => deletar(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
+                      <Td><ButtonIcon onClick={() => confirmarExclusao(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -130,27 +143,34 @@ function Estoque() {
 
             <DivButtons>
               <ButtonAdd onClick={() => setModal(true)}> <UilPlus size='24' color='#fff' />Adicionar Produtos</ButtonAdd>
+              
             </DivButtons>
+            
+            
 
             {modal && (
               <ModalOverlay>
                 <ModalContent>
                   <DivClose>
-                    <ButtonClose onClick={() => {setModal(false); limparInputs()}}><UilTimes size='24' /></ButtonClose>
+                    <ButtonClose onClick={() => { setModal(false); limparInputs() }}><UilTimes size='24' /></ButtonClose>
                   </DivClose>
 
                   <h3 style={{ fontSize: '24px' }}>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</h3>
-                  <Label>
-                    Produto:
-                    <Select value={nomeProduto} onChange={(e) => setNomeProduto(e.target.value)}>
-                      <option value="">Selecione algum produto</option>
-                      <option value="Feijão">Feijão</option>
-                      <option value="Maçã">Maçã</option>
-                    </Select>
-                  </Label>
+
+                  <InputAdd type='text' value={nomeProduto} placeholder='Digite o Produto' onChange={(e) => setNomeProduto(e.target.value)} />
                   <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
 
-                  <InputAdd type="text" placeholder='Categoria' value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)} />
+                  <Label>
+                    Categoria:
+                    <Select value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)}>
+                      <option value="" disabled hidden>Selecione uma categoria</option>
+                      {arrayCategorias.map((cat, index) => (
+                        <option key={index} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </Select>
+                  </Label>
 
                   <Datas>
 
@@ -193,6 +213,16 @@ function Estoque() {
                     <ButtonCancelar onClick={limparInputs}>Cancelar</ButtonCancelar>
 
                   </ModalButtons>
+                </ModalContent>
+              </ModalOverlay>
+            )}
+
+            {modalConfirmacao && (
+              <ModalOverlay>
+                <ModalContent>
+                  <h2>Deseja excuir este item?</h2>
+                  <ButtonSalvar onClick={deletar}>Sim</ButtonSalvar>
+                  <ButtonCancelar onClick={() => setModalConfirmacao(false)}>Não</ButtonCancelar>
                 </ModalContent>
               </ModalOverlay>
             )}
