@@ -1,7 +1,7 @@
 import {
   Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
-  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select,ButtonExcluir
+  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select
 } from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
@@ -15,10 +15,12 @@ function Estoque() {
   }, [])
 
   const [produtos, setProdutos] = useState([
-    { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Cereal', validade: '2025-05-30', doador: "unijui", valor: 10 }
+    { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Leguminosas', validade: '2025-05-30', doador: "unijui", valor: 10 }
   ])
 
-  const arrayCategorias = ['Cereal', 'Bebida', 'Fruta', 'Legume', 'Higiene', 'Outros']
+  const arrayCategorias = ['Cereais', 'Leguminosas', 'Carnes e Proteínas', 'Laticínios', 'Frutas', 'Verduras e Legumes', 
+    'Pães e Massas', 'Bebidas', 'Condimentos e Temperos', 'Produtos de Limpeza e Higiene', 'Outros'
+   ]
 
   const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
   const [nomeProduto, setNomeProduto] = useState('')
@@ -120,6 +122,7 @@ function Estoque() {
                     <Th>Entrada</Th>
                     <Th>Produto</Th>
                     <Th>Quantidade</Th>
+                    <Th>Categoria</Th>
                     <Th>Validade</Th>
                     <Th></Th>
                     <Th></Th>
@@ -131,6 +134,7 @@ function Estoque() {
                       <Td><ConvertDate data={item.entrada} /></Td>
                       <Td>{item.nome}</Td>
                       <Td>{item.quantidade}</Td>
+                      <Td>{item.categoria}</Td>
                       <Td><ConvertDate data={item.validade} /></Td>
                       <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
                       <Td><ButtonIcon onClick={() => confirmarExclusao(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>

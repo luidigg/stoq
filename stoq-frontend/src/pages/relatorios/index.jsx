@@ -1,7 +1,7 @@
 import Header from "../../components/header"
 import Sidebar from "../../components/sidebar"
 import ConvertDate from "../../components/convertDate"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
     Container, Main, Content, Box, H2, DivFiltros, Select, Label, SelectMovimento
     , SelectProduto, SelectCategoria, SelectData, InputData, Button, DivResultado, Span, Table, Tbody, Thead, Td, Th, Tr,DivTable
@@ -9,25 +9,26 @@ import {
 
 
 function Relatorio() {
-    const title = document.querySelector('title')
-    title.innerHTML = 'Relatórios'
+    useEffect(() => {
+        document.title = 'Relatórios'
+    })
 
     // Arrays com as opções
     const tiposMovimentos = ['Entrada', 'Saída']
-    const produtos = ['Produto A', 'Produto B']
-    const categorias = ['Categoria 1', 'Categoria 2']
+    const produtos = ['Produto A', 'Produto B', 'Produto C', 'Produto D']
+    const categorias = ['Categoria 1', 'Categoria 2','Categoria 3']
 
     // dados ficticios para relatorio
     const dadosRelatorio = [
         { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto B', quantidade: ' 5 Kg', categoria: 'Categoria 2', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto C', quantidade: ' 5 Kg', categoria: 'Categoria 3', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto D', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto D', quantidade: ' 5 Kg', categoria: 'Categoria 2', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Saída', produto: 'Produto C', quantidade: ' 5 Kg', categoria: 'Categoria 3', validade:"2025-05-30" },
         { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
-        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 1', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto B', quantidade: ' 5 Kg', categoria: 'Categoria 2', validade:"2025-05-30" },
+        { data: '2025-05-19', tipo: 'Entrada', produto: 'Produto A', quantidade: ' 5 Kg', categoria: 'Categoria 3', validade:"2025-05-30" },
 
     ]
 

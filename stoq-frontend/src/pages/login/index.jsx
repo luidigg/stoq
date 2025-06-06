@@ -2,11 +2,14 @@ import { Container, Form, DivTexts, H2, P, DivInput, Input, ButtonEntrar, Button
 import circle from '../../assets/circulo.png'
 import elipse from '../../assets/elipse.png'
 import vetor from '../../assets/vetor.png'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { login } from '../../services/authService';
 
 function Login() {
+    useEffect(() => {
+        document.title = 'Login'
+    }, [])
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
@@ -28,8 +31,7 @@ function Login() {
 
 
     const navigate = useNavigate()
-    const title = document.querySelector('title')
-    title.innerHTML = 'Login'
+   
     return (
         <>
             <Container>
