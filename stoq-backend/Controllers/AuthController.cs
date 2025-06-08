@@ -12,31 +12,47 @@ namespace stoq.Controllers
         private readonly IUserService _userService = userService;
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest loginRequest)
+        public IActionResult Login([FromBody] LoginDTO loginRequest)
         {
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
-            AuthResult result = _authService.Authenticate(loginRequest);
+            AuthDTO result = _authService.Authenticate(loginRequest);
 
-            if (result.Sucesso == false) {
+            if (result.Sucesso == false)
+            {
                 return Unauthorized(result);
             }
 
-            return Ok(result);
+            Response.Cookies.Append("authtoken", result.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.UtcNow.AddDays(1)
+            });
+
+            return Ok(new
+            {
+                result.Sucesso,
+                result.Mensagem
+            });
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<IActionResult> Register([FromBody] RegistroDTO registerRequest)
         {
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
 
-            AuthResult result = await _userService.RegisterAsync(registerRequest);
+            AuthDTO result = await _userService.RegisterAsync(registerRequest);
 
-            if (result.Sucesso == false) {
+            if (result.Sucesso == false)
+            {
                 return BadRequest(result);
             }
 

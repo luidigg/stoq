@@ -4,6 +4,6 @@ namespace Stoq.IServices
 {
     public interface IUserService
     {
-        Task<AuthResult> RegisterAsync(RegisterRequest dto);
+        Task<AuthDTO> RegisterAsync(RegistroDTO dto);
     }
 }

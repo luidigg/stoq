@@ -1,10 +1,11 @@
 using Stoq.Data;
 using Stoq.Models;
 using Microsoft.EntityFrameworkCore;
+using Stoq.IServices;
 
 namespace Stoq.Services
 {
-    public class LogService(DataContext context)
+    public class LogService(DataContext context) : ILogService
     {
         private readonly DataContext _context = context;
 

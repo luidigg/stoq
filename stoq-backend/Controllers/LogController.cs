@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Stoq.Models;
-using Stoq.Services;
+using Stoq.IServices;
 
 namespace Stoq.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LogController(LogService logService) : ControllerBase
+    public class LogController(ILogService logService) : ControllerBase
     {
-        private readonly LogService _logService = logService;
+        private readonly ILogService _logService = logService;
 
         [HttpGet]
         public async Task<ActionResult<List<Log>>> GetTodos()

@@ -1,6 +1,6 @@
 namespace Stoq.DTOs
 {
-    public class AuthResult
+    public class AuthDTO
     {
         public bool Sucesso { get; set; }
         public string Mensagem { get; set; }

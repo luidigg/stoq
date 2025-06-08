@@ -18,13 +18,13 @@ function Login() {
 
         try {
             const response = await login(email, senha);
-            //localStorage.setItem('token', response.token); // Salva o token
             console.log('Login realizado com sucesso!');
             navigate('/inicio');
         } catch (err) {
             setError(err);
         }
     };
+
 
 
     const navigate = useNavigate()

@@ -15,7 +15,7 @@ namespace Stoq.Services
         private readonly IConfiguration _configuration = configuration;
         private readonly DataContext _context = context;
 
-        public AuthResult Authenticate(LoginRequest dto)
+        public AuthDTO Authenticate(LoginDTO dto)
         {
             List<ValidationResult> validationResults = [];
             bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true);
@@ -26,14 +26,14 @@ namespace Stoq.Services
             if (user == null || validPassword == false)
             {
                 string mensagem = user == null ? "Usuário não encontrado." : "Senha incorreta.";
-                return new AuthResult
+                return new AuthDTO
                 {
                     Sucesso = false,
                     Mensagem = mensagem
                 };
             }
 
-            return new AuthResult
+            return new AuthDTO
             {
                 Sucesso = true,
                 Mensagem = "Autenticação bem-sucedida.",
@@ -65,7 +65,7 @@ namespace Stoq.Services
             }
         }
 
-        private string GenerateJwtToken(string userId, string name)
+        public string GenerateJwtToken(string userId, string name)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var signingKey = GetSigningKey();

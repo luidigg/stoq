@@ -10,14 +10,14 @@ namespace Stoq.Services
     {
         private readonly DataContext _context = context;
 
-        public async Task<AuthResult> RegisterAsync(RegisterRequest dto)
+        public async Task<AuthDTO> RegisterAsync(RegistroDTO dto)
         {
             // Validar o formulario com DataAnnotations
             List<ValidationResult> validationResults = [];
             bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true);
             if (!isValid)
             {
-                return new AuthResult
+                return new AuthDTO
                 {
                     Sucesso = false,
                     Mensagem = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage))
@@ -26,7 +26,7 @@ namespace Stoq.Services
 
             if (_context.Usuario.Any(u => u.Email == dto.Email))
             {
-                return new AuthResult
+                return new AuthDTO
                 {
                     Sucesso = false,
                     Mensagem = "Já existe um usuário com esse email."
@@ -47,7 +47,7 @@ namespace Stoq.Services
             _context.Usuario.Add(novoUsuario);
             await _context.SaveChangesAsync();
 
-            return new AuthResult
+            return new AuthDTO
             {
                 Sucesso = true,
                 Mensagem = "Usuário registrado com sucesso."

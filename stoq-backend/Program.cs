@@ -11,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Injeção de dependências
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<LogService>();
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IEntradaDoacaoService, EntradaDoacaoService>();
+builder.Services.AddScoped<ISaidaDoacaoService, SaidaDoacaoService>();
+builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
