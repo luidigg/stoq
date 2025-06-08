@@ -1,15 +1,9 @@
-import { Button, SideBar } from './sidebar.styles'
-import {
-  UilEstate,
-  UilBox,
-  UilChartBar,
-  UilUser,
-} from '@iconscout/react-unicons'
-
-import { useNavigate } from 'react-router-dom'
+import { Button, SideBar } from './sidebar.styles';
+import { UilEstate, UilBox, UilChartBar, UilUser } from '@iconscout/react-unicons';
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <SideBar>
@@ -26,7 +20,7 @@ function Sidebar() {
         <UilUser size="30px" /> Meu Perfil
       </Button>
     </SideBar>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

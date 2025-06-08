@@ -10,13 +10,26 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { register } from '../../services/auth-service';
 
+const texts = {
+  title: "Registro",
+  subtitle: "Preencha seu nome, e-mail e crie uma senha",
+  info: "Sua solicitação de cadastro será enviada ao administrador do sistema para aprovação",
+  buttonSubmit: "Enviar Solicitação",
+  haveAccount: "Já possui cadastro?",
+  buttonLogin: "Entre!",
+  placeholderName: "Nome",
+  placeholderEmail: "Email",
+  placeholderPassword: "Senha",
+  placeholderConfirmPassword: "Confirme sua senha"
+}
+
 function Register() {
   const navigate = useNavigate();
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [cargoId, setCargoId] = useState(2);
+  const [cargoId, setCargoId] = useState(2); // usando cargoId 2 temporariamente
   const [error, setError] = useState('');
 
   const handleRegister = async (e) => {
@@ -47,11 +60,9 @@ function Register() {
       <Form onSubmit={handleRegister}>
 
         <DivTexts>
-          <H2>Registro</H2>
-          <P>Preencha seu nome, e-mail e crie uma senha</P>
-          <P style={{ fontWeight: '400' }}>
-            Sua solicitação de cadastro será enviada ao administrador do sistema para aprovação
-          </P>
+          <H2>{texts.title}</H2>
+          <P>{texts.subtitle}</P>
+          <P style={{ fontWeight: '400' }}>{texts.info}</P>
         </DivTexts>
 
         <DivInputs>
@@ -60,7 +71,7 @@ function Register() {
             <IconUser size="28" />
             <Input
               type="text"
-              placeholder="Nome"
+              placeholder={texts.placeholderName}
               value={nome}
               onChange={(e) => setNome(e.target.value)}
             />
@@ -70,7 +81,7 @@ function Register() {
             <IconEmail size="28" />
             <Input
               type="email"
-              placeholder="Email"
+              placeholder={texts.placeholderEmail}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -80,7 +91,7 @@ function Register() {
             <IconPass size="28" />
             <Input
               type="password"
-              placeholder="Senha"
+              placeholder={texts.placeholderPassword}
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
@@ -90,7 +101,7 @@ function Register() {
             <IconPass size="28" />
             <Input
               type="password"
-              placeholder="Confirme sua senha"
+              placeholder={texts.placeholderConfirmPassword}
             />
           </DivII>
 
@@ -98,10 +109,10 @@ function Register() {
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <ButtonRegister type="submit">Enviar Solicitação</ButtonRegister>
+        <ButtonRegister type="submit">{texts.buttonSubmit}</ButtonRegister>
 
         <P>
-          Já possui cadastro? <ButtonLogin onClick={() => navigate('/login')}>Entre!</ButtonLogin>
+          {texts.haveAccount} <ButtonLogin onClick={() => navigate('/login')}>{texts.buttonLogin}</ButtonLogin>
         </P>
 
       </Form>

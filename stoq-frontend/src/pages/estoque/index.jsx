@@ -8,6 +8,7 @@ import Header from '../../components/header'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
 import ConvertDate from '../../components/convert-date'
+import { H2Medium } from '../common-styles'
 
 function Estoque() {
   useEffect(() => {
@@ -18,9 +19,9 @@ function Estoque() {
     { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Leguminosas', validade: '2025-05-30', doador: "unijui", valor: 10 }
   ])
 
-  const arrayCategorias = ['Cereais', 'Leguminosas', 'Carnes e Proteínas', 'Laticínios', 'Frutas', 'Verduras e Legumes', 
+  const arrayCategorias = ['Cereais', 'Leguminosas', 'Carnes e Proteínas', 'Laticínios', 'Frutas', 'Verduras e Legumes',
     'Pães e Massas', 'Bebidas', 'Condimentos e Temperos', 'Produtos de Limpeza e Higiene', 'Outros'
-   ]
+  ]
 
   const [dataEntrada, setDataEntrada] = useState(new Date().toISOString().split('T')[0])
   const [nomeProduto, setNomeProduto] = useState('')
@@ -107,135 +108,131 @@ function Estoque() {
   }
 
   return (
-    <>
-      <Container>
-        <Header />
-        <Content>
-          <Sidebar />
-          <Main>
-            <H2>Estoque</H2>
+    <Container>
+      <Header />
+      <Content>
+        <Sidebar />
+        <Main>
+          <H2Medium>Estoque</H2Medium>
 
-            <DivTable>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Entrada</Th>
-                    <Th>Produto</Th>
-                    <Th>Quantidade</Th>
-                    <Th>Categoria</Th>
-                    <Th>Validade</Th>
-                    <Th></Th>
-                    <Th></Th>
+          <DivTable>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Entrada</Th>
+                  <Th>Produto</Th>
+                  <Th>Quantidade</Th>
+                  <Th>Categoria</Th>
+                  <Th>Validade</Th>
+                  <Th></Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {produtos.map((item, index) => (
+                  <Tr key={index}>
+                    <Td><ConvertDate data={item.entrada} /></Td>
+                    <Td>{item.nome}</Td>
+                    <Td>{item.quantidade}</Td>
+                    <Td>{item.categoria}</Td>
+                    <Td><ConvertDate data={item.validade} /></Td>
+                    <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
+                    <Td><ButtonIcon onClick={() => confirmarExclusao(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {produtos.map((item, index) => (
-                    <Tr key={index}>
-                      <Td><ConvertDate data={item.entrada} /></Td>
-                      <Td>{item.nome}</Td>
-                      <Td>{item.quantidade}</Td>
-                      <Td>{item.categoria}</Td>
-                      <Td><ConvertDate data={item.validade} /></Td>
-                      <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
-                      <Td><ButtonIcon onClick={() => confirmarExclusao(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
-                    </Tr>
-                  ))}
-                </Tbody>
+                ))}
+              </Tbody>
 
-              </Table>
-            </DivTable>
+            </Table>
+          </DivTable>
 
-            <DivButtons>
-              <ButtonAdd onClick={() => setModal(true)}> <UilPlus size='24' color='#fff' />Adicionar Produtos</ButtonAdd>
-              
-            </DivButtons>
-            
-            
+          <DivButtons>
+            <ButtonAdd onClick={() => setModal(true)}> <UilPlus size='24' color='#fff' />Adicionar Produtos</ButtonAdd>
 
-            {modal && (
-              <ModalOverlay>
-                <ModalContent>
-                  <DivClose>
-                    <ButtonClose onClick={() => { setModal(false); limparInputs() }}><UilTimes size='24' /></ButtonClose>
-                  </DivClose>
+          </DivButtons>
 
-                  <h3 style={{ fontSize: '24px' }}>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</h3>
 
-                  <InputAdd type='text' value={nomeProduto} placeholder='Digite o Produto' onChange={(e) => setNomeProduto(e.target.value)} />
-                  <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
+
+          {modal && (
+            <ModalOverlay>
+              <ModalContent>
+                <DivClose>
+                  <ButtonClose onClick={() => { setModal(false); limparInputs() }}><UilTimes size='24' /></ButtonClose>
+                </DivClose>
+
+                <h3 style={{ fontSize: '24px' }}>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</h3>
+
+                <InputAdd type='text' value={nomeProduto} placeholder='Digite o Produto' onChange={(e) => setNomeProduto(e.target.value)} />
+                <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
+
+                <Label>
+                  Categoria:
+                  <Select value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)}>
+                    <option value="" disabled hidden>Selecione uma categoria</option>
+                    {arrayCategorias.map((cat, index) => (
+                      <option key={index} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </Select>
+                </Label>
+
+                <Datas>
 
                   <Label>
-                    Categoria:
-                    <Select value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)}>
-                      <option value="" disabled hidden>Selecione uma categoria</option>
-                      {arrayCategorias.map((cat, index) => (
-                        <option key={index} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </Select>
+                    Data de Cadastro:
+                    <InputAdd
+                      type="date"
+                      value={dataEntrada}
+                      onChange={(e) => setDataEntrada(e.target.value)} />
                   </Label>
 
-                  <Datas>
+                  <Label>
+                    Data de Validade:
+                    <InputAdd
+                      type="date"
+                      value={validadeProduto}
+                      onChange={(e) => setValidadeProduto(e.target.value)}
+                    />
+                  </Label>
 
-                    <Label>
-                      Data de Cadastro:
-                      <InputAdd
-                        type="date"
-                        value={dataEntrada}
-                        onChange={(e) => setDataEntrada(e.target.value)} />
-                    </Label>
+                </Datas>
 
-                    <Label>
-                      Data de Validade:
-                      <InputAdd
-                        type="date"
-                        value={validadeProduto}
-                        onChange={(e) => setValidadeProduto(e.target.value)}
-                      />
-                    </Label>
+                <InputAdd
+                  type="number"
+                  placeholder='R$ Valor da Compra (OPCIONAL)'
+                  value={valorProduto}
+                  onChange={(e) => setValorProduto(e.target.value)}
+                />
 
-                  </Datas>
+                <InputAdd
+                  type="text"
+                  placeholder='Nome do Doador (OPCIONAL)'
+                  value={nomeDoador}
+                  onChange={(e) => setNomeDoador(e.target.value)}
+                />
 
-                  <InputAdd
-                    type="number"
-                    placeholder='R$ Valor da Compra (OPCIONAL)'
-                    value={valorProduto}
-                    onChange={(e) => setValorProduto(e.target.value)}
-                  />
+                <ModalButtons>
 
-                  <InputAdd
-                    type="text"
-                    placeholder='Nome do Doador (OPCIONAL)'
-                    value={nomeDoador}
-                    onChange={(e) => setNomeDoador(e.target.value)}
-                  />
+                  <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
+                  <ButtonCancelar onClick={limparInputs}>Cancelar</ButtonCancelar>
 
-                  <ModalButtons>
+                </ModalButtons>
+              </ModalContent>
+            </ModalOverlay>
+          )}
 
-                    <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
-                    <ButtonCancelar onClick={limparInputs}>Cancelar</ButtonCancelar>
-
-                  </ModalButtons>
-                </ModalContent>
-              </ModalOverlay>
-            )}
-
-            {modalConfirmacao && (
-              <ModalOverlay>
-                <ModalContent>
-                  <h2>Deseja excuir este item?</h2>
-                  <ButtonSalvar onClick={deletar}>Sim</ButtonSalvar>
-                  <ButtonCancelar onClick={() => setModalConfirmacao(false)}>Não</ButtonCancelar>
-                </ModalContent>
-              </ModalOverlay>
-            )}
-          </Main>
-
-        </Content>
-
-      </Container>
-    </>
+          {modalConfirmacao && (
+            <ModalOverlay>
+              <ModalContent>
+                <h2>Deseja excuir este item?</h2>
+                <ButtonSalvar onClick={deletar}>Sim</ButtonSalvar>
+                <ButtonCancelar onClick={() => setModalConfirmacao(false)}>Não</ButtonCancelar>
+              </ModalContent>
+            </ModalOverlay>
+          )}
+        </Main>
+      </Content>
+    </Container>
   )
 }
 
