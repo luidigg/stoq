@@ -4,7 +4,7 @@ import elipse from '../../assets/elipse.png'
 import vetor from '../../assets/vetor.png'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { login } from '../../services/authService';
+import { login } from '../../services/auth-service';
 
 function Login() {
     useEffect(() => {

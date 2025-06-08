@@ -1,12 +1,7 @@
-import {Head} from './style'
+import { Head } from './header.styles'
 
 function Header() {
-
-    return (
-        <>
-        <Head></Head>
-        </>
-    )
+    return <Head />
 }
 
 export default Header

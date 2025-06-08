@@ -7,7 +7,7 @@ import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
-import ConvertDate from '../../components/convertDate'
+import ConvertDate from '../../components/convert-date'
 
 function Estoque() {
   useEffect(() => {

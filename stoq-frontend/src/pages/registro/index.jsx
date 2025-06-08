@@ -8,7 +8,7 @@ import elipse from '../../assets/elipse.png'
 import vetor from '../../assets/vetor.png'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { register } from '../../services/authService';
+import { register } from '../../services/auth-service';
 
 function Register() {
   const navigate = useNavigate();
