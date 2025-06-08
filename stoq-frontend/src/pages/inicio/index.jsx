@@ -1,10 +1,12 @@
 import {Container,Main,Content,IconBox,IconEx,IconUp,IconDown,Box,TopCards,Card,BottomCards,P,Ul,Li,Card2,H2,Circle} from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
+import { useEffect } from 'react'
 
 function Inicio() {
-    const title = document.querySelector('title')
-    title.innerHTML = 'Início'
+    useEffect(() => {
+        document.title = 'Inicio'
+    }, [])
 
     return (
        <>

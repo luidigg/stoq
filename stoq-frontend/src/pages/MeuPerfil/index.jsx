@@ -2,10 +2,12 @@ import Header from "../../components/header"
 import Sidebar from "../../components/sidebar"
 import { Container, Main, Content, H2, DivTop, ImgPerfil, Pnome, Pemail, DivInfos, Campo, Span, Valores,Informacoes,TextTop,Button,DivButton } from './style'
 import perfil from '../../assets/perfil.png'
+import { useEffect } from "react"
 
 function Perfil() {
-    const title = document.querySelector('title')
-    title.innerHTML = 'Meu Perfil'
+    useEffect(() => {
+        document.title = 'Meu Perfil'
+    }, [])
     
     return (
         <>
