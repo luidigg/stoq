@@ -12,46 +12,47 @@ import {
   MainWithBackground,
   H2Medium,
   ButtonPrimary,
-} from '../common-styles'
+} from '../../pages/common-styles';
 
 export {
   H2Medium,
   ButtonPrimary
-}
+};
 
-export const Container = styled(CommonContainer)``
-export const Content = styled(CommonContent)``
+// Containers base
+export const Container = styled(CommonContainer)``;
+export const Content = styled(CommonContent)``;
 
 export const Main = styled(MainWithBackground)`
   display: flex;
   flex-direction: column;
   padding: 35px;
   gap: 20px;
-`
-
-export const Box = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 100%;
 `;
 
+// Layout de cards superiores e inferiores
 export const TopCards = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 10px 0 10px 0;
+  margin: 10px 0;
 `;
 
+export const BottomCards = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+// Cards
 export const Card = styled.div`
   background-color: #fff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   width: 17vw;
   height: 20vh;
-  justify-content: center;
 `;
 
 export const Card2 = styled.div`
@@ -64,15 +65,13 @@ export const Card2 = styled.div`
   gap: 10px;
 `;
 
-export const BottomCards = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
+// Tipografia
 export const P = styled.p`
-  font-size: 18px;
+  font-size: 15px;
+  padding-left: 10px;
 `;
 
+// Lista antiga (mantida caso use em algum componente legado)
 export const Ul = styled.ul`
   list-style: none;
   display: flex;
@@ -86,22 +85,24 @@ export const Li = styled.li`
   align-items: center;
 `;
 
+// Ícones
 export const IconBox = styled(UilBox)`
-  color:rgb(255, 157, 0);
+  color: #1E8673;
 `;
 
 export const IconEx = styled(UilExclamationTriangle)`
-  color:rgb(255, 0, 0);
+  color: #EB6613;
 `;
 
 export const IconUp = styled(UilArrowUp)`
-  color:rgb(27, 198, 50);
+  color: #1E8673;
 `;
 
 export const IconDown = styled(UilArrowDown)`
-  color:rgb(255, 0, 0);
+  color: #EB6613;
 `;
 
+// Indicador visual
 export const Circle = styled.div`
   background-color: green;
   width: 15px;

@@ -31,7 +31,7 @@ export const CenterText = styled.div`
 
 export const Logo = styled.img`
   height: 70%; 
-  max-height: 120px;
+  max-height: 100px;
 `;
 
 export const UserBlock = styled.div`

@@ -3,20 +3,22 @@ import {
   Container,     
   Content,       
   MainWithBackground, 
-  ButtonPrimary
+  ButtonPrimary,
+  H2Medium as H2
 } from '../common-styles';
 
 export { 
   Container, 
   Content, 
-  ButtonPrimary
+  ButtonPrimary,
+  H2
 };
 
 export const Main = styled(MainWithBackground)`
   display: flex;
+  flex-direction: column;
   justify-content: start;
-  align-items: center;
-  padding: 10px 20px;
+  padding: 35px;
   overflow-y: auto;
 `;
 

@@ -1,5 +1,5 @@
 import { Head, Container, Logo, UserBlock, Username, LogoutButton, CenterText } from './header.styles';
-import logoImg from '../../assets/stoq-icon.png';
+import logoImg from '../../assets/stoq-icon-2.png';
 
 function Header() {
   const userName = 'João Carlos';

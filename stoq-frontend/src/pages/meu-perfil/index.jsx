@@ -7,7 +7,7 @@ import {
     Content,
     Main,
     Informacoes,
-    Titulo,
+    H2,
     TopSection,
     ImgPerfil,
     TextTop,
@@ -36,8 +36,8 @@ function Perfil() {
             <Content>
                 <Sidebar />
                 <Main>
+                    <H2>Meu Perfil</H2>
                     <Informacoes>
-                        <Titulo>Meu Perfil</Titulo>
                         <TopSection>
                             <ImgPerfil>
                                 <img src={perfil} alt="Foto de Perfil" />

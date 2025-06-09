@@ -19,67 +19,71 @@ import {
   Main,
   H2Medium
 } from './style';
+import InfoCards from '../../components/info-cards/infocards';
+import MiniTable from '../../components/mini-table/minitable';
 
 function Inicio() {
   useEffect(() => {
     document.title = 'Inicio';
   }, []);
 
+  const movimentacoes = [
+    {
+      tipo: 'entrada',
+      descricao: 'Produto A',
+      quantidade: '5 KG',
+      dataEntrada: '01/06/2025',
+      validade: '15/06/2025'
+    },
+    {
+      tipo: 'saida',
+      descricao: 'Produto B',
+      quantidade: '2 KG',
+      dataEntrada: '02/06/2025',
+      validade: '20/06/2025'
+    },
+    {
+      tipo: 'entrada',
+      descricao: 'Produto C',
+      quantidade: '3 KG',
+      dataEntrada: '03/06/2025',
+      validade: '25/06/2025'
+    },
+        {
+      tipo: 'entrada',
+      descricao: 'Produto E',
+      quantidade: '5 KG',
+      dataEntrada: '01/06/2025',
+      validade: '15/06/2025'
+    },
+    {
+      tipo: 'saida',
+      descricao: 'Produto Y',
+      quantidade: '2 KG',
+      dataEntrada: '02/06/2025',
+      validade: '20/06/2025'
+    }
+  ];
+
   return (
     <Container>
       <Header />
       <Content>
         <Sidebar />
-          <Main>
-            <H2Medium>Início</H2Medium>
+        <Main>
+          <H2Medium>Início</H2Medium>
 
-            <TopCards>
-              <Card>
-                <IconBox size="40" />
-                <P>Total de Produtos</P>
-                <P>32</P>
-              </Card>
-              <Card>
-                <IconEx size="40" />
-                <P>Produtos Com Estoque Baixo</P>
-                <P>4</P>
-              </Card>
-              <Card>
-                <IconUp size="40" />
-                <P>Entradas Do Dia</P>
-                <P>7</P>
-              </Card>
-              <Card>
-                <IconDown size="40" />
-                <P>Saídas Do Dia</P>
-                <P>12</P>
-              </Card>
-            </TopCards>
+          <TopCards>
+            <InfoCards Icon={IconBox} title="Total de Produtos" value={32} />
+            <InfoCards Icon={IconEx} title="Itens Com Estoque Baixo" value={4} />
+            <InfoCards Icon={IconUp} title="Entradas Do Dia" value={7} />
+            <InfoCards Icon={IconDown} title="Saídas Do Dia" value={12} />
+          </TopCards>
 
-            <BottomCards>
-              <Card2>
-                <P>Últimas Movimentações no Estoque</P>
-                <Ul>
-                  <Li><Circle /></Li>
-                  <Li>Produto A - Entrada</Li>
-                  <Li>5 KG</Li>
-                  <Li>18/05/2025</Li>
-                </Ul>
-                <Ul>
-                  <Li><Circle /></Li>
-                  <Li>Produto B - Entrada</Li>
-                  <Li>9 KG</Li>
-                  <Li>18/05/2025</Li>
-                </Ul>
-                <Ul>
-                  <Li><Circle /></Li>
-                  <Li>Produto C - Entrada</Li>
-                  <Li>1 KG</Li>
-                  <Li>18/05/2025</Li>
-                </Ul>
-              </Card2>
-            </BottomCards>
-          </Main>
+          <BottomCards>
+            <MiniTable title="Últimas Movimentações no Estoque" data={movimentacoes} />
+          </BottomCards>
+        </Main>
       </Content>
     </Container>
   );
