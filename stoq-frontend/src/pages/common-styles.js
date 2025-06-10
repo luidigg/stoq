@@ -41,12 +41,4 @@ export const ButtonPrimary = styled.button`
   line-height: 19px;
   cursor: pointer;
   transition: all 0.25s ease;
-
-  &:hover {
-    box-shadow: 0px 4px 15px #1E8673;
-  }
-
-  &:active {
-    box-shadow: 4px 4px 20px #1E8673;
-  }
 `;

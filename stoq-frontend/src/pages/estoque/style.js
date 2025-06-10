@@ -109,28 +109,55 @@ export const ModalOverlay = styled.div`
 `
 
 export const ModalContent = styled.div`
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+`;
+
+
+export const SmallModalContent = styled.div`
   background: white;
   padding: 30px;
   border-radius: 12px;
-  width: 400px;
+  width: 320px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 `
 
+export const BotoesWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 1rem;
+`;
+
 export const Datas = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
 `
+
 
 export const Label = styled.label`
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  gap: 4px;
+  width: 100%;
 `
+
+
 
 export const DivClose = styled.div`
   display: flex;
@@ -148,19 +175,31 @@ export const ButtonClose = styled.button`
 `
 
 export const InputAdd = styled.input`
-  padding: 5px 10px;
-  font-size: 14px;
-  font-weight: 400;
-`
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: border 0.3s ease;
+
+  &:focus {
+    border-color: #1e8673;
+  }
+`;
+
 
 export const ButtonSalvar = styled(ButtonPrimary)`
   background-color: #1E8673;
   color: #fff;
-  padding: 5px 25px;
+  padding: 5px 45px;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
-    opacity: 0.8;
+    box-shadow: 0 0 10px rgb(0, 108, 88);
   }
 
   &:active {
@@ -169,17 +208,16 @@ export const ButtonSalvar = styled(ButtonPrimary)`
 `
 
 export const ButtonCancelar = styled(ButtonPrimary)`
-  background-color: #ff4d4f;
-  color: #fff;
-  padding: 5px 25px;
-  border: none;
+  color: #ff4d4f;
+  padding: 5px 45px;
+  border: 2px solid #ff4d4f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
-    opacity: 0.8;
-  }
-
-  &:active {
-    opacity: 0.5;
+    background-color: #ff4d4f;
+    color: #fff;
   }
 `
 
@@ -187,9 +225,34 @@ export const ModalButtons = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 15px;
-`
+  margin-top: 1rem;
+`;
+
 
 export const Select = styled.select`
   width: 100%;
-  padding: 5px 10px;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: border 0.3s ease;
+
+  &:focus {
+    border-color: #1e8673;
+  }
+`;
+
+export const HeaderModal = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`
+
+export const TituloModal = styled.h3`
+  font-size: 25px;
+  text-align: center;
+  flex: 1;
+  margin: 0;
 `

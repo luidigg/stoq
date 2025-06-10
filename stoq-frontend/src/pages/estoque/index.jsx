@@ -1,7 +1,8 @@
 import {
   Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
-  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select
+  Datas, ButtonClose, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select, BotoesWrapper, SmallModalContent,
+  HeaderModal, TituloModal
 } from './style'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
@@ -147,7 +148,6 @@ function Estoque() {
 
           <DivButtons>
             <ButtonAdd onClick={() => setModal(true)}> <UilPlus size='24' color='#fff' />Adicionar Produtos</ButtonAdd>
-
           </DivButtons>
 
 
@@ -155,67 +155,58 @@ function Estoque() {
           {modal && (
             <ModalOverlay>
               <ModalContent>
-                <DivClose>
-                  <ButtonClose onClick={() => { setModal(false); limparInputs() }}><UilTimes size='24' /></ButtonClose>
-                </DivClose>
+                <HeaderModal>
+                  <TituloModal>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</TituloModal>
+                  <ButtonClose onClick={() => { setModal(false); limparInputs(); }}>
+                    <UilTimes size='24' />
+                  </ButtonClose>
+                </HeaderModal>
 
-                <h3 style={{ fontSize: '24px' }}>{modoEdicao ? 'Editar Produto' : 'Adicionar Produto'}</h3>
+                <Label>
+                  Nome do Produto:
+                  <InputAdd type='text' value={nomeProduto} placeholder='Obrigatório*' onChange={(e) => setNomeProduto(e.target.value)} />
+                </Label>
 
-                <InputAdd type='text' value={nomeProduto} placeholder='Digite o Produto' onChange={(e) => setNomeProduto(e.target.value)} />
-                <InputAdd type="text" placeholder='Quantidade' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
+                <Label>
+                  Quantidade:
+                  <InputAdd type="text" placeholder='Obrigatório*' value={quantidadeProduto} onChange={(e) => setQuantidadeProduto(e.target.value)} />
+                </Label>
 
                 <Label>
                   Categoria:
                   <Select value={categoriaProduto} onChange={(e) => setCategoriaProduto(e.target.value)}>
                     <option value="" disabled hidden>Selecione uma categoria</option>
                     {arrayCategorias.map((cat, index) => (
-                      <option key={index} value={cat}>
-                        {cat}
-                      </option>
+                      <option key={index} value={cat}>{cat}</option>
                     ))}
                   </Select>
                 </Label>
 
                 <Datas>
-
                   <Label>
                     Data de Cadastro:
-                    <InputAdd
-                      type="date"
-                      value={dataEntrada}
-                      onChange={(e) => setDataEntrada(e.target.value)} />
+                    <InputAdd type="date" value={dataEntrada} onChange={(e) => setDataEntrada(e.target.value)} />
                   </Label>
 
                   <Label>
                     Data de Validade:
-                    <InputAdd
-                      type="date"
-                      value={validadeProduto}
-                      onChange={(e) => setValidadeProduto(e.target.value)}
-                    />
+                    <InputAdd type="date" value={validadeProduto} onChange={(e) => setValidadeProduto(e.target.value)} />
                   </Label>
-
                 </Datas>
 
-                <InputAdd
-                  type="number"
-                  placeholder='R$ Valor da Compra (OPCIONAL)'
-                  value={valorProduto}
-                  onChange={(e) => setValorProduto(e.target.value)}
-                />
+                <Label>
+                  Valor da Compra:
+                  <InputAdd type="number" placeholder='Opcional' value={valorProduto} onChange={(e) => setValorProduto(e.target.value)} />
+                </Label>
 
-                <InputAdd
-                  type="text"
-                  placeholder='Nome do Doador (OPCIONAL)'
-                  value={nomeDoador}
-                  onChange={(e) => setNomeDoador(e.target.value)}
-                />
+                <Label>
+                  Nome do Doador:
+                  <InputAdd type="text" placeholder='Opcional' value={nomeDoador} onChange={(e) => setNomeDoador(e.target.value)} />
+                </Label>
 
                 <ModalButtons>
-
                   <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
-                  <ButtonCancelar onClick={limparInputs}>Cancelar</ButtonCancelar>
-
+                  <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>
             </ModalOverlay>
@@ -223,11 +214,13 @@ function Estoque() {
 
           {modalConfirmacao && (
             <ModalOverlay>
-              <ModalContent>
-                <h2>Deseja excuir este item?</h2>
-                <ButtonSalvar onClick={deletar}>Sim</ButtonSalvar>
-                <ButtonCancelar onClick={() => setModalConfirmacao(false)}>Não</ButtonCancelar>
-              </ModalContent>
+              <SmallModalContent>
+                <h2>Deseja excluir este item?</h2>
+                <BotoesWrapper>
+                  <ButtonSalvar onClick={deletar}>Sim</ButtonSalvar>
+                  <ButtonCancelar onClick={() => setModalConfirmacao(false)}>Não</ButtonCancelar>
+                </BotoesWrapper>
+              </SmallModalContent>
             </ModalOverlay>
           )}
         </Main>

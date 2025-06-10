@@ -60,10 +60,6 @@ function Perfil() {
                                 <Label>Número de Celular</Label>
                                 <Valor>(55) 99999-9999</Valor>
                             </InfoItem>
-                            <InfoItem>
-                                <Label>Senha</Label>
-                                <Valor>*********</Valor>
-                            </InfoItem>
                         </InfoList>
                         <ButtonWrapper>
                             <EditButton onClick={handleEditClick}>Editar Informações</EditButton>
