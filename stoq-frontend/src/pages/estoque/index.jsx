@@ -10,15 +10,17 @@ import { UilEdit, UilTrashAlt, UilPlus, UilTimes } from '@iconscout/react-unicon
 import { useState, useEffect } from 'react'
 import ConvertDate from '../../components/convert-date'
 import { H2Medium } from '../common-styles'
+import axios from 'axios';
 
 function Estoque() {
+  const [produtos, setProdutos] = useState([])
+
   useEffect(() => {
     document.title = 'Estoque'
+    axios.get('http://localhost:5144/api/produto')
+      .then(response => setProdutos(response.data))
+      .catch(error => console.error('Error fetching products:', error));
   }, [])
-
-  const [produtos, setProdutos] = useState([
-    { entrada: '2025-05-25', nome: 'Feijão', quantidade: '10 kg', categoria: 'Leguminosas', validade: '2025-05-30', doador: "unijui", valor: 10 }
-  ])
 
   const arrayCategorias = ['Cereais', 'Leguminosas', 'Carnes e Proteínas', 'Laticínios', 'Frutas', 'Verduras e Legumes',
     'Pães e Massas', 'Bebidas', 'Condimentos e Temperos', 'Produtos de Limpeza e Higiene', 'Outros'
@@ -130,13 +132,13 @@ function Estoque() {
                 </Tr>
               </Thead>
               <Tbody>
-                {produtos.map((item, index) => (
-                  <Tr key={index}>
-                    <Td><ConvertDate data={item.entrada} /></Td>
-                    <Td>{item.nome}</Td>
-                    <Td>{item.quantidade}</Td>
-                    <Td>{item.categoria}</Td>
-                    <Td><ConvertDate data={item.validade} /></Td>
+                {produtos.map(produto => (
+                  <Tr key={produto.id}>
+                    <Td><ConvertDate data={produto.entrada} /></Td>
+                    <Td>{produto.nome}</Td>
+                    <Td>{produto.quantidade}</Td>
+                    <Td>{produto.categoria.nome}</Td>
+                    <Td><ConvertDate data={produto.validade} /></Td>
                     <Td><ButtonIcon onClick={() => editarProduto(index)}><UilEdit size='24' color='#1E8673' /></ButtonIcon></Td>
                     <Td><ButtonIcon onClick={() => confirmarExclusao(index)}><UilTrashAlt size='24' color='#1E8673' /></ButtonIcon></Td>
                   </Tr>
