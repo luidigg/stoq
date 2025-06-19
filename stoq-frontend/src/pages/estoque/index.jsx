@@ -50,8 +50,13 @@ function Estoque() {
   }
 
   //adiciona o novo produto a lista
+  const validacaoCadastro = () => nomeProduto.trim() && quantidadeProduto.trim() && categoriaProduto
   const cadastrar = () => {
-    const novoProduto = {
+    if (!nomeProduto.trim() || !quantidadeProduto.trim() || !categoriaProduto){
+      alert('Por favor, preencha todos os campos obrogatórios')
+      return
+    }
+    const novoProduto = { 
       entrada: dataEntrada,
       nome: nomeProduto,
       quantidade: quantidadeProduto,
@@ -132,7 +137,7 @@ function Estoque() {
                 </Tr>
               </Thead>
               <Tbody>
-                {produtos.map(produto => (
+                {produtos.map((produto, index) => (
                   <Tr key={produto.id}>
                     <Td><ConvertDate data={produto.entrada} /></Td>
                     <Td>{produto.nome}</Td>
@@ -207,7 +212,8 @@ function Estoque() {
                 </Label>
 
                 <ModalButtons>
-                  <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
+                  
+                  <ButtonSalvar disabled={!validacaoCadastro()} onClick={cadastrar}>Salvar</ButtonSalvar>
                   <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>
