@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Stoq.IServices;
 using Stoq.DTOs;
+using System.Security.Claims;
 
 namespace stoq.Controllers
 {
@@ -31,7 +32,7 @@ namespace stoq.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTimeOffset.UtcNow.AddDays(1)
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
             });
 
             return Ok(new
@@ -57,6 +58,30 @@ namespace stoq.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("authtoken");
+
+            return Ok(new
+            {
+                Sucesso = true,
+                Mensagem = "Logout realizado com sucesso."
+            });
+        }
+
+        [HttpGet("get-user")]
+        public IActionResult GetUser()
+        {
+            if (HttpContext.User.Identity is not ClaimsIdentity identity || !identity.IsAuthenticated)
+                return Unauthorized();
+
+            var userId = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var name = identity.FindFirst(ClaimTypes.Name)?.Value;
+
+            return Ok(new { id = userId, name });
         }
     }
 }

@@ -41,30 +41,6 @@ namespace Stoq.Services
             };
         }
 
-        public ClaimsPrincipal ValidateJwtToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var signingKey = GetSigningKey();
-
-            TokenValidationParameters validationParameters = new()
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = signingKey,
-                ValidateIssuer = false,
-                ValidateAudience = false
-            };
-
-            try
-            {
-                var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
-                return principal;
-            }
-            catch
-            {
-                throw new SecurityTokenException("Token inválido.");
-            }
-        }
-
         public string GenerateJwtToken(string userId, string name)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

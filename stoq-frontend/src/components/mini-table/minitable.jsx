@@ -38,6 +38,12 @@ const MovementType = styled.div`
   color: #333;
 `;
 
+const formatarData = (dataStr) => {
+  if (!dataStr) return '';
+  const data = new Date(dataStr);
+  return data.toLocaleDateString('pt-BR');
+}
+
 const MiniTable = ({ title, data }) => {
   return (
     <Card2>
@@ -63,8 +69,8 @@ const MiniTable = ({ title, data }) => {
               </Td>
               <Td>{item.descricao}</Td>
               <Td>{item.quantidade}</Td>
-              <Td>{item.dataEntrada}</Td>
-              <Td>{item.validade}</Td>
+              <Td>{formatarData(item.dataEntrada)}</Td>
+              <Td>{formatarData(item.validade)}</Td>
             </tr>
           ))}
         </Tbody>

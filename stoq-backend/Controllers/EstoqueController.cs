@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Stoq.IServices;
 using Stoq.DTOs;
+using Stoq.IServices;
+using Stoq.Models;
 
 namespace Stoq.Controllers
 {
@@ -10,30 +11,43 @@ namespace Stoq.Controllers
     {
         private readonly IEstoqueService _estoqueService = estoqueService;
 
-        // GET: api/estoque
         [HttpGet]
-        public async Task<ActionResult<List<EstoqueDTO>>> Listar()
+        public async Task<IActionResult> GetAll()
         {
-            var lista = await _estoqueService.ListarAsync();
-            return Ok(lista);
+            var estoques = await _estoqueService.GetAllAsync();
+            return Ok(estoques);
         }
 
-        // GET: api/estoque/produto/5
-        [HttpGet("produto/{produtoId}")]
-        public async Task<ActionResult<EstoqueDTO>> BuscarPorProdutoId(int produtoId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var estoque = await _estoqueService.BuscarPorProdutoIdAsync(produtoId);
+            var estoque = await _estoqueService.GetByIdAsync(id);
             if (estoque == null) return NotFound();
             return Ok(estoque);
         }
 
-        // PUT: api/estoque/ajustar
-        [HttpPut("ajustar")]
-        public async Task<ActionResult> AjustarEstoque(int produtoId, int novaQuantidade)
+        [HttpPost("criar")]
+        public async Task<IActionResult> Create([FromBody] EstoqueDTO dto)
         {
-            var sucesso = await _estoqueService.AjustarQuantidadeAsync(produtoId, novaQuantidade);
-            if (!sucesso) return NotFound("Produto não encontrado no estoque.");
-            return Ok("Estoque ajustado com sucesso.");
+            await _estoqueService.CreateAsync(dto);
+            return Ok("Estoque atualizado com sucesso!");
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] EstoqueDTO dto)
+        {
+            var sucesso = await _estoqueService.UpdateAsync(id, dto);
+            if (!sucesso) return NotFound();
+            return NoContent();
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var resultado = await _estoqueService.DeleteAsync(id);
+            if (!resultado) return NotFound();
+            return NoContent();
         }
     }
 }

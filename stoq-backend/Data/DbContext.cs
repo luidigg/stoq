@@ -82,6 +82,11 @@ namespace Stoq.Data
                 entity.Property(e => e.DataSaida).HasColumnName("data_saida");
                 entity.Property(e => e.Motivo).HasColumnName("motivo");
                 entity.Property(e => e.Observacoes).HasColumnName("observacoes");
+
+                entity.HasOne(e => e.EntradaDoacao)
+                    .WithMany(e => e.SaidasDoacao)
+                    .HasForeignKey(e => e.EntradaId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Log>(entity =>

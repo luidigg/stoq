@@ -21,6 +21,7 @@ export const DivButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 `
 
 export const ButtonAdd = styled(ButtonPrimary)`
@@ -28,6 +29,26 @@ export const ButtonAdd = styled(ButtonPrimary)`
   align-items: center;
   gap: 7px;
   background-color: #1E8673;
+  color: #fff;
+  border: none;
+  width: auto;
+  padding: 6px 17px;
+  font-size: 18px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.6;
+  }
+`
+
+export const ButtonRemove = styled(ButtonPrimary)`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background-color:rgb(134, 30, 30);
   color: #fff;
   border: none;
   width: auto;
