@@ -351,7 +351,8 @@ function Estoque() {
                 </Label>
 
                 <ModalButtons>
-                  <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
+                  
+                  <ButtonSalvar disabled={!validacaoCadastro()} onClick={cadastrar}>Salvar</ButtonSalvar>
                   <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>

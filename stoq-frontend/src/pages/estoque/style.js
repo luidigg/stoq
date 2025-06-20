@@ -226,6 +226,12 @@ export const ButtonSalvar = styled(ButtonPrimary)`
   &:active {
     opacity: 0.5;
   }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 `
 
 export const ButtonCancelar = styled(ButtonPrimary)`
