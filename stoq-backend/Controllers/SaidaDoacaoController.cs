@@ -12,21 +12,38 @@ namespace Stoq.Controllers
 
         // GET: api/saida-doacao
         [HttpGet]
-        public async Task<ActionResult<List<SaidaDoacaoDTO>>> Listar()
+        public async Task<ActionResult<IEnumerable<SaidaDoacaoDTO>>> GetAll()
         {
-            var saidas = await _saidaService.ListarAsync();
-            return Ok(saidas);
+            try
+            {
+                var saidas = await _saidaService.ListarAsync();
+                return Ok(saidas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao buscar saídas: {ex.Message}");
+            }
         }
 
         // POST: api/saida-doacao
-        [HttpPost]
+        [HttpPost("criar")]
         public async Task<ActionResult> Criar([FromBody] CriarSaidaDoacaoDTO dto)
         {
-            var sucesso = await _saidaService.CriarAsync(dto);
-            if (!sucesso)
-                return BadRequest("Não foi possível registrar a saída. Verifique os dados.");
+            if (!ModelState.IsValid)
+                return BadRequest("Dados inválidos.");
 
-            return Ok(new { mensagem = "Saída registrada com sucesso." });
+            try
+            {
+                var sucesso = await _saidaService.CriarAsync(dto);
+                if (!sucesso)
+                    return BadRequest("Não foi possível registrar a saída. Verifique os dados.");
+
+                return Ok(new { mensagem = "Saída registrada com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao registrar saída: {ex.Message}");
+            }
         }
     }
 }

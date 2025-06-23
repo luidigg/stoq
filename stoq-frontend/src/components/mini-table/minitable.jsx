@@ -54,19 +54,19 @@ const Td = styled.td`
 
   @media (max-width: 768px) {
     display: block;
-    text-align: right; /* Alinha o valor à direita */
+    text-align: right; 
     padding: 20px;
-    padding-left: 50%; /* Deixa espaço para o rótulo */
+    padding-left: 50%; 
     position: relative;
-    border-bottom: 1px solid #eee; /* Linha separadora entre os dados do card */
+    border-bottom: 1px solid #eee;
 
     &:last-child {
-      border-bottom: none; /* Remove a borda do último item */
+      border-bottom: none; 
     }
 
-    /* O truque mágico: Adiciona o cabeçalho como um rótulo antes do dado */
+    
     &::before {
-      content: attr(data-label); /* Pega o texto do atributo 'data-label' */
+      content: attr(data-label); 
       position: absolute;
       left: 10px;
       width: 45%;
@@ -87,9 +87,9 @@ const MovementType = styled.div`
   font-weight: 500;
   color: #333;
 
-  /* Ajustes para o layout de card no mobile */
+  
   @media (max-width: 768px) {
-    justify-content: flex-end; /* Alinha o conteúdo à direita, como as outras células */
+    justify-content: flex-end; 
     width: 100%;
     margin-left: 0;
   }
@@ -128,7 +128,7 @@ const MiniTable = ({ title, data }) => {
               <Td data-label='Quantidade'>{item.quantidade}</Td>
               <Td data-label='Data de Entrada'>{formatarData(item.dataEntrada)}</Td>
               {item.validade && (
-                <Td data-label='Validade'>{formatarData(item.validade)}</Td>
+              <Td data-label='Validade'>{item.validade ? formatarData(item.validade) : '-'}</Td>
               )}
             </tr>
           ))}

@@ -133,18 +133,8 @@ export const ModalContent = styled.div`
   flex-direction: column;
   gap: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  position: relative; 
 `;
-export const SmallModalContent = styled.div`
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-`
 export const BotoesWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -169,15 +159,6 @@ export const Label = styled.label`
 export const DivClose = styled.div`
   display: flex;
   justify-content: flex-end;
-`
-export const ButtonClose = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.6;
-  }
 `
 export const InputAdd = styled.input`
   width: 100%;
@@ -228,12 +209,6 @@ export const ButtonCancelar = styled(ButtonPrimary)`
     color: #fff;
   }
 `
-export const ModalButtons = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-  margin-top: 1rem;
-`;
 export const Select = styled.select`
   width: 100%;
   padding: 10px 14px;
@@ -247,15 +222,66 @@ export const Select = styled.select`
     border-color: #1e8673;
   }
 `;
+
+export const SmallModalContent = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+`;
+
 export const HeaderModal = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 10px;
-`
+`;
+
 export const TituloModal = styled.h3`
-  font-size: 25px;
-  text-align: center;
-  flex: 1;
+  font-size: 24px;
   margin: 0;
-`
+`;
+
+export const ButtonClose = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+`;
+
+export const ModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 1.5rem;
+`;
+
+export const QuantidadeWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+export const BotaoTudo = styled.button`
+  position: absolute;
+  right: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  background-color:rgba(0, 0, 0, 0.38);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color:rgb(141, 141, 141);
+  }
+`;
+

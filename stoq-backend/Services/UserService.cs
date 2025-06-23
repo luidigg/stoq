@@ -53,5 +53,28 @@ namespace Stoq.Services
                 Mensagem = "Usuário registrado com sucesso."
             };
         }
+
+        public async Task<Usuario?> ObterPorIdAsync(int id)
+        {
+            return await _context.Usuario.FindAsync(id);
+        }
+
+        public async Task<bool> AtualizarAsync(EditarUsuarioDTO dto)
+        {
+            var usuario = await _context.Usuario.FindAsync(dto.Id);
+            if (usuario == null)
+                return false;
+
+            var emailExistente = _context.Usuario.Any(u => u.Email == dto.Email && u.Id != dto.Id);
+            if (emailExistente)
+                return false;
+
+            usuario.Nome = dto.Nome;
+            usuario.Email = dto.Email;
+            usuario.AtualizadoEm = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
