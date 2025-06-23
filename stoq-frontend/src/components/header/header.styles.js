@@ -6,6 +6,8 @@ export const Head = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: sticky;
+  top: 0;
 `;
 
 export const Container = styled.div`
@@ -16,6 +18,8 @@ export const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+
+
 `;
 
 export const CenterText = styled.div`
@@ -26,12 +30,19 @@ export const CenterText = styled.div`
   font-size: 18px;
   font-weight: 500;
   pointer-events: none; /* impede cliques acidentais */
+
+   @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 
 export const Logo = styled.img`
-  height: 70%; 
   max-height: 100px;
+
+  @media (max-width: 768px) {
+    height: 70px; 
+  }
 `;
 
 export const UserBlock = styled.div`
@@ -39,6 +50,10 @@ export const UserBlock = styled.div`
   align-items: center;
   gap: 20px;
   color: #fff;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const Username = styled.span`
