@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import Layout from '../../components/layout/indexL';
 import Header from '../../components/header';
 import Sidebar from '../../components/sidebar';
 
@@ -94,10 +94,7 @@ function Administracao() {
   };
 
   return (
-    <Container>
-      <Header />
-      <Content>
-        <Sidebar />
+    <Layout>
         <Main>
           <H2>Administração</H2>
 
@@ -194,8 +191,7 @@ function Administracao() {
             </SectionForm>
           </MainContent>
         </Main>
-      </Content>
-    </Container>
+    </Layout>
   );
 }
 

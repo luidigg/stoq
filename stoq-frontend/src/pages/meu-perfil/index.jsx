@@ -17,8 +17,12 @@ import {
     Valor,
     ButtonWrapper,
     EditButton,
-    InputEdit
+    InputEdit,
+    Container,
+    Content
 } from './style';
+import Sidebar from '../../components/sidebar'
+import Header from '../../components/header'
 
 function Perfil() {
     const [usuario, setUsuario] = useState(null);
@@ -67,10 +71,7 @@ function Perfil() {
     };
 
     return (
-        <Container>
-            <Header />
-            <Content>
-                <Sidebar />
+        <Layout>
                 <Main>
                     <H2>Meu Perfil</H2>
                     <Informacoes>
@@ -130,8 +131,7 @@ function Perfil() {
                         </ButtonWrapper>
                     </Informacoes>
                 </Main>
-            </Content>
-        </Container>
+        </Layout>
     );
 }
 

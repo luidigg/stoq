@@ -33,7 +33,6 @@ export const Main = styled(MainWithBackground)`
   display: flex;
   flex-direction: column;
   padding: 35px;
-  margin-left: 18vw; /* evita sobreposição da sidebar fixa */
   overflow-y: auto;
   box-sizing: border-box;
 

@@ -5,8 +5,8 @@ import {
   HeaderModal, TituloModal, QuantidadeWrapper, BotaoTudo
 } from './style'
 import MessageBox from '../../components/message-box'
-// import Sidebar from '../../components/sidebar'
-// import Header from '../../components/header'
+import Sidebar from '../../components/sidebar'
+import Header from '../../components/header'
 import Layout from '../../components/layout/indexL'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes, UilMinus } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
