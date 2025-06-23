@@ -5,8 +5,6 @@ import Inicio from './pages/inicio'
 import Estoque from './pages/estoque'
 import Relatorio from './pages/relatorios'
 import Perfil from './pages/meu-perfil'
-// import Colaboradores from "./pages/colaboradores";
-//import Config from './pages/configuracoes'
 
 const Router = createBrowserRouter([
     {
@@ -37,14 +35,6 @@ const Router = createBrowserRouter([
         path: '/meu-perfil',
         element: <Perfil />
     }
-    // {
-    //     path:'/colaboradores',
-    //     element: <Colaboradores/>
-    // },
-    // {
-    //     path: '/configuracoes',
-    //     element: <Config/>
-    // }
 ])
 
 export default Router

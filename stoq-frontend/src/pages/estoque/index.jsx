@@ -4,8 +4,9 @@ import {
   Datas, ButtonClose, ButtonRemove, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select, BotoesWrapper, SmallModalContent,
   HeaderModal, TituloModal
 } from './style'
-import Sidebar from '../../components/sidebar'
-import Header from '../../components/header'
+// import Sidebar from '../../components/sidebar'
+// import Header from '../../components/header'
+import Layout from '../../components/layout/indexL'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes, UilMinus } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
 import ProdutoInput from '../../components/produto-input'
@@ -192,11 +193,19 @@ function Estoque() {
 
   const formatDateForInput = dateStr => dateStr ? dateStr.split('T')[0] : '';
 
+  // validacao dos campos de adicao de produtos
+  const validacaoForm = produto.nomeProduto.trim() !== '' &&
+    produto.quantidade > 0 && 
+    produto.categoria.trim() != '' &&
+    produto.validade != '' &&
+    produto.entrada != ''
+
   return (
-    <Container>
-      <Header />
-      <Content>
-        <Sidebar />
+    <Layout> 
+    {/* <Container> */}
+      {/* <Header /> */}
+      {/* <Content> */}
+        {/* <Sidebar /> */}
         <Main>
           <H2Medium>Estoque</H2Medium>
 
@@ -352,7 +361,7 @@ function Estoque() {
 
                 <ModalButtons>
                   
-                  <ButtonSalvar disabled={!validacaoCadastro()} onClick={cadastrar}>Salvar</ButtonSalvar>
+                  <ButtonSalvar onClick={cadastrar} disabled={!validacaoForm}>Salvar</ButtonSalvar>
                   <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>
@@ -443,8 +452,7 @@ function Estoque() {
             </ModalOverlay>
           )}
         </Main>
-      </Content>
-    </Container>
+    </Layout>
   )
 }
 

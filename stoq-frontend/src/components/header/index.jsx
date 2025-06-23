@@ -9,10 +9,13 @@ import {
   Username,
   LogoutButton,
   CenterText,
+  MenuButton
 } from './header.styles';
 import logoImg from '../../assets/stoq-icon-2.png';
+import { UilBars } from '@iconscout/react-unicons';
 
-function Header() {
+
+function Header({onToggleSidebar}) {
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
 
@@ -41,7 +44,11 @@ function Header() {
   return (
     <Head>
       <Container>
-        <Logo src={logoImg} alt="Logo" />
+        <div style={{display:"flex", alignItems:"center"}}>  
+          <MenuButton onClick={onToggleSidebar}> <UilBars size="30" color="white" /> </MenuButton>
+          <Logo src={logoImg} alt="Logo" />
+        </div>
+       
         <CenterText>Controle de Estoque</CenterText>
         <UserBlock>
           <Username>{userName}</Username>
