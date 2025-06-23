@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const SideBar = styled.div`
-  width: 18vw;
+  /* width: 18vw; */
   height: 90vh;
   background: #C7DAD4;
   display: flex;
@@ -13,6 +13,10 @@ export const SideBar = styled.div`
   left: 0;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 10;
+
+  width: ${(props) => (props.isOpen ? '18vw' : '0')};
+  overflow: hidden;
+  transition: width 0.3s ease;
 `;
 
 export const Button = styled.button`

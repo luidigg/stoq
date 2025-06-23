@@ -7,12 +7,14 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  margin-left: 18vw;
+  margin-left: ${(props) => (props.isOpen ? "18vw" : "0")}; 
 `;
 
 export const Main = styled.main`
-  width: 82vw;
+  flex: 1;
   height: 90vh;
+  transition: width 0.3s ease;
+
 `;
 
 export const MainWithBackground = styled(Main)`

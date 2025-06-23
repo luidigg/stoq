@@ -61,3 +61,14 @@ export const LogoutButton = styled.button`
     color: #fff;
   }
 `;
+
+export const MenuButton = styled.button`
+  background: transparent;
+  border: none;
+  transition: 0.3s  ease all;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.1)
+  }
+`

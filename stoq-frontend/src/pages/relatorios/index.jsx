@@ -1,11 +1,8 @@
-import Header from "../../components/header"
-import Sidebar from "../../components/sidebar"
+import Layout from "../../components/layout/indexL"
 import ConvertDate from "../../components/convert-date"
 import { useEffect, useState } from "react"
 import {
-    Container,
     Main,
-    Content,
     H2,
     Select,
     Label,
@@ -80,98 +77,94 @@ function Relatorio() {
     }
 
     return (
-        <Container>
-            <Header />
-            <Content>
-                <Sidebar />
-                <Main>
-                    <H2>Relatórios</H2>
-                    <FiltrosEBotoesWrapper>
-                        <LinhaSuperior>
-                            <SelectMovimento>
-                                <Label>Tipo de Movimento:</Label>
-                                <Select value={tipoMovimento} onChange={(e) => setTipoMovimento(e.target.value)}>
-                                    <option value="">Todos</option>
-                                    {tiposMovimentos.map((tipo, i) => (
-                                        <option key={i} value={tipo.toLowerCase()}>{tipo}</option>
-                                    ))}
-                                </Select>
-                            </SelectMovimento>
+        <Layout>
+            <Main>
+                <H2>Relatórios</H2>
+                <FiltrosEBotoesWrapper>
+                    <LinhaSuperior>
+                        <SelectMovimento>
+                            <Label>Tipo de Movimento:</Label>
+                            <Select value={tipoMovimento} onChange={(e) => setTipoMovimento(e.target.value)}>
+                                <option value="">Todos</option>
+                                {tiposMovimentos.map((tipo, i) => (
+                                    <option key={i} value={tipo.toLowerCase()}>{tipo}</option>
+                                ))}
+                            </Select>
+                        </SelectMovimento>
 
-                            <SelectProduto>
-                                <Label>Produto:</Label>
-                                <Select value={produto} onChange={(e) => setProduto(e.target.value)}>
-                                    <option value="">Todos</option>
-                                    {produtos.map((item, i) => (
-                                        <option key={i} value={item.toLowerCase()}>{item}</option>
-                                    ))}
-                                </Select>
-                            </SelectProduto>
+                        <SelectProduto>
+                            <Label>Produto:</Label>
+                            <Select value={produto} onChange={(e) => setProduto(e.target.value)}>
+                                <option value="">Todos</option>
+                                {produtos.map((item, i) => (
+                                    <option key={i} value={item.toLowerCase()}>{item}</option>
+                                ))}
+                            </Select>
+                        </SelectProduto>
 
-                            <SelectCategoria>
-                                <Label>Categoria:</Label>
-                                <Select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
-                                    <option value="">Todos</option>
-                                    {categorias.map((cat, i) => (
-                                        <option key={i} value={cat.toLowerCase()}>{cat}</option>
-                                    ))}
-                                </Select>
-                            </SelectCategoria>
-                        </LinhaSuperior>
+                        <SelectCategoria>
+                            <Label>Categoria:</Label>
+                            <Select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                                <option value="">Todos</option>
+                                {categorias.map((cat, i) => (
+                                    <option key={i} value={cat.toLowerCase()}>{cat}</option>
+                                ))}
+                            </Select>
+                        </SelectCategoria>
+                    </LinhaSuperior>
 
 
-                        <LinhaInferior>
-                            <FiltroDataContainer>
-                                <div>
-                                    <Label>De:</Label>
-                                    <InputData type="date" value={dataInicial} onChange={(e) => setDataInicial(e.target.value)} />
-                                </div>
-                                <div>
-                                    <Label>Até:</Label>
-                                    <InputData type="date" value={dataFinal} onChange={(e) => setDataFinal(e.target.value)} />
-                                </div>
-                            </FiltroDataContainer>
+                    <LinhaInferior>
+                        <FiltroDataContainer>
+                            <div>
+                                <Label>De:</Label>
+                                <InputData type="date" value={dataInicial} onChange={(e) => setDataInicial(e.target.value)} />
+                            </div>
+                            <div>
+                                <Label>Até:</Label>
+                                <InputData type="date" value={dataFinal} onChange={(e) => setDataFinal(e.target.value)} />
+                            </div>
+                        </FiltroDataContainer>
 
-                            <ButtonGroup>
-                                <Button onClick={aplicarFiltros}>Aplicar Filtros</Button>
-                                <Button onClick={gerarPDF}>Gerar PDF</Button>
-                            </ButtonGroup>
-                        </LinhaInferior>
-                    </FiltrosEBotoesWrapper>
+                        <ButtonGroup>
+                            <Button onClick={aplicarFiltros}>Aplicar Filtros</Button>
+                            <Button onClick={gerarPDF}>Gerar PDF</Button>
+                        </ButtonGroup>
+                    </LinhaInferior>
+                </FiltrosEBotoesWrapper>
 
-                    <DivResultado>
-                        <H2>Resultado</H2>
-                        <Span>Data do relatório 19/05/2025</Span>
-                        <DivTable>
-                            <Table>
-                                <Thead>
-                                    <Tr>
-                                        <Th>Data</Th>
-                                        <Th>Tipo</Th>
-                                        <Th>Produto</Th>
-                                        <Th>Quantidade</Th>
-                                        <Th>Categoria</Th>
-                                        <Th>Validade</Th>
+                <DivResultado>
+                    <H2>Resultado</H2>
+                    <Span>Data do relatório 19/05/2025</Span>
+                    <DivTable>
+                        <Table>
+                            <Thead>
+                                <Tr>
+                                    <Th>Data</Th>
+                                    <Th>Tipo</Th>
+                                    <Th>Produto</Th>
+                                    <Th>Quantidade</Th>
+                                    <Th>Categoria</Th>
+                                    <Th>Validade</Th>
+                                </Tr>
+                            </Thead>
+                            <Tbody>
+                                {filtrosAplicado.map((item, i) => (
+                                    <Tr key={i}>
+                                        <Td><ConvertDate data={item.data} /></Td>
+                                        <Td>{item.tipo}</Td>
+                                        <Td>{item.produto}</Td>
+                                        <Td>{item.quantidade}</Td>
+                                        <Td>{item.categoria}</Td>
+                                        <Td><ConvertDate data={item.validade} /></Td>
                                     </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {filtrosAplicado.map((item, i) => (
-                                        <Tr key={i}>
-                                            <Td><ConvertDate data={item.data} /></Td>
-                                            <Td>{item.tipo}</Td>
-                                            <Td>{item.produto}</Td>
-                                            <Td>{item.quantidade}</Td>
-                                            <Td>{item.categoria}</Td>
-                                            <Td><ConvertDate data={item.validade} /></Td>
-                                        </Tr>
-                                    ))}
-                                </Tbody>
-                            </Table>
-                        </DivTable>
-                    </DivResultado>
-                </Main>
-            </Content>
-        </Container>
+                                ))}
+                            </Tbody>
+                        </Table>
+                    </DivTable>
+                </DivResultado>
+            </Main>
+        </Layout>
     )
 }
 

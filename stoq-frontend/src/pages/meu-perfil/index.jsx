@@ -1,11 +1,8 @@
-import Header from "../../components/header";
-import Sidebar from "../../components/sidebar";
+import Layout from '../../components/layout/indexL';
 import perfil from '../../assets/perfil.png';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-    Container,
-    Content,
     Main,
     Informacoes,
     H2,

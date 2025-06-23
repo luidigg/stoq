@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react';
-import Sidebar from '../../components/sidebar';
-import Header from '../../components/header';
+import Layout from '../../components/layout/indexL';
 import {
   TopCards,
-  Card,
   BottomCards,
-  Card2,
-  P,
-  Ul,
-  Li,
-  Circle,
   IconBox,
   IconEx,
   IconUp,
   IconDown,
-  Container,
-  Content,
   Main,
   H2Medium
 } from './style';
@@ -24,6 +15,7 @@ import MiniTable from '../../components/mini-table/minitable';
 import axios from 'axios';
 
 function Inicio() {
+  
   // Estados para armazenar os dados da API
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [totalProdutos, setTotalProdutos] = useState(0);
@@ -62,10 +54,8 @@ function Inicio() {
   }, []);
 
   return (
-    <Container>
-      <Header />
-      <Content>
-        <Sidebar />
+    <Layout>
+ 
         <Main>
           <H2Medium>Início</H2Medium>
 
@@ -80,8 +70,7 @@ function Inicio() {
             <MiniTable title="Últimas Movimentações no Estoque" data={movimentacoes} />
           </BottomCards>
         </Main>
-      </Content>
-    </Container>
+    </Layout>
   );
 }
 

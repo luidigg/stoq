@@ -5,8 +5,9 @@ import {
   HeaderModal, TituloModal, QuantidadeWrapper, BotaoTudo
 } from './style'
 import MessageBox from '../../components/message-box'
-import Sidebar from '../../components/sidebar'
-import Header from '../../components/header'
+// import Sidebar from '../../components/sidebar'
+// import Header from '../../components/header'
+import Layout from '../../components/layout/indexL'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes, UilMinus } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
 import ProdutoInput from '../../components/produto-input'
@@ -232,11 +233,19 @@ function Estoque() {
 
   const formatDateForInput = dateStr => dateStr ? dateStr.split('T')[0] : '';
 
+  // validacao dos campos de adicao de produtos
+  const validacaoForm = produto.nomeProduto.trim() !== '' &&
+    produto.quantidade > 0 && 
+    produto.categoria.trim() != '' &&
+    produto.validade != '' &&
+    produto.entrada != ''
+
   return (
-    <Container>
-      <Header />
-      <Content>
-        <Sidebar />
+    <Layout> 
+    {/* <Container> */}
+      {/* <Header /> */}
+      {/* <Content> */}
+        {/* <Sidebar /> */}
         <Main>
           <H2Medium>Estoque</H2Medium>
 
@@ -565,8 +574,7 @@ function Estoque() {
             </ModalOverlay>
           )}
         </Main>
-      </Content>
-    </Container>
+    </Layout>
   )
 }
 

@@ -2,11 +2,11 @@ import { Button, SideBar } from './sidebar.styles';
 import { UilEstate, UilBox, UilChartBar, UilUser, UilSetting } from '@iconscout/react-unicons';
 import { useNavigate } from 'react-router-dom';
 
-function Sidebar() {
+function Sidebar({ isOpen }) {
   const navigate = useNavigate();
 
   return (
-    <SideBar>
+    <SideBar isOpen={ isOpen }>
       <Button onClick={() => navigate('/inicio')}>
         <UilEstate size="30px" /> Início
       </Button>
