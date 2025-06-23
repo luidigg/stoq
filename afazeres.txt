@@ -1,14 +1,19 @@
-Lista de Afazeres
+<<< Lista de Afazeres >>>
 
-1- Integrar a tela de registrar saída com o banco
-2- Ajustar o visual da tela de registrar saída
-3- Adicionar ícone de loading na tela de login
-4- Mover o formulário de cadastro de pessoas para a página Meu Perfil e deletar a tela de registro
-5- Ajustar o design da tela de Meu Perfil e tornar funcional
-6- Apagar Services inuteis
+6- Apagar Services e Telas / Codigo inutil
 7- Ajustar cards da tela de início
 8- Configurar API para gerar relatórios em PDF
 9- Dar um repasse geral pelo código e melhorar organização / refatorar
 10- Aplicar cabeçalho [Authorize] aos endpoints
+11- Reaplicar validações de formulário
+
+
+
+<<< FEITO >>>
+3- Adicionar ícone de loading na tela de login
+1- Integrar a tela de registrar saída com o banco 
 11- Fazer funcionar o botão de logout
 12- Verificar tempo de expiração dos tokens e cookie de autenticação
+2- Ajustar o visual da tela de registrar saída
+5- Ajustar o design da tela de Meu Perfil e tornar funcional
+4- Mover o formulário de cadastro de pessoas para a página Meu Perfil

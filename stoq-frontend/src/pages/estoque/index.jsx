@@ -2,8 +2,9 @@ import {
   Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
   Datas, ButtonClose, ButtonRemove, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select, BotoesWrapper, SmallModalContent,
-  HeaderModal, TituloModal
+  HeaderModal, TituloModal, QuantidadeWrapper, BotaoTudo
 } from './style'
+import MessageBox from '../../components/message-box'
 import Sidebar from '../../components/sidebar'
 import Header from '../../components/header'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes, UilMinus } from '@iconscout/react-unicons'
@@ -12,6 +13,7 @@ import ProdutoInput from '../../components/produto-input'
 import { H2Medium } from '../common-styles'
 import axios from 'axios';
 import ThSortable from '../../components/th-sortable';
+import React from 'react';
 
 function Estoque() {
   const [produtos, setProdutos] = useState([]);
@@ -33,6 +35,11 @@ function Estoque() {
     return parseFloat(str.replace(/[^\d,.-]/g, '').replace(',', '.')) || 0;
   };
 
+  const [showMessageBox, setShowMessageBox] = React.useState(false);
+  const [messageBoxText, setMessageBoxText] = React.useState('');
+
+
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
   const [modalSaida, setModalSaida] = useState(false);
   const [saida, setSaida] = useState({
@@ -114,6 +121,39 @@ function Estoque() {
     setModoEdicao(false);
     setProdutoIdEdicao(null);
   };
+
+  const registrarSaida = async () => {
+    try {
+
+      const saidaParaEnviar = {
+        produtoId: produtoSelecionado.id,
+        quantidade: Number(saida.quantidadeSaida),
+        motivo: saida.motivoSaida,
+        observacoes: saida.observacaoSaida,
+        usuarioId: 2 // <- Certifique-se de ter o usuário logado no estado
+      };
+
+      // Ajuste a URL e método conforme seu backend
+      await axios.post('/api/saidadoacao/criar', saidaParaEnviar, { withCredentials: true });
+      console.log('Saída registrada:', saidaParaEnviar);
+
+      // Após registrar, atualize os dados (produtos, estoque, etc)
+      await fetchEstoques();
+
+      // Feche a modal e limpe o estado da saída
+      setModalSaida(false);
+      setProdutoSelecionado(null);
+      setSaida({
+        dataSaida: new Date().toISOString().split('T')[0],
+        quantidadeSaida: '',
+        motivoSaida: '',
+        observacaoSaida: ''
+      });
+    } catch (error) {
+      console.error('Erro ao registrar saída:', error);
+    }
+  };
+
 
   const cadastrar = async () => {
     try {
@@ -245,7 +285,13 @@ function Estoque() {
               </Thead>
               <Tbody>
                 {sortedProdutos.map((produtoItem, index) => (
-                  <Tr key={produtoItem.id}>
+                  <Tr
+                    key={produtoItem.id}
+                    onClick={() => setProdutoSelecionado(produtoItem)}
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: produtoSelecionado?.id === produtoItem.id ? '#ffd9d9' : 'transparent'
+                    }}>
                     <Td>{formatarData(produtoItem.entrada)}</Td>
                     <Td>{produtoItem.nomeProduto}</Td>
                     <Td>{produtoItem.quantidade}</Td>
@@ -260,14 +306,39 @@ function Estoque() {
           </DivTable>
 
           <DivButtons>
-            <ButtonRemove onClick={() => { limparInputs(); setModalSaida(true); }}>
+            <ButtonRemove onClick={() => {
+              if (!produtoSelecionado) {
+                setMessageBoxText('Selecione um produto da tabela primeiro.');
+                setShowMessageBox(true);
+                return;
+              }
+
+              setSaida({
+                nomeProduto: produtoSelecionado.nomeProduto,
+                quantidadeSaida: 1, // Valor padrão para a quantidade de saída
+                dataSaida: new Date().toISOString().split('T')[0],
+                motivoSaida: '',
+                observacaoSaida: '',
+                quantidadeDisponivel: produtoSelecionado.quantidade
+              });
+
+              setModalSaida(true);
+            }}>
               <UilMinus size='24' color='#fff' /> Registrar Saída
             </ButtonRemove>
+
 
             <ButtonAdd onClick={() => { limparInputs(); setModal(true); }}>
               <UilPlus size='24' color='#fff' />Adicionar Produto
             </ButtonAdd>
           </DivButtons>
+
+          {showMessageBox && (
+            <MessageBox
+              message={messageBoxText}
+              onClose={() => setShowMessageBox(false)}
+            />
+          )}
 
           {modal && (
             <ModalOverlay>
@@ -351,8 +422,7 @@ function Estoque() {
                 </Label>
 
                 <ModalButtons>
-                  
-                  <ButtonSalvar disabled={!validacaoCadastro()} onClick={cadastrar}>Salvar</ButtonSalvar>
+                  <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
                   <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>
@@ -370,21 +440,67 @@ function Estoque() {
                 </HeaderModal>
 
                 <Label>
-                  Data da Saída:
+                  Produto:
                   <InputAdd
-                    type="date"
-                    value={saida.dataSaida}
-                    onChange={(e) => setSaida({ ...saida, dataSaida: e.target.value })}
+                    type="text"
+                    value={saida.nomeProduto}
+                    readOnly
+                    disabled
+                    style={{ backgroundColor: "#f0f0f0", cursor: "not-allowed" }}
                   />
                 </Label>
 
                 <Label>
                   Quantidade:
+                  <QuantidadeWrapper>
+                    <InputAdd
+                      type="text" // 👈 mudar para texto para evitar spinners
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      min={1}
+                      max={produtoSelecionado?.quantidade || 1}
+                      placeholder="Obrigatório*"
+                      value={saida.quantidadeSaida}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        const somenteNumeros = raw.replace(/\D/g, '');
+                        const valor = Number(somenteNumeros);
+                        const max = produtoSelecionado?.quantidade || 1;
+                        if (!somenteNumeros) {
+                          setSaida({ ...saida, quantidadeSaida: '' });
+                          return;
+                        }
+                        if (valor > max) {
+                          setSaida({ ...saida, quantidadeSaida: max });
+                          return;
+                        }
+                        if (valor < 1) {
+                          setSaida({ ...saida, quantidadeSaida: 1 });
+                          return;
+                        }
+                        setSaida({ ...saida, quantidadeSaida: valor });
+                      }}
+
+                    />
+                    <BotaoTudo
+                      type="button"
+                      onClick={() => {
+                        if (produtoSelecionado) {
+                          setSaida({ ...saida, quantidadeSaida: produtoSelecionado.quantidade });
+                        }
+                      }}
+                    >
+                      Tudo
+                    </BotaoTudo>
+                  </QuantidadeWrapper>
+                </Label>
+
+                <Label>
+                  Data da Saída:
                   <InputAdd
-                    type="number"
-                    placeholder="Obrigatório*"
-                    value={saida.quantidadeSaida}
-                    onChange={(e) => setSaida({ ...saida, quantidadeSaida: e.target.value })}
+                    type="date"
+                    value={saida.dataSaida}
+                    onChange={(e) => setSaida({ ...saida, dataSaida: e.target.value })}
                   />
                 </Label>
 
@@ -413,9 +529,15 @@ function Estoque() {
 
                 <ModalButtons>
                   <ButtonSalvar onClick={() => {
-                    // 🔁 Aqui você chamaria a API de saída futuramente
+                    if (!saida.quantidadeSaida || !saida.motivoSaida) {
+                      setMessageBoxText('Preencha todos os campos obrigatórios.');
+                      setShowMessageBox(true);
+                      return;
+                    }
+                    registrarSaida();
                     console.log('Saída registrada:', saida);
                     setModalSaida(false);
+                    setProdutoSelecionado(null);
                     setSaida({
                       dataSaida: new Date().toISOString().split('T')[0],
                       quantidadeSaida: '',

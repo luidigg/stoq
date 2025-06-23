@@ -25,7 +25,7 @@ export const Main = styled(MainWithBackground)`
 export const Informacoes = styled.div`
   background-color: #E8FFF6;
   width: 100%;
-  max-width: 600px;
+  max-width: 450px;
   max-height: 100%;
   border-radius: 20px;
   padding: 30px 40px;
@@ -175,5 +175,29 @@ export const EditButton = styled(ButtonPrimary)`
 
   &:active {
     box-shadow: 4px 4px 18px #166a5a;
+  }
+`;
+
+export const InputEdit = styled.input`
+  font-size: 14px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 60%;
+  text-align: right;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #1E8673;
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(30, 134, 115, 0.2);
+  }
+
+  @media (max-width: 400px) {
+    width: 100%;
+    text-align: left;
   }
 `;

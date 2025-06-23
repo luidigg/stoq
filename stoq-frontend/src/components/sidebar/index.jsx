@@ -1,5 +1,5 @@
 import { Button, SideBar } from './sidebar.styles';
-import { UilEstate, UilBox, UilChartBar, UilUser } from '@iconscout/react-unicons';
+import { UilEstate, UilBox, UilChartBar, UilUser, UilSetting } from '@iconscout/react-unicons';
 import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
@@ -18,6 +18,9 @@ function Sidebar() {
       </Button>
       <Button onClick={() => navigate('/meu-perfil')}>
         <UilUser size="30px" /> Meu Perfil
+      </Button>
+      <Button onClick={() => navigate('/administracao')}>
+        <UilSetting size="30px" /> Administração
       </Button>
     </SideBar>
   );

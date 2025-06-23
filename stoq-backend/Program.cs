@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using stoq.Controllers;
 using Stoq.Data;
 using Stoq.IServices;
 using Stoq.Services;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +49,18 @@ builder.Services.AddAuthentication(options =>
         {
             if (context.Request.Cookies.TryGetValue("authtoken", out var token))
                 context.Token = token;
+
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var jwtToken = context.SecurityToken as JwtSecurityToken;
+            var tokenRaw = jwtToken?.RawData;
+
+            if (tokenRaw != null && AuthController.LoggedOutTokens.Contains(tokenRaw))
+            {
+                context.Fail("Token invalidado por logout.");
+            }
 
             return Task.CompletedTask;
         }

@@ -29,28 +29,42 @@ namespace Stoq.Services
 
         public async Task<bool> CriarAsync(CriarSaidaDoacaoDTO dto)
         {
-            var entrada = await _context.EntradaDoacao.FindAsync(dto.EntradaId);
-            if (entrada == null || dto.Quantidade <= 0)
+            if (dto.Quantidade <= 0)
                 return false;
 
+            // Buscar estoque do produto
             var estoque = await _context.Estoque
-                .FirstOrDefaultAsync(e => e.ProdutoId == entrada.ProdutoId);
+                .FirstOrDefaultAsync(e => e.ProdutoId == dto.ProdutoId);
 
             if (estoque == null || estoque.Quantidade < dto.Quantidade)
                 return false;
 
+            // Buscar a entrada mais antiga com estoque suficiente (FIFO)
+            var entrada = await _context.EntradaDoacao
+                .Where(e => e.ProdutoId == dto.ProdutoId && e.Quantidade > 0)
+                .OrderBy(e => e.DataRecebimento)
+                .FirstOrDefaultAsync();
+
+            if (entrada == null || entrada.Quantidade < dto.Quantidade)
+                return false;
+
+            // Criar saída
             var saida = new SaidaDoacao
             {
-                EntradaId = dto.EntradaId,
+                EntradaId = entrada.Id,
                 Quantidade = dto.Quantidade,
                 DataSaida = DateTime.UtcNow,
                 Motivo = dto.Motivo,
                 Observacoes = dto.Observacoes
             };
 
-            // Atualizar estoque
+            // Atualizar quantidade na entrada usada (caso precise controlar o saldo da entrada)
+            entrada.Quantidade -= dto.Quantidade;
+
+            // Atualizar estoque geral
             estoque.Quantidade -= dto.Quantidade;
 
+            // Persistir
             _context.SaidaDoacao.Add(saida);
             await _context.SaveChangesAsync();
 
@@ -59,7 +73,7 @@ namespace Stoq.Services
                 "SaidaDoacao",
                 "Criar",
                 dto.UsuarioId,
-                $"Nova saída registrada (entrada_id={dto.EntradaId}, quantidade={dto.Quantidade})"
+                $"Saída registrada do produto_id={dto.ProdutoId}, quantidade={dto.Quantidade}, entrada_id={entrada.Id}"
             );
 
             return true;

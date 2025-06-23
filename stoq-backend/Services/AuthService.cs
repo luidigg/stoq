@@ -46,6 +46,8 @@ namespace Stoq.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var signingKey = GetSigningKey();
 
+            int tokenExpirationDays = _configuration.GetValue<int>("AuthSettings:TokenDurationInDays");
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
@@ -53,7 +55,7 @@ namespace Stoq.Services
                     new Claim(ClaimTypes.NameIdentifier, userId),
                     new Claim(ClaimTypes.Name, name)
                 ]),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(tokenExpirationDays),
                 SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature)
             };
 

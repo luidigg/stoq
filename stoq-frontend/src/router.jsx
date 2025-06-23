@@ -1,21 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import Register from './pages/registro'
 import Login from './pages/login'
 import Inicio from './pages/inicio'
 import Estoque from './pages/estoque'
 import Relatorio from './pages/relatorios'
 import Perfil from './pages/meu-perfil'
-// import Colaboradores from "./pages/colaboradores";
-//import Config from './pages/configuracoes'
+import Administracao from "./pages/administracao";
 
 const Router = createBrowserRouter([
     {
         path: '/',
-        element: <Register />
-    },
-    {
-        path: '/registro',
-        element: <Register />
+        element: <Login />
     },
     {
         path: '/login',
@@ -36,15 +30,11 @@ const Router = createBrowserRouter([
     {
         path: '/meu-perfil',
         element: <Perfil />
+    },
+    {
+        path:'/administracao',
+        element: <Administracao/>
     }
-    // {
-    //     path:'/colaboradores',
-    //     element: <Colaboradores/>
-    // },
-    // {
-    //     path: '/configuracoes',
-    //     element: <Config/>
-    // }
 ])
 
 export default Router

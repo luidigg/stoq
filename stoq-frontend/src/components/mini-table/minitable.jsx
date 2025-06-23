@@ -70,7 +70,7 @@ const MiniTable = ({ title, data }) => {
               <Td>{item.descricao}</Td>
               <Td>{item.quantidade}</Td>
               <Td>{formatarData(item.dataEntrada)}</Td>
-              <Td>{formatarData(item.validade)}</Td>
+              <Td>{item.validade ? formatarData(item.validade) : '-'}</Td>
             </tr>
           ))}
         </Tbody>

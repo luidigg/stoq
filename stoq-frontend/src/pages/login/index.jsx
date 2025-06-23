@@ -1,6 +1,6 @@
-import { 
-  Container, Form, DivTexts, H2, P, DivInput, Input, ButtonEntrar, ButtonRegister, 
-  IconEmail, IconPass, DivII, ImgTop, ImgBottom, ImgVetor 
+import {
+  Container, Form, DivTexts, H2, P, DivInput, Input, ButtonEntrar, ButtonRegister,
+  IconEmail, IconPass, DivII, ImgTop, ImgBottom, ImgVetor
 } from './style';
 
 import circle from '../../assets/circulo.png';
@@ -10,6 +10,7 @@ import vetor from '../../assets/vetor.png';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth-service';
+import { FaSpinner } from 'react-icons/fa';
 
 function Login() {
   const navigate = useNavigate();
@@ -17,8 +18,8 @@ function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Textos fixos (para facilitar manutenção)
   const texts = {
     title: 'Entrar',
     description: 'Insira seu email ou usuário e sua senha para entrar',
@@ -33,21 +34,21 @@ function Login() {
     document.title = 'Login';
   }, []);
 
-  // Função para login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       await login(email, senha);
-      console.log('Login realizado com sucesso!');
       navigate('/inicio');
     } catch (err) {
       setError(err.toString());
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Função para renderizar os inputs com ícones
   const renderInput = (type, placeholder, value, onChange, Icon) => (
     <DivII>
       <Icon size="28" />
@@ -74,18 +75,33 @@ function Login() {
         </DivTexts>
 
         <DivInput>
-          {renderInput('email', texts.placeholderEmail, email, e => setEmail(e.target.value), IconEmail)}
+          {renderInput('text', texts.placeholderEmail, email, e => setEmail(e.target.value), IconEmail)}
           {renderInput('password', texts.placeholderSenha, senha, e => setSenha(e.target.value), IconPass)}
         </DivInput>
 
         {error && <P style={{ color: 'red' }}>{error}</P>}
 
-        <ButtonEntrar type="submit">{texts.buttonEntrar}</ButtonEntrar>
+        <ButtonEntrar type="submit" disabled={loading}>
+          {loading ? <FaSpinner className="spinner" /> : texts.buttonEntrar}
+        </ButtonEntrar>
+
         <P>
           {texts.questionRegister}{' '}
           <ButtonRegister onClick={() => navigate('/')}>{texts.buttonRegister}</ButtonRegister>
         </P>
       </Form>
+
+      <style>
+        {`
+          .spinner {
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
     </Container>
   );
 }

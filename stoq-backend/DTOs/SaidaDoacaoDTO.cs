@@ -12,7 +12,7 @@ namespace Stoq.DTOs
 
     public class CriarSaidaDoacaoDTO
     {
-        public int EntradaId { get; set; }
+        public int ProdutoId { get; set; }
         public int Quantidade { get; set; }
         public string Motivo { get; set; }
         public string? Observacoes { get; set; }
