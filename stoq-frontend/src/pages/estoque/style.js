@@ -7,6 +7,10 @@ import {
   ButtonPrimary,
 } from '../common-styles'
 
+const breakpoints = {
+  mobile: '768px',
+};
+
 export const Container = styled(CommonContainer)``
 export const Content = styled(CommonContent)``
 export const Main = styled(MainWithBackground)`
@@ -14,6 +18,10 @@ export const Main = styled(MainWithBackground)`
   flex-direction: column;
   padding: 35px;
   gap: 20px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 20px 15px;
+  }
 `
 export const H2 = styled(H2Medium)``
 
@@ -22,6 +30,12 @@ export const DivButtons = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
 `
 
 export const ButtonAdd = styled(ButtonPrimary)`
@@ -70,6 +84,7 @@ export const DivTable = styled.div`
   background-color: #fff;
   overflow-y: auto;
   border-radius: 10px;
+  overflow-x: auto;
 `
 
 export const Table = styled.table`
@@ -78,6 +93,7 @@ export const Table = styled.table`
   border-radius: 10px;
   width: 100%;
   text-align: center;
+  min-width: 800px;
 `
 
 export const Thead = styled.thead`
@@ -122,7 +138,8 @@ export const ModalOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1003;
+  padding: 15px;
 `
 export const ModalContent = styled.div`
   background: #ffffff;
@@ -134,18 +151,34 @@ export const ModalContent = styled.div`
   gap: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   position: relative; 
+  max-height: 90vh;
+  overflow-y: auto;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%; 
+  }
 `;
 export const BotoesWrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 4rem;
   margin-top: 1rem;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    gap: 1rem;
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
 `;
 export const Datas = styled.div`
   display: flex;
   flex-direction: row;
   gap: 10px;
   justify-content: space-between;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    flex-direction: column;
+  }
 `
 export const Label = styled.label`
   display: flex;
@@ -233,6 +266,10 @@ export const SmallModalContent = styled.div`
   flex-direction: column;
   gap: 1rem;
   position: relative;
+
+  @media (max-width: ${breakpoints.mobile}) {
+      width: 100%;
+  }
 `;
 
 export const HeaderModal = styled.div`

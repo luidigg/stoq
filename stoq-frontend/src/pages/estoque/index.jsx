@@ -1,12 +1,10 @@
 import {
-  Container, Main, Content, H2, DivButtons, ButtonAdd, DivTable,
+  Main, DivButtons, ButtonAdd, DivTable,
   Table, Thead, Tr, Th, Tbody, Td, ButtonIcon, ModalContent, ModalOverlay,
-  Datas, ButtonClose, ButtonRemove, DivClose, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select, BotoesWrapper, SmallModalContent,
+  Datas, ButtonClose, ButtonRemove, InputAdd, Label, ButtonSalvar, ButtonCancelar, ModalButtons, Select, BotoesWrapper, SmallModalContent,
   HeaderModal, TituloModal, QuantidadeWrapper, BotaoTudo
 } from './style'
 import MessageBox from '../../components/message-box'
-import Sidebar from '../../components/sidebar'
-import Header from '../../components/header'
 import Layout from '../../components/layout/indexL'
 import { UilEdit, UilTrashAlt, UilPlus, UilTimes, UilMinus } from '@iconscout/react-unicons'
 import { useState, useEffect } from 'react'
@@ -242,10 +240,6 @@ function Estoque() {
 
   return (
     <Layout> 
-    {/* <Container> */}
-      {/* <Header /> */}
-      {/* <Content> */}
-        {/* <Sidebar /> */}
         <Main>
           <H2Medium>Estoque</H2Medium>
 
@@ -431,7 +425,7 @@ function Estoque() {
                 </Label>
 
                 <ModalButtons>
-                  <ButtonSalvar onClick={cadastrar}>Salvar</ButtonSalvar>
+                  <ButtonSalvar disabled={!validacaoForm} onClick={cadastrar}>Salvar</ButtonSalvar>
                   <ButtonCancelar onClick={limparInputs}>Limpar</ButtonCancelar>
                 </ModalButtons>
               </ModalContent>
