@@ -9,9 +9,14 @@ const InfoCards = ({ Icon, title, value }) => {
             <Icon size="30" />
           </IconWrapper>
         )}
-        <Title>{title}</Title>
+        <div>
+           <Title>{title}</Title>
+          {title === "Itens Com Estoque Baixo"  && <strong style={{color:""}}>Clique para ver detalhes</strong>}
+        </div>
+       
       </Header>
       <Value>{value}</Value>
+      
     </Card>
   );
 };

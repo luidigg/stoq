@@ -1,33 +1,13 @@
 import styled from 'styled-components';
 import {
-  Container as CommonContainer,
   H2Medium as H2,
   ButtonPrimary,
   MainWithBackground
 } from '../common-styles';
 import { UilUser, UilAt, UilLock } from '@iconscout/react-unicons';
-
 export { H2 };
 
-// Container geral (sem padding à esquerda)
-export const Container = styled(CommonContainer)`
-  position: relative;
-  padding: 0;
-  overflow: hidden;
-`;
 
-// Content é flex container para responsividade, mas sem sidebar aqui
-export const Content = styled.div`
-  display: flex;
-  min-height: 100vh;
-  /* Não precisa gap */
-
-  @media (max-width: 900px) {
-    flex-direction: column;
-  }
-`;
-
-// Main recebe margin-left igual a sidebar para não ficar por baixo dela
 export const Main = styled(MainWithBackground)`
   flex: 1;
   display: flex;
@@ -37,12 +17,11 @@ export const Main = styled(MainWithBackground)`
   box-sizing: border-box;
 
   @media (max-width: 900px) {
-    margin-left: 0; /* mobile, sem sidebar fixa */
+    margin-left: 0;
     padding: 20px;
   }
 `;
 
-// Dentro do main, o conteúdo principal flexível
 export const MainContent = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -56,7 +35,6 @@ export const MainContent = styled.div`
   }
 `;
 
-// Sessão Logs - flexível e com scroll
 export const SectionLogs = styled.section`
   flex: 1.2;
   min-width: 240px;
@@ -68,7 +46,6 @@ export const SectionLogs = styled.section`
   box-sizing: border-box;
 `;
 
-// Formulário - flexível, respeitando o espaço do main
 export const SectionForm = styled.section`
   flex: 0.8;
   min-width: 200px;
@@ -79,7 +56,6 @@ export const SectionForm = styled.section`
   box-sizing: border-box;
 `;
 
-// Table e outros estilos sem alteração
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -108,18 +84,23 @@ export const Tr = styled.tr``;
 export const Th = styled.th``;
 export const Td = styled.td``;
 
-export const Form = styled.form``;
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
 
 export const DivTexts = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 20px;
 `;
 
 export const DivInputs = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
+  
 `;
 
 export const DivII = styled.div`
@@ -127,6 +108,7 @@ export const DivII = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+
 
   svg {
     color: #1E8673;
@@ -157,15 +139,11 @@ export const ButtonRegister = styled(ButtonPrimary)`
   font-weight: 700;
   font-size: 16px;
   text-align: center;
+  color: #fff;
 
   &:hover {
     background-color: #166a5a;
     box-shadow: 0px 4px 12px #166a5a;
-    color: #e0f7f3;
-  }
-
-  &:active {
-    box-shadow: 4px 4px 18px #166a5a;
   }
 `;
 
@@ -207,8 +185,8 @@ export const IconPass = styled(UilLock)`
 
 export const P = styled.p`
   color: #000;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 23px;
   text-align: center;
 `;

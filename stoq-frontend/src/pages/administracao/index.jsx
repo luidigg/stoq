@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Layout from '../../components/layout/indexL';
-import Header from '../../components/header';
-import Sidebar from '../../components/sidebar';
+
 
 import {
-  Container,
-  Content,
   SectionLogs,
   SectionForm,
   H2,
@@ -42,8 +39,7 @@ function Administracao() {
 
   const texts = {
     title: 'Registrar Novo Usuário',
-    subtitle: 'Preencha os dados para criar um novo usuário.',
-    info: 'Campos obrigatórios *',
+    subtitle: 'Preencha todos os dados para criação de um novo usuário',
     placeholderName: 'Nome completo*',
     placeholderEmail: 'Email*',
     placeholderPassword: 'Senha*',
@@ -95,102 +91,101 @@ function Administracao() {
 
   return (
     <Layout>
-        <Main>
-          <H2>Administração</H2>
+      <Main>
+        <H2>Administração</H2>
 
-          <MainContent>
-            <SectionLogs>
-              <H2>Logs do Sistema</H2>
-              <Table>
-                <Thead>
+        <MainContent>
+          <SectionLogs>
+            <H2>Logs do Sistema</H2>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Data</Th>
+                  <Th>Ação</Th>
+                  <Th>Usuário</Th>
+                  <Th>Descrição</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {logs.length === 0 ? (
                   <Tr>
-                    <Th>Data</Th>
-                    <Th>Ação</Th>
-                    <Th>Usuário</Th>
-                    <Th>Descrição</Th>
+                    <Td colSpan={4} style={{ textAlign: 'center' }}>Nenhum log encontrado.</Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {logs.length === 0 ? (
-                    <Tr>
-                      <Td colSpan={4} style={{ textAlign: 'center' }}>Nenhum log encontrado.</Td>
+                ) : (
+                  logs.map(log => (
+                    <Tr key={log.id}>
+                      <Td>{new Date(log.data).toLocaleString('pt-BR')}</Td>
+                      <Td>{log.acao}</Td>
+                      <Td>{log.usuarioNome || log.usuarioId}</Td>
+                      <Td>{log.descricao}</Td>
                     </Tr>
-                  ) : (
-                    logs.map(log => (
-                      <Tr key={log.id}>
-                        <Td>{new Date(log.data).toLocaleString('pt-BR')}</Td>
-                        <Td>{log.acao}</Td>
-                        <Td>{log.usuarioNome || log.usuarioId}</Td>
-                        <Td>{log.descricao}</Td>
-                      </Tr>
-                    ))
-                  )}
-                </Tbody>
-              </Table>
-            </SectionLogs>
+                  ))
+                )}
+              </Tbody>
+            </Table>
+          </SectionLogs>
 
-            <SectionForm>
-              <Form onSubmit={handleRegister}>
-                <DivTexts>
-                  <H2>{texts.title}</H2>
-                  <P>{texts.subtitle}</P>
-                  <P style={{ fontWeight: 400 }}>{texts.info}</P>
-                </DivTexts>
+          <SectionForm>
+            <Form onSubmit={handleRegister}>
+              <DivTexts>
+                <H2>{texts.title}</H2>
+                <P>{texts.subtitle}</P>
+              </DivTexts>
 
-                <DivInputs>
-                  <DivII>
-                    <IconUser size="28" />
-                    <Input
-                      type="text"
-                      placeholder={texts.placeholderName}
-                      value={nome}
-                      onChange={e => setNome(e.target.value)}
-                      required
-                    />
-                  </DivII>
+              <DivInputs>
+                <DivII>
+                  <IconUser size="28" />
+                  <Input
+                    type="text"
+                    placeholder={texts.placeholderName}
+                    value={nome}
+                    onChange={e => setNome(e.target.value)}
+                    required
+                  />
+                </DivII>
 
-                  <DivII>
-                    <IconEmail size="28" />
-                    <Input
-                      type="email"
-                      placeholder={texts.placeholderEmail}
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      required
-                    />
-                  </DivII>
+                <DivII>
+                  <IconEmail size="28" />
+                  <Input
+                    type="email"
+                    placeholder={texts.placeholderEmail}
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                  />
+                </DivII>
 
-                  <DivII>
-                    <IconPass size="28" />
-                    <Input
-                      type="password"
-                      placeholder={texts.placeholderPassword}
-                      value={senha}
-                      onChange={e => setSenha(e.target.value)}
-                      required
-                    />
-                  </DivII>
+                <DivII>
+                  <IconPass size="28" />
+                  <Input
+                    type="password"
+                    placeholder={texts.placeholderPassword}
+                    value={senha}
+                    onChange={e => setSenha(e.target.value)}
+                    required
+                  />
+                </DivII>
 
-                  <DivII>
-                    <IconPass size="28" />
-                    <Input
-                      type="password"
-                      placeholder={texts.placeholderConfirmPassword}
-                      value={confirmSenha}
-                      onChange={e => setConfirmSenha(e.target.value)}
-                      required
-                    />
-                  </DivII>
-                </DivInputs>
+                <DivII>
+                  <IconPass size="28" />
+                  <Input
+                    type="password"
+                    placeholder={texts.placeholderConfirmPassword}
+                    value={confirmSenha}
+                    onChange={e => setConfirmSenha(e.target.value)}
+                    required
+                  />
+                </DivII>
+              </DivInputs>
 
-                {error && <ErrorMessage>{error}</ErrorMessage>}
-                {success && <p style={{ color: 'green' }}>{success}</p>}
+              {error && <ErrorMessage>{error}</ErrorMessage>}
+              {success && <p style={{ color: 'green' }}>{success}</p>}
 
-                <ButtonRegister type="submit">{texts.buttonSubmit}</ButtonRegister>
-              </Form>
-            </SectionForm>
-          </MainContent>
-        </Main>
+              <ButtonRegister type="submit">{texts.buttonSubmit}</ButtonRegister>
+            </Form>
+          </SectionForm>
+        </MainContent>
+      </Main>
     </Layout>
   );
 }

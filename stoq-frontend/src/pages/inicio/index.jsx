@@ -8,20 +8,41 @@ import {
   IconUp,
   IconDown,
   Main,
-  H2Medium
+  H2Medium,
+  ModalBackdrop,
+  ModalContent,
+  CloseButton,
+  ModalTitle,
+  ItemList,
+  ListItem,
+  ListHeader,
+  DivEstoqueBaixo
 } from './style';
 import InfoCards from '../../components/info-cards/infocards';
 import MiniTable from '../../components/mini-table/minitable';
 import axios from 'axios';
 
 function Inicio() {
-  
+
   // Estados para armazenar os dados da API
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [totalProdutos, setTotalProdutos] = useState(0);
   const [itensComEstoqueBaixo, setItensComEstoqueBaixo] = useState(0);
   const [entradasDoDia, setEntradasDoDia] = useState(0);
   const [saidasDoDia, setSaidasDoDia] = useState(0);
+
+  // estados do modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // função para fechar o modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  }
+
+  //  Função para abrir o modal 
+  const handleOpenLowStockModal = () => {
+    setIsModalOpen(true);
+  };
 
   // Função para buscar movimentações
   const fetchMovimentacoes = async () => {
@@ -46,6 +67,8 @@ function Inicio() {
     }
   };
 
+
+
   // useEffect para fazer os fetchs assim que o componente carregar
   useEffect(() => {
     document.title = 'Início';
@@ -55,21 +78,51 @@ function Inicio() {
 
   return (
     <Layout>
- 
-        <Main>
-          <H2Medium>Início</H2Medium>
 
-          <TopCards>
-            <InfoCards Icon={IconBox} title="Total de Produtos" value={totalProdutos} />
+      <Main>
+        <H2Medium>Início</H2Medium>
+
+        <TopCards>
+          <InfoCards Icon={IconBox} title="Total de Produtos" value={totalProdutos} />
+          <DivEstoqueBaixo
+            onClick={handleOpenLowStockModal}
+            style={{ cursor: itensComEstoqueBaixo > 0 ? 'pointer' : 'default' }}
+          >
             <InfoCards Icon={IconEx} title="Itens Com Estoque Baixo" value={itensComEstoqueBaixo} />
-            <InfoCards Icon={IconUp} title="Entradas Do Dia" value={entradasDoDia} />
-            <InfoCards Icon={IconDown} title="Saídas Do Dia" value={saidasDoDia} />
-          </TopCards>
+          </DivEstoqueBaixo>
 
-          <BottomCards>
-            <MiniTable title="Últimas Movimentações no Estoque" data={movimentacoes} />
-          </BottomCards>
-        </Main>
+          <InfoCards Icon={IconUp} title="Entradas Do Dia" value={entradasDoDia} />
+          <InfoCards Icon={IconDown} title="Saídas Do Dia" value={saidasDoDia} />
+        </TopCards>
+
+        <BottomCards>
+          <MiniTable title="Últimas Movimentações no Estoque" data={movimentacoes} />
+        </BottomCards>
+      </Main>
+
+      <ModalBackdrop isOpen={isModalOpen} onClick={handleCloseModal}>
+        <ModalContent isOpen={isModalOpen}>
+          <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
+          <ModalTitle>Itens com Estoque Baixo</ModalTitle>
+          <ItemList>
+
+            <ListHeader>
+              <span>Produto</span>
+              <span>Quantidade</span>
+            </ListHeader>
+            <ListItem >
+              <span>Feijao</span>
+              <strong>Restam: 2</strong>
+            </ListItem>
+            <ListItem >
+              <span>Arroz</span>
+              <strong>Restam: 2</strong>
+            </ListItem>
+
+          </ItemList>
+
+        </ModalContent>
+      </ModalBackdrop>
     </Layout>
   );
 }

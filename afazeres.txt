@@ -15,10 +15,8 @@ AJUSTAR PRA PEGAR OS PRODUTOS DO BANCO
 
 
 EDUARDO
-7- Ajustar cards da tela de início (Adicionar modal com minitabela de produtos para o card
-de produtos em estoque baixo (somente coluna de nome e quantidade))
-8 - Dar uma ajustada no design da tela de administração, alinhar os botoes, ajustar tamanho
-da fonte, etc, deixar bacana 👍
+
+
 
 
 
@@ -30,3 +28,7 @@ da fonte, etc, deixar bacana 👍
 2- Ajustar o visual da tela de registrar saída
 5- Ajustar o design da tela de Meu Perfil e tornar funcional
 4- Mover o formulário de cadastro de pessoas para a página Meu Perfil
+8 - Dar uma ajustada no design da tela de administração, alinhar os botoes, ajustar tamanho
+da fonte, etc, deixar bacana 👍
+7- Ajustar cards da tela de início (Adicionar modal com minitabela de produtos para o card
+de produtos em estoque baixo (somente coluna de nome e quantidade))
