@@ -93,6 +93,7 @@ function Estoque() {
     try {
       const response = await axios.get('/api/estoque', { withCredentials: true });
       setProdutos(response.data);
+      console.log(response.data) // apagar 
     } catch (error) {
       console.error('Erro ao buscar estoques:', error);
     }
@@ -125,7 +126,7 @@ function Estoque() {
     try {
 
       const saidaParaEnviar = {
-        produtoId: produtoSelecionado.id,
+        produtoId: produtoSelecionado.produtoId,
         quantidade: Number(saida.quantidadeSaida),
         motivo: saida.motivoSaida,
         observacoes: saida.observacaoSaida,
@@ -531,13 +532,16 @@ function Estoque() {
                 </Label>
 
                 <ModalButtons>
-                  <ButtonSalvar onClick={() => {
+                  <ButtonSalvar onClick={ () => {
                     if (!saida.quantidadeSaida || !saida.motivoSaida) {
                       setMessageBoxText('Preencha todos os campos obrigatórios.');
                       setShowMessageBox(true);
                       return;
                     }
-                    registrarSaida();
+                    
+                     registrarSaida();
+
+                     
                     console.log('Saída registrada:', saida);
                     setModalSaida(false);
                     setProdutoSelecionado(null);
