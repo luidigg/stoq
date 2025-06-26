@@ -40,7 +40,7 @@ namespace Stoq.Services
             await _logService.RegistrarAsync(
                 entidade: "EntradaDoacao",
                 acao: "Cadastro",
-                usuarioId: usuarioId,
+                usuarioId: 1, // padrao
                 detalhes: $"Entrada registrada para produtoId={entrada.ProdutoId}, quantidade={entrada.Quantidade}"
             );
 

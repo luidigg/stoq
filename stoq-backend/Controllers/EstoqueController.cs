@@ -1,11 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stoq.DTOs;
 using Stoq.IServices;
-using Stoq.Models;
 
 namespace Stoq.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class EstoqueController(IEstoqueService estoqueService) : ControllerBase
     {
@@ -40,7 +41,6 @@ namespace Stoq.Controllers
             if (!sucesso) return NotFound();
             return NoContent();
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

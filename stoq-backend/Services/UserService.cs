@@ -6,13 +6,13 @@ using Stoq.Models;
 
 namespace Stoq.Services
 {
-    public class UserService(DataContext context) : IUserService
+    public class UserService(DataContext context, ILogService logService) : IUserService
     {
         private readonly DataContext _context = context;
+        private readonly ILogService _logService = logService;
 
         public async Task<AuthDTO> RegisterAsync(RegistroDTO dto)
         {
-            // Validar o formulario com DataAnnotations
             List<ValidationResult> validationResults = [];
             bool isValid = Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true);
             if (!isValid)
@@ -47,16 +47,19 @@ namespace Stoq.Services
             _context.Usuario.Add(novoUsuario);
             await _context.SaveChangesAsync();
 
+            await _logService.RegistrarAsync(
+                entidade: "Usuário",
+                acao: "Registro de novo usuário",
+                usuarioId: 1, // Padrão
+                detalhes: $"Usuário '{dto.Nome}' registrado com o email '{dto.Email}'."
+            );
+
+
             return new AuthDTO
             {
                 Sucesso = true,
                 Mensagem = "Usuário registrado com sucesso."
             };
-        }
-
-        public async Task<Usuario?> ObterPorIdAsync(int id)
-        {
-            return await _context.Usuario.FindAsync(id);
         }
 
         public async Task<bool> AtualizarAsync(EditarUsuarioDTO dto)
@@ -74,7 +77,20 @@ namespace Stoq.Services
             usuario.AtualizadoEm = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
+
+            await _logService.RegistrarAsync(
+                entidade: "Usuário",
+                acao: "Atualização de usuário",
+                usuarioId: 1, // Padrão
+                detalhes: $"Usuário com ID {dto.Id} atualizado para nome '{dto.Nome}' e email '{dto.Email}'."
+            );
+
             return true;
+        }
+
+        public async Task<Usuario?> ObterPorIdAsync(int id)
+        {
+            return await _context.Usuario.FindAsync(id);
         }
     }
 }

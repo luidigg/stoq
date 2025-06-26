@@ -1,13 +1,22 @@
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using Stoq.DTOs;
+using System;
+using System.Collections.Generic;
 
 namespace Stoq.Services.Relatorios
 {
-    public class RelatorioMaisMovimentadosDocument(List<MovimentoEstoqueDTO> dados, RelatorioPeriodoDTO filtro) : IDocument
+    public class RelatorioMaisMovimentadosDocument : IDocument
     {
-        private readonly List<MovimentoEstoqueDTO> _dados = dados;
-        private readonly RelatorioPeriodoDTO _filtro = filtro;
+        private readonly List<MovimentoEstoqueDTO> _dados;
+        private readonly RelatorioPeriodoDTO _filtro;
+
+        public RelatorioMaisMovimentadosDocument(List<MovimentoEstoqueDTO> dados, RelatorioPeriodoDTO filtro)
+        {
+            _dados = dados;
+            _filtro = filtro;
+        }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
@@ -18,19 +27,28 @@ namespace Stoq.Services.Relatorios
                 page.Margin(30);
 
                 page.Header()
+                    .PaddingBottom(10)
                     .Text("Relatório de Produtos Mais Movimentados")
-                    .FontSize(20).Bold().AlignCenter();
+                    .FontSize(20)
+                    .Bold()
+                    .AlignCenter();
 
-                page.Content().Element(ComposeTable);
+                page.Content()
+                    .PaddingVertical(10)
+                    .Element(ComposeTable);
 
-                page.Footer().AlignCenter()
-                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}");
+                page.Footer()
+                    .AlignCenter()
+                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}")
+                    .FontSize(10)
+                    .SemiBold()
+                    .FontColor(Colors.Grey.Darken1);
             });
         }
 
         void ComposeTable(IContainer container)
         {
-            container.PaddingTop(20).Table(table =>
+            container.Table(table =>
             {
                 table.ColumnsDefinition(columns =>
                 {
@@ -42,18 +60,18 @@ namespace Stoq.Services.Relatorios
 
                 table.Header(header =>
                 {
-                    header.Cell().Text("Produto").Bold();
-                    header.Cell().Text("Categoria").Bold();
-                    header.Cell().Text("Quantidade").Bold();
-                    header.Cell().Text("Unidade").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Produto").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Categoria").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Quantidade").Bold().AlignCenter();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Unidade").Bold().AlignCenter();
                 });
 
                 foreach (var item in _dados)
                 {
-                    table.Cell().Text(item.Produto);
-                    table.Cell().Text(item.Categoria);
-                    table.Cell().Text(item.Quantidade.ToString("N2"));
-                    table.Cell().Text(item.Unidade);
+                    table.Cell().Padding(5).Text(item.Produto).AlignLeft();
+                    table.Cell().Padding(5).Text(item.Categoria).AlignLeft();
+                    table.Cell().Padding(5).Text(item.Quantidade.ToString("N2")).AlignCenter();
+                    table.Cell().Padding(5).Text(item.Unidade).AlignCenter();
                 }
             });
         }

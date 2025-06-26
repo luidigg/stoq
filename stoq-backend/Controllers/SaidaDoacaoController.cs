@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stoq.DTOs;
 using Stoq.IServices;
@@ -5,12 +6,12 @@ using Stoq.IServices;
 namespace Stoq.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class SaidaDoacaoController(ISaidaDoacaoService saidaService) : ControllerBase
     {
         private readonly ISaidaDoacaoService _saidaService = saidaService;
 
-        // GET: api/saida-doacao
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SaidaDoacaoDTO>>> GetAll()
         {
@@ -25,7 +26,6 @@ namespace Stoq.Controllers
             }
         }
 
-        // POST: api/saida-doacao
         [HttpPost("criar")]
         public async Task<ActionResult> Criar([FromBody] CriarSaidaDoacaoDTO dto)
         {

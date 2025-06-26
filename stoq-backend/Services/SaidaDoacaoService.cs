@@ -32,51 +32,90 @@ namespace Stoq.Services
             if (dto.Quantidade <= 0)
                 return false;
 
-            // Buscar estoque do produto
-            var estoque = await _context.Estoque
-                .FirstOrDefaultAsync(e => e.ProdutoId == dto.ProdutoId);
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-            if (estoque == null || estoque.Quantidade < dto.Quantidade)
-                return false;
-
-            // Buscar a entrada mais antiga com estoque suficiente (FIFO)
-            var entrada = await _context.EntradaDoacao
-                .Where(e => e.ProdutoId == dto.ProdutoId && e.Quantidade > 0)
-                .OrderBy(e => e.DataRecebimento)
-                .FirstOrDefaultAsync();
-
-            if (entrada == null || entrada.Quantidade < dto.Quantidade)
-                return false;
-
-            // Criar saída
-            var saida = new SaidaDoacao
+            try
             {
-                EntradaId = entrada.Id,
-                Quantidade = dto.Quantidade,
-                DataSaida = DateTime.UtcNow,
-                Motivo = dto.Motivo,
-                Observacoes = dto.Observacoes
-            };
+                // Buscar estoque atual
+                var estoque = await _context.Estoque.FirstOrDefaultAsync(e => e.ProdutoId == dto.ProdutoId);
+                if (estoque == null || estoque.Quantidade < dto.Quantidade)
+                    return false;
 
-            // Atualizar quantidade na entrada usada (caso precise controlar o saldo da entrada)
-            entrada.Quantidade -= dto.Quantidade;
+                // Buscar todas entradas com saldo (quantidade > 0), ordenadas por data (FIFO)
+                var entradas = await _context.EntradaDoacao
+                    .Where(e => e.ProdutoId == dto.ProdutoId && e.Quantidade > 0)
+                    .OrderBy(e => e.DataRecebimento)
+                    .ToListAsync();
 
-            // Atualizar estoque geral
-            estoque.Quantidade -= dto.Quantidade;
+                // Corrigir o Kind das datas nas entradas para UTC (IMPORTANTE)
+                foreach (var entrada in entradas)
+                {
+                    entrada.DataRecebimento = DateTime.SpecifyKind(entrada.DataRecebimento, DateTimeKind.Utc);
+                    if (entrada.DataValidade.HasValue)
+                        entrada.DataValidade = DateTime.SpecifyKind(entrada.DataValidade.Value, DateTimeKind.Utc);
+                    entrada.CriadoEm = DateTime.SpecifyKind(entrada.CriadoEm, DateTimeKind.Utc);
+                }
 
-            // Persistir
-            _context.SaidaDoacao.Add(saida);
-            await _context.SaveChangesAsync();
+                var quantidadeRestante = dto.Quantidade;
 
-            // Log
-            await _logService.RegistrarAsync(
-                "SaidaDoacao",
-                "Criar",
-                dto.UsuarioId,
-                $"Saída registrada do produto_id={dto.ProdutoId}, quantidade={dto.Quantidade}, entrada_id={entrada.Id}"
-            );
+                foreach (var entrada in entradas)
+                {
+                    if (quantidadeRestante <= 0)
+                        break;
 
-            return true;
+                    int quantidadeASubtrair = Math.Min(entrada.Quantidade, quantidadeRestante);
+
+                    // Criar saída para essa entrada parcial, DataSaida já é UTC
+                    var saida = new SaidaDoacao
+                    {
+                        EntradaId = entrada.Id,
+                        Quantidade = quantidadeASubtrair,
+                        DataSaida = DateTime.UtcNow,
+                        Motivo = dto.Motivo,
+                        Observacoes = dto.Observacoes
+                    };
+                    _context.SaidaDoacao.Add(saida);
+
+                    // Atualizar entrada
+                    entrada.Quantidade -= quantidadeASubtrair;
+                    _context.EntradaDoacao.Update(entrada);
+
+                    quantidadeRestante -= quantidadeASubtrair;
+                }
+
+                if (quantidadeRestante > 0)
+                {
+                    // Não há quantidade suficiente nas entradas para a saída total
+                    return false;
+                }
+
+                // Atualizar estoque
+                estoque.Quantidade -= dto.Quantidade;
+                _context.Estoque.Update(estoque);
+
+                // ATENÇÃO: Corrigir todas as propriedades DateTime de estoque também, se houver.
+                // (Se estoque não tem DateTime, pode ignorar.)
+
+                // Salvar mudanças
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                await _logService.RegistrarAsync(
+                    entidade: "SaidaDoacao",
+                    acao: "Criação de saída",
+                    usuarioId: dto.UsuarioId,
+                    detalhes: $"Saída registrada do produto ID {dto.ProdutoId}, quantidade {dto.Quantidade}."
+                );
+
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
     }
 }

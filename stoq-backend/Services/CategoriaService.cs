@@ -6,14 +6,9 @@ using Stoq.Models;
 
 namespace Stoq.Services
 {
-    public class CategoriaService : ICategoriaService
+    public class CategoriaService(DataContext context) : ICategoriaService
     {
-        private readonly DataContext _context;
-
-        public CategoriaService(DataContext context)
-        {
-            _context = context;
-        }
+        private readonly DataContext _context = context;
 
         public async Task<List<CategoriaDTO>> GetAllAsync()
         {
@@ -36,40 +31,6 @@ namespace Stoq.Services
                 Id = categoria.Id,
                 Nome = categoria.Nome
             };
-        }
-
-        public async Task<CategoriaDTO> CreateAsync(CategoriaDTO dto)
-        {
-            var categoria = new Categoria
-            {
-                Nome = dto.Nome
-            };
-
-            _context.Categoria.Add(categoria);
-            await _context.SaveChangesAsync();
-
-            dto.Id = categoria.Id;
-            return dto;
-        }
-
-        public async Task<bool> UpdateAsync(int id, CategoriaDTO dto)
-        {
-            var categoria = await _context.Categoria.FindAsync(id);
-            if (categoria == null) return false;
-
-            categoria.Nome = dto.Nome;
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var categoria = await _context.Categoria.FindAsync(id);
-            if (categoria == null) return false;
-
-            _context.Categoria.Remove(categoria);
-            await _context.SaveChangesAsync();
-            return true;
         }
     }
 }

@@ -1,13 +1,22 @@
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using Stoq.DTOs;
+using System;
+using System.Collections.Generic;
 
 namespace Stoq.Services.Relatorios
 {
-    public class RelatorioEstoqueBaixoDocument(List<MovimentoEstoqueDTO> dados, RelatorioEstoqueDTO filtro) : IDocument
+    public class RelatorioEstoqueBaixoDocument : IDocument
     {
-        private readonly List<MovimentoEstoqueDTO> _dados = dados;
-        private readonly RelatorioEstoqueDTO _filtro = filtro;
+        private readonly List<MovimentoEstoqueDTO> _dados;
+        private readonly RelatorioEstoqueDTO _filtro;
+
+        public RelatorioEstoqueBaixoDocument(List<MovimentoEstoqueDTO> dados, RelatorioEstoqueDTO filtro)
+        {
+            _dados = dados;
+            _filtro = filtro;
+        }
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
@@ -18,39 +27,46 @@ namespace Stoq.Services.Relatorios
                 page.Margin(30);
 
                 page.Header()
+                    .PaddingBottom(10)
                     .Text("Relatório de Produtos com Estoque Baixo")
-                    .FontSize(20).Bold().AlignCenter();
+                    .FontSize(20)
+                    .Bold()
+                    .AlignCenter();
 
-                page.Content().Element(ComposeTable);
+                page.Content().PaddingVertical(10).Element(ComposeTable);
 
-                page.Footer().AlignCenter()
-                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}");
+                page.Footer()
+                    .AlignCenter()
+                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}")
+                    .FontSize(10)
+                    .SemiBold()
+                    .FontColor(Colors.Grey.Darken1);
             });
         }
 
         void ComposeTable(IContainer container)
         {
-            container.PaddingTop(20).Table(table =>
+            container.Table(table =>
             {
                 table.ColumnsDefinition(columns =>
                 {
-                    columns.RelativeColumn(4); // Produto
-                    columns.RelativeColumn(2); // Quantidade
-                    columns.RelativeColumn(1); // Unidade
+                    columns.RelativeColumn(4);
+                    columns.RelativeColumn(2);
+                    columns.RelativeColumn(1);
                 });
 
                 table.Header(header =>
                 {
-                    header.Cell().Text("Produto").Bold();
-                    header.Cell().Text("Quantidade").Bold();
-                    header.Cell().Text("Unidade").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Produto").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Quantidade").Bold().AlignCenter();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Unidade").Bold().AlignCenter();
                 });
 
                 foreach (var item in _dados)
                 {
-                    table.Cell().Text(item.Produto);
-                    table.Cell().Text(item.Quantidade.ToString());
-                    table.Cell().Text(item.Unidade);
+                    table.Cell().Padding(5).Text(item.Produto).AlignLeft();
+                    table.Cell().Padding(5).Text(item.Quantidade.ToString()).AlignCenter();
+                    table.Cell().Padding(5).Text(item.Unidade).AlignCenter();
                 }
             });
         }

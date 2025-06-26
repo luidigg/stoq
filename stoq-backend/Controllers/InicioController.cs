@@ -1,23 +1,28 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stoq.IServices;
 
-[ApiController]
-[Route("api/[controller]")]
-public class InicioController(IInicioService inicioService) : ControllerBase
+namespace Stoq.Controllers
 {
-    private readonly IInicioService _inicioService = inicioService;
-
-    [HttpGet("totais")]
-    public async Task<IActionResult> GetTotais()
+    [ApiController]
+    [Authorize]
+    [Route("api/[controller]")]
+    public class InicioController(IInicioService inicioService) : ControllerBase
     {
-        var totais = await _inicioService.ObterTotaisAsync();
-        return Ok(totais);
-    }
+        private readonly IInicioService _inicioService = inicioService;
 
-    [HttpGet("movimentacoes")]
-    public async Task<IActionResult> GetMovimentacoes()
-    {
-        var lista = await _inicioService.ObterUltimasMovimentacoesAsync();
-        return Ok(lista);
+        [HttpGet("totais")]
+        public async Task<IActionResult> GetTotais()
+        {
+            var totais = await _inicioService.ObterTotaisAsync();
+            return Ok(totais);
+        }
+
+        [HttpGet("movimentacoes")]
+        public async Task<IActionResult> GetMovimentacoes()
+        {
+            var lista = await _inicioService.ObterUltimasMovimentacoesAsync();
+            return Ok(lista);
+        }
     }
 }

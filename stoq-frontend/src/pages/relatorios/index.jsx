@@ -200,8 +200,9 @@ function Relatorio() {
                     <Button disabled={cardsDesabilitados.saidas} onClick={gerarPDFSaidas}>Gerar PDF</Button>
                 </Card>
 
-                {/* Card 3: Produtos por Categoria */}
-                <Card disabled={cardsDesabilitados.categoria}>
+                {/* Card 3: Produtos por Categoria 
+                
+                                <Card disabled={cardsDesabilitados.categoria}>
                     <h3>Produtos por Categoria</h3>
                     <p>Veja produtos agrupados por categoria.</p>
                     <div>
@@ -215,6 +216,12 @@ function Relatorio() {
                     </div>
                     <Button disabled={cardsDesabilitados.categoria} onClick={gerarPDFPorCategoria}>Gerar PDF</Button>
                 </Card>
+                
+                
+                
+                
+                */}
+
 
                 {/* Card 4: Produtos com Validade Próxima */}
                 <Card disabled={cardsDesabilitados.validade}>

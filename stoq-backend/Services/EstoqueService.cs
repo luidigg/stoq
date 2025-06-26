@@ -6,14 +6,10 @@ using Stoq.Models;
 
 namespace Stoq.Services
 {
-    public class EstoqueService : IEstoqueService
+    public class EstoqueService(DataContext context, ILogService logService) : IEstoqueService
     {
-        private readonly DataContext _context;
-
-        public EstoqueService(DataContext context)
-        {
-            _context = context;
-        }
+        private readonly DataContext _context = context;
+        private readonly ILogService _logService = logService;
 
         public async Task<List<EstoqueDTO>> GetAllAsync()
         {
@@ -77,32 +73,79 @@ namespace Stoq.Services
 
         public async Task CreateAsync(EstoqueDTO dto)
         {
-            // Buscar categoria pelo nome
+            // Buscar categoria pelo nome ou id
             Categoria? categoria = (int.TryParse(dto.Categoria, out var idCategoria)
                 ? await _context.Categoria.FindAsync(idCategoria)
                 : await _context.Categoria.FirstOrDefaultAsync(c => c.Nome.ToLower() == dto.Categoria.ToLower()))
                 ?? throw new Exception($"Categoria '{dto.Categoria}' não encontrada.");
 
-            // Buscar ou criar produto
-            Produto? produto = await _context.Produto.FirstOrDefaultAsync(p => p.Nome.ToLower() == dto.NomeProduto.ToLower());
+            // Buscar produtos com o nome igual (ignorando case)
+            var produtosComMesmoNome = await _context.Produto
+                .Where(p => p.Nome.ToLower().StartsWith(dto.NomeProduto.ToLower()))
+                .ToListAsync();
 
-            if (produto == null)
+            Produto? produtoParaUsar = null;
+
+            // Para cada produto com mesmo nome, buscar a entrada de doação para ver validade
+            foreach (var p in produtosComMesmoNome)
             {
-                produto = new Produto
+                var entradaExistente = await _context.EntradaDoacao
+                    .Where(e => e.ProdutoId == p.Id)
+                    .OrderByDescending(e => e.CriadoEm)
+                    .FirstOrDefaultAsync();
+
+                // Se existir entrada com mesma validade (null ou igual)
+                if (entradaExistente != null &&
+                    ((entradaExistente.DataValidade == null && dto.Validade == null) ||
+                    (entradaExistente.DataValidade?.Date == dto.Validade?.Date)))
                 {
-                    Nome = dto.NomeProduto,
+                    produtoParaUsar = p;
+                    break;
+                }
+            }
+
+            if (produtoParaUsar == null)
+            {
+                // Criar novo produto com sufixo de lote se for necessário
+                int maiorLote = 1;
+                string nomeBase = dto.NomeProduto;
+
+                // Procurar produtos com o prefixo igual para descobrir maior lote
+                var produtosComPrefixo = await _context.Produto
+                    .Where(p => p.Nome.StartsWith(nomeBase))
+                    .ToListAsync();
+
+                foreach (var p in produtosComPrefixo)
+                {
+                    string sufixo = p.Nome.Substring(nomeBase.Length).Trim();
+                    if (sufixo.StartsWith("L"))
+                    {
+                        if (int.TryParse(sufixo.Substring(1), out int loteNum))
+                        {
+                            if (loteNum > maiorLote)
+                                maiorLote = loteNum;
+                        }
+                    }
+                }
+
+                int novoLote = maiorLote + 1;
+                string nomeComLote = novoLote == 1 ? nomeBase : $"{nomeBase} L{novoLote}";
+
+                produtoParaUsar = new Produto
+                {
+                    Nome = nomeComLote,
                     CategoriaId = categoria.Id,
                     CriadoEm = DateTime.UtcNow
                 };
 
-                _context.Produto.Add(produto);
-                await _context.SaveChangesAsync();
+                _context.Produto.Add(produtoParaUsar);
+                await _context.SaveChangesAsync(); // Para gerar ID
             }
 
-            // Criar entrada de doação
+            // Criar entrada de doação vinculada ao produto selecionado/criado
             EntradaDoacao entrada = new()
             {
-                ProdutoId = produto.Id,
+                ProdutoId = produtoParaUsar.Id,
                 Quantidade = dto.Quantidade,
                 DataRecebimento = (dto.Entrada ?? DateTime.UtcNow).ToUniversalTime(),
                 DataValidade = dto.Validade?.ToUniversalTime(),
@@ -113,25 +156,32 @@ namespace Stoq.Services
             _context.EntradaDoacao.Add(entrada);
 
             // Atualizar ou criar estoque
-            Estoque? estoque = await _context.Estoque.FirstOrDefaultAsync(e => e.ProdutoId == produto.Id);
-
+            Estoque? estoque = await _context.Estoque.FirstOrDefaultAsync(e => e.ProdutoId == produtoParaUsar.Id);
             if (estoque != null)
             {
                 estoque.Quantidade += dto.Quantidade;
+                _context.Estoque.Update(estoque);
             }
             else
             {
-                estoque = new()
+                estoque = new Estoque
                 {
-                    ProdutoId = produto.Id,
+                    ProdutoId = produtoParaUsar.Id,
                     Quantidade = dto.Quantidade
                 };
                 _context.Estoque.Add(estoque);
             }
 
             await _context.SaveChangesAsync();
-            return;
+
+            await _logService.RegistrarAsync(
+                entidade: "Estoque",
+                acao: "Criação de entrada",
+                usuarioId: 1, // Padrão
+                detalhes: $"Produto '{produtoParaUsar.Nome}' adicionado com {dto.Quantidade} unidades."
+            );
         }
+
 
 
         public async Task<bool> UpdateAsync(int id, EstoqueDTO dto)
@@ -176,6 +226,14 @@ namespace Stoq.Services
             }
 
             await _context.SaveChangesAsync();
+
+            await _logService.RegistrarAsync(
+                entidade: "Estoque",
+                acao: "Atualização de entrada",
+                usuarioId: 1, // Padrão
+                detalhes: $"Estoque do produto '{dto.NomeProduto}' atualizado para {dto.Quantidade} unidades."
+            );
+
             return true;
         }
 
@@ -184,8 +242,28 @@ namespace Stoq.Services
             var estoque = await _context.Estoque.FindAsync(id);
             if (estoque == null) return false;
 
+            var produto = await _context.Produto.FindAsync(estoque.ProdutoId);
+            if (produto == null) return false;
+
+            var entradas = await _context.EntradaDoacao
+                .Where(e => e.ProdutoId == produto.Id)
+                .ToListAsync();
+
+            _context.EntradaDoacao.RemoveRange(entradas);
+
+            _context.Produto.Remove(produto);
+
             _context.Estoque.Remove(estoque);
+
             await _context.SaveChangesAsync();
+
+            await _logService.RegistrarAsync(
+                entidade: "Estoque",
+                acao: "Remoção completa",
+                usuarioId: 1, // Padrão
+                detalhes: $"Remoção completa do estoque ID {id}, produto '{produto.Nome}' e {entradas.Count} entradas."
+            );
+
             return true;
         }
 

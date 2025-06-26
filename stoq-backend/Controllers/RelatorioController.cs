@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stoq.DTOs;
+using Stoq.IServices;
 
 namespace Stoq.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class RelatorioController(IRelatorioService relatorioService) : ControllerBase
     {
@@ -55,12 +58,8 @@ namespace Stoq.Controllers
 
         private static RelatorioPeriodoDTO AjustarPeriodo(RelatorioPeriodoDTO dto)
         {
-            // Se DataInicio for nula, define início de época (ou outro default)
             var dataInicio = dto.DataInicio?.Date ?? DateTime.MinValue;
-            // Se DataFim for nula, define hoje
             var dataFim = dto.DataFim?.Date ?? DateTime.UtcNow.Date;
-
-            // Garante que dataFim é o fim do dia (23:59:59.999)
             dataFim = dataFim.AddDays(1).AddTicks(-1);
 
             return new RelatorioPeriodoDTO

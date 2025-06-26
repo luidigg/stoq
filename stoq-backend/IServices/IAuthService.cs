@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Stoq.DTOs;
 
 namespace Stoq.IServices

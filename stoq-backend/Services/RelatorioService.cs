@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 using Stoq.Data;
 using Stoq.DTOs;
 using Stoq.IServices;
@@ -13,9 +7,10 @@ using Stoq.Services.Relatorios;
 
 namespace Stoq.Services
 {
-    public class RelatorioService(DataContext context) : IRelatorioService
+    public class RelatorioService(DataContext context, ILogService logService) : IRelatorioService
     {
         private readonly DataContext _context = context;
+        private readonly ILogService _logService = logService;
 
         public async Task<byte[]> GerarRelatorioEntradas(RelatorioPeriodoDTO dto)
         {
@@ -34,6 +29,14 @@ namespace Stoq.Services
                 .ToListAsync();
 
             var document = new EntradasRelatorioDocument(entradas, dto);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório de Entradas",
+                usuarioId: 1,
+                detalhes: $"Relatório de entradas gerado de {dto.DataInicio:dd/MM/yyyy} a {dto.DataFim:dd/MM/yyyy}."
+            );
+
             return document.GeneratePdf();
         }
 
@@ -56,6 +59,15 @@ namespace Stoq.Services
                 .ToListAsync();
 
             var document = new SaidasRelatorioDocument(saidas, dto);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório de Saídas",
+                usuarioId: 1,
+                detalhes: $"Relatório de saídas gerado de {dto.DataInicio:dd/MM/yyyy} a {dto.DataFim:dd/MM/yyyy}."
+            );
+
+
             return document.GeneratePdf();
         }
 
@@ -86,6 +98,14 @@ namespace Stoq.Services
                 .ToListAsync();
 
             var document = new RelatorioCategoriaDocument(dados, dto);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório por Categoria",
+                usuarioId: 1,
+                detalhes: $"Relatório por categoria {(string.IsNullOrEmpty(dto.Categoria) ? "(todas)" : $"'{dto.Categoria}'")} gerado."
+            );
+
             return document.GeneratePdf();
         }
 
@@ -110,6 +130,14 @@ namespace Stoq.Services
 
             var filtro = new RelatorioValidadeDTO { DiasAteValidade = dto.DiasAteValidade };
             var document = new RelatorioValidadeDocument(dados, filtro);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório de Validade",
+                usuarioId: 1,
+                detalhes: $"Relatório de validade gerado para próximos {dto.DiasAteValidade} dias."
+            );
+
             return document.GeneratePdf();
         }
 
@@ -169,6 +197,14 @@ namespace Stoq.Services
                 .ToListAsync();
 
             var document = new RelatorioMaisMovimentadosDocument(dados, dto);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório de Produtos Mais Movimentados",
+                usuarioId: 1,
+                detalhes: $"Relatório de produtos mais movimentados de {dto.DataInicio:dd/MM/yyyy} a {dto.DataFim:dd/MM/yyyy}."
+            );
+
             return document.GeneratePdf();
         }
 
@@ -188,6 +224,14 @@ namespace Stoq.Services
                 .ToListAsync();
 
             var document = new RelatorioEstoqueBaixoDocument(dados, dto);
+
+            await _logService.RegistrarAsync(
+                entidade: "Relatório",
+                acao: "Gerar Relatório de Estoque Baixo",
+                usuarioId: 1,
+                detalhes: $"Relatório de estoque baixo gerado para limite de {dto.QuantidadeMinima} unidades."
+            );
+
             return document.GeneratePdf();
         }
     }

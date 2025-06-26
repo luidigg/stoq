@@ -1,6 +1,9 @@
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using QuestPDF.Helpers;
 using Stoq.DTOs;
+using System;
+using System.Collections.Generic;
 
 namespace Stoq.Services.Relatorios
 {
@@ -18,19 +21,28 @@ namespace Stoq.Services.Relatorios
                 page.Margin(30);
 
                 page.Header()
-                    .Text("Relatório de Validade Próxima")
-                    .FontSize(20).Bold().AlignCenter();
+                    .PaddingBottom(10)
+                    .Text("Relatório de Produtos Com Validade Próxima")
+                    .FontSize(20)
+                    .Bold()
+                    .AlignCenter();
 
-                page.Content().Element(ComposeTable);
+                page.Content()
+                    .PaddingVertical(10)
+                    .Element(ComposeTable);
 
-                page.Footer().AlignCenter()
-                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}");
+                page.Footer()
+                    .AlignCenter()
+                    .Text($"Emitido em {DateTime.Now:dd/MM/yyyy HH:mm}")
+                    .FontSize(10)
+                    .SemiBold()
+                    .FontColor(Colors.Grey.Darken1);
             });
         }
 
         void ComposeTable(IContainer container)
         {
-            container.PaddingTop(20).Table(table =>
+            container.Table(table =>
             {
                 table.ColumnsDefinition(columns =>
                 {
@@ -42,18 +54,18 @@ namespace Stoq.Services.Relatorios
 
                 table.Header(header =>
                 {
-                    header.Cell().Text("Data Recebimento").Bold();
-                    header.Cell().Text("Produto").Bold();
-                    header.Cell().Text("Quantidade").Bold();
-                    header.Cell().Text("Validade").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Data Recebimento").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Produto").Bold();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Quantidade").Bold().AlignCenter();
+                    header.Cell().Padding(5).BorderBottom(1).Text("Validade").Bold().AlignCenter();
                 });
 
                 foreach (var item in _dados)
                 {
-                    table.Cell().Text(item.Data.ToString("dd/MM/yyyy"));
-                    table.Cell().Text(item.Produto);
-                    table.Cell().Text(item.Quantidade);
-                    table.Cell().Text(item.Validade?.ToString("dd/MM/yyyy") ?? "-");
+                    table.Cell().Padding(5).Text(item.Data.ToString("dd/MM/yyyy")).AlignLeft();
+                    table.Cell().Padding(5).Text(item.Produto).AlignLeft();
+                    table.Cell().Padding(5).Text(item.Quantidade.ToString()).AlignCenter();
+                    table.Cell().Padding(5).Text(item.Validade?.ToString("dd/MM/yyyy") ?? "-").AlignCenter();
                 }
             });
         }

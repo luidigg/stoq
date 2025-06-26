@@ -20,16 +20,6 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const texts = {
-    title: 'Entrar',
-    description: 'Insira seu email ou usuário e sua senha para entrar',
-    placeholderEmail: 'Email ou Usuário',
-    placeholderSenha: 'Senha',
-    buttonEntrar: 'Entrar',
-    questionRegister: 'Ainda não possui cadastro?',
-    buttonRegister: 'Registre-se',
-  };
-
   useEffect(() => {
     document.title = 'Login';
   }, []);
@@ -70,25 +60,21 @@ function Login() {
 
       <Form onSubmit={handleLogin}>
         <DivTexts>
-          <H2>{texts.title}</H2>
-          <P>{texts.description}</P>
+          <H2>Entrar</H2>
+          <P>Insira seu email ou usuário e sua senha para entrar</P>
         </DivTexts>
 
         <DivInput>
-          {renderInput('text', texts.placeholderEmail, email, e => setEmail(e.target.value), IconEmail)}
-          {renderInput('password', texts.placeholderSenha, senha, e => setSenha(e.target.value), IconPass)}
+          {renderInput('text', 'Email ou Usuário', email, e => setEmail(e.target.value), IconEmail)}
+          {renderInput('password', 'Senha', senha, e => setSenha(e.target.value), IconPass)}
         </DivInput>
 
         {error && <P style={{ color: 'red' }}>{error}</P>}
 
         <ButtonEntrar type="submit" disabled={loading}>
-          {loading ? <FaSpinner className="spinner" /> : texts.buttonEntrar}
+          {loading ? <FaSpinner className="spinner" /> : 'Entrar'}
         </ButtonEntrar>
 
-        <P>
-          {texts.questionRegister}{' '}
-          <ButtonRegister onClick={() => navigate('/')}>{texts.buttonRegister}</ButtonRegister>
-        </P>
       </Form>
 
       <style>

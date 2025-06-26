@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Stoq.Models;
 using Stoq.IServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Stoq.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class LogController(ILogService logService) : ControllerBase
     {
