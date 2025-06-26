@@ -249,10 +249,21 @@ namespace Stoq.Services
                 .Where(e => e.ProdutoId == produto.Id)
                 .ToListAsync();
 
+            // Buscar saídas relacionadas às entradas que serão removidas
+            var entradaIds = entradas.Select(e => e.Id).ToList();
+
+            var saidas = await _context.SaidaDoacao
+                .Where(s => entradaIds.Contains(s.EntradaId))
+                .ToListAsync();
+
+            // Remover as saídas primeiro
+            _context.SaidaDoacao.RemoveRange(saidas);
+
+            // Depois remover as entradas
             _context.EntradaDoacao.RemoveRange(entradas);
 
+            // Remover produto e estoque
             _context.Produto.Remove(produto);
-
             _context.Estoque.Remove(estoque);
 
             await _context.SaveChangesAsync();
