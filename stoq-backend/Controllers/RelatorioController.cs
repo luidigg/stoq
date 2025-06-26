@@ -12,14 +12,16 @@ namespace Stoq.Controllers
         [HttpPost("entradas")]
         public async Task<IActionResult> GerarRelatorioEntradas([FromBody] RelatorioPeriodoDTO dto)
         {
-            var pdf = await _relatorioService.GerarRelatorioEntradas(dto);
+            var periodo = AjustarPeriodo(dto);
+            var pdf = await _relatorioService.GerarRelatorioEntradas(periodo);
             return File(pdf, "application/pdf", "entradas.pdf");
         }
 
         [HttpPost("saidas")]
         public async Task<IActionResult> GerarRelatorioSaidas([FromBody] RelatorioPeriodoDTO dto)
         {
-            var pdf = await _relatorioService.GerarRelatorioSaidas(dto);
+            var periodo = AjustarPeriodo(dto);
+            var pdf = await _relatorioService.GerarRelatorioSaidas(periodo);
             return File(pdf, "application/pdf", "saidas.pdf");
         }
 
@@ -49,6 +51,23 @@ namespace Stoq.Controllers
         {
             var pdf = await _relatorioService.GerarRelatorioEstoqueBaixo(dto);
             return File(pdf, "application/pdf", "estoque-baixo.pdf");
+        }
+
+        private static RelatorioPeriodoDTO AjustarPeriodo(RelatorioPeriodoDTO dto)
+        {
+            // Se DataInicio for nula, define início de época (ou outro default)
+            var dataInicio = dto.DataInicio?.Date ?? DateTime.MinValue;
+            // Se DataFim for nula, define hoje
+            var dataFim = dto.DataFim?.Date ?? DateTime.UtcNow.Date;
+
+            // Garante que dataFim é o fim do dia (23:59:59.999)
+            dataFim = dataFim.AddDays(1).AddTicks(-1);
+
+            return new RelatorioPeriodoDTO
+            {
+                DataInicio = DateTime.SpecifyKind(dataInicio, DateTimeKind.Utc),
+                DataFim = DateTime.SpecifyKind(dataFim, DateTimeKind.Utc)
+            };
         }
     }
 }

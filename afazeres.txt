@@ -1,22 +1,16 @@
 <<< Lista de Afazeres >>>
 
-6- Apagar Services e Telas / Codigo inutil
-8- Configurar API para gerar relatórios em PDF
-9- Dar um repasse geral pelo código e melhorar organização / refatorar
-10- Aplicar cabeçalho [Authorize] aos endpoints
-11- Reaplicar validações de formulário
-12 - Verificação para caso seja adicionado 
-13 - deletar produtos da tabela produto quando nao tiver mais estoque deles
-14 - verificar todas as partes que fazem requisicoes / caçar bugs
-15 - C:\Users\Luidi\Desktop\Trabalhos Unijuí\stoq-web-app\stoq\stoq-frontend\src\components\produto-input\index.jsx
-AJUSTAR PRA PEGAR OS PRODUTOS DO BANCO
-16 - erros mais informativos para o usuario (nao exibir somente no console)
-
-
-
-EDUARDO
-
-
+1. Apagar Services e Telas / Código inútil
+2. Configurar API para gerar relatórios em PDF
+3. Dar um repasse geral pelo código e melhorar organização / refatorar
+4. Aplicar cabeçalho [Authorize] aos endpoints
+5. Reaplicar validações de formulário
+7. Deletar produtos da tabela 'produto' quando não tiver mais estoque deles
+8. Verificar todas as partes que fazem requisições / caçar bugs
+9. Ajustar componente 'produto-input'
+   Caminho: C:\Users\Luidi\Desktop\Trabalhos Unijuí\stoq-web-app\stoq\stoq-frontend\src\components\produto-input\index.jsx
+   Objetivo: Ajustar para pegar os produtos do banco
+10. Exibir erros mais informativos para o usuário (evitar exibir só no console)
 
 
 

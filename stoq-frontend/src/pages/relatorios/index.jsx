@@ -20,9 +20,9 @@ function Relatorio() {
     const cardsDesabilitados = {
         entradas: false,
         saidas: false,
-        categoria: false,
+        categoria: true,
         validade: false,
-        movimentados: true,
+        movimentados: false,
         estoqueBaixo: false
     };
 

@@ -8,7 +8,6 @@ namespace Stoq.DTOs
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Email é obrigatório.")]
-        [EmailAddress(ErrorMessage = "Email inválido.")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Senha é obrigatória.")]

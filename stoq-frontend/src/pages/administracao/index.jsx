@@ -156,8 +156,8 @@ function Administracao() {
                 <DivII>
                   <IconEmail size="28" />
                   <Input
-                    type="email"
-                    placeholder="Email*"
+                    type="text"
+                    placeholder="Email/Usuário*"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
