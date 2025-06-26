@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Stoq.Models;
 using Stoq.IServices;
+using Stoq.DTOs;
 
 namespace Stoq.Controllers
 {
@@ -53,5 +54,13 @@ namespace Stoq.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("buscar")]
+        public async Task<ActionResult<List<ProdutoNomeDTO>>> BuscarPorNome([FromQuery] string nome)
+        {
+            var sugestoes = await _service.BuscarPorNomeAsync(nome);
+            return Ok(sugestoes);
+        }
+
     }
 }

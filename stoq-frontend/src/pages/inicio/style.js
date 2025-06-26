@@ -84,7 +84,7 @@ export const ModalBackdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1003;
+  z-index: 1303;
   opacity: ${props => (props.isOpen ? '1' : '0')};
   visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: opacity 0.3s ease, visibility 0.3s ease;

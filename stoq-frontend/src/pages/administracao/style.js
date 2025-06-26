@@ -5,8 +5,8 @@ import {
   MainWithBackground
 } from '../common-styles';
 import { UilUser, UilAt, UilLock } from '@iconscout/react-unicons';
-export { H2 };
 
+export { H2 };
 
 export const Main = styled(MainWithBackground)`
   flex: 1;
@@ -38,12 +38,21 @@ export const MainContent = styled.div`
 export const SectionLogs = styled.section`
   flex: 1.2;
   min-width: 240px;
-  background-color: #E8FFF6;
+  background-color: #fefefe;
   padding: 25px 30px;
   border-radius: 20px;
-  max-height: 80vh;
-  overflow-y: auto;
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.05);
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: #000;
+  }
 `;
 
 export const SectionForm = styled.section`
@@ -54,6 +63,15 @@ export const SectionForm = styled.section`
   border-radius: 20px;
   box-shadow: 0 0 10px rgb(0 0 0 / 0.05);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+`;
+
+export const TableContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
 `;
 
 export const Table = styled.table`
@@ -61,28 +79,43 @@ export const Table = styled.table`
   border-collapse: collapse;
   font-size: 14px;
   color: #333;
-
-  th, td {
-    padding: 10px 8px;
-    border-bottom: 1px solid #ccc;
-    text-align: left;
-  }
-
-  th {
-    background-color: #d1f0e7;
-    font-weight: 600;
-  }
-
-  tbody tr:hover {
-    background-color: #c8f2e1;
-  }
+  table-layout: fixed;
 `;
 
-export const Tbody = styled.tbody``;
-export const Thead = styled.thead``;
-export const Tr = styled.tr``;
-export const Th = styled.th``;
-export const Td = styled.td``;
+export const Thead = styled.thead`
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  background-color: #d1f0e7;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
+
+export const Tbody = styled.tbody`
+  display: block;
+  width: 100%;
+`;
+
+export const Tr = styled.tr`
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+`;
+
+export const Th = styled.th`
+  padding: 10px 8px;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  background-color: #d1f0e7;
+`;
+
+export const Td = styled.td`
+  padding: 10px 8px;
+  border-bottom: 1px solid #ccc;
+  word-break: break-word;
+`;
 
 export const Form = styled.form`
   display: flex;
@@ -100,7 +133,6 @@ export const DivInputs = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  
 `;
 
 export const DivII = styled.div`
@@ -109,9 +141,8 @@ export const DivII = styled.div`
   align-items: center;
   gap: 12px;
 
-
   svg {
-    color: #1E8673;
+    color: #1e8673;
   }
 `;
 
@@ -125,7 +156,7 @@ export const Input = styled.input`
   transition: border-color 0.3s ease;
 
   &:focus {
-    border-color: #1E8673;
+    border-color: #1e8673;
     background-color: #fff;
     box-shadow: 0 0 0 2px rgba(30, 134, 115, 0.2);
     outline: none;
@@ -133,7 +164,7 @@ export const Input = styled.input`
 `;
 
 export const ButtonRegister = styled(ButtonPrimary)`
-  background-color: #1E8673;
+  background-color: #1e8673;
   border-radius: 25px;
   padding: 12px 0;
   font-weight: 700;

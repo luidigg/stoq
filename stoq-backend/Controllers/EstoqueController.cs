@@ -49,5 +49,13 @@ namespace Stoq.Controllers
             if (!resultado) return NotFound();
             return NoContent();
         }
+
+        [HttpGet("estoque-baixo")]
+        public async Task<IActionResult> GetEstoqueBaixo()
+        {
+            var itensBaixos = await _estoqueService.GetEstoqueBaixoAsync();
+            return Ok(itensBaixos);
+        }
+
     }
 }

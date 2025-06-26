@@ -53,6 +53,7 @@ namespace stoq.Controllers
                 return BadRequest(ModelState);
             }
 
+            registerRequest.CargoId = 1; // Padrão para usuário comum
             AuthDTO result = await userService.RegisterAsync(registerRequest);
 
             if (result.Sucesso == false)

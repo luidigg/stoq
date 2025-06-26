@@ -196,3 +196,31 @@ export const DivTable = styled.div`
   overflow-y: auto;
   width: 100%;
 `;
+
+export const CardRelatorio = styled.div`
+  background: #fefefe;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+export const Card = styled.div`
+    background: #fefefe;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: opacity 0.3s ease;
+
+    /* Usando um operador ternário para retornar os estilos como uma string */
+    ${props => props.disabled ? `
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    ` : ''}
+`;

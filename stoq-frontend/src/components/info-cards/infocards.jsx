@@ -1,4 +1,4 @@
-import { Card, Header, IconWrapper, Title, Value } from './infocards.styles';
+import { Card, Header, IconWrapper, Title, Value, SubText } from './infocards.styles';
 
 const InfoCards = ({ Icon, title, value }) => {
   return (
@@ -10,13 +10,15 @@ const InfoCards = ({ Icon, title, value }) => {
           </IconWrapper>
         )}
         <div>
-           <Title>{title}</Title>
-          {title === "Itens Com Estoque Baixo"  && <strong style={{color:""}}>Clique para ver detalhes</strong>}
+          <Title>{title}</Title>
+          {title === "Itens Com Estoque Baixo" && (
+            <SubText>Clique para ver detalhes</SubText>
+          )}
         </div>
-       
+
       </Header>
       <Value>{value}</Value>
-      
+
     </Card>
   );
 };

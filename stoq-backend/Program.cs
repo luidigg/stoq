@@ -20,6 +20,7 @@ builder.Services.AddScoped<ISaidaDoacaoService, SaidaDoacaoService>();
 builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IInicioService, InicioService>();
+builder.Services.AddScoped<IRelatorioService, RelatorioService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

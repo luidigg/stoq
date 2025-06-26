@@ -9,5 +9,6 @@ namespace Stoq.IServices
         Task CreateAsync(EstoqueDTO dto);
         Task<bool> UpdateAsync(int id, EstoqueDTO dto);
         Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<EstoqueBaixoDTO>> GetEstoqueBaixoAsync();
     }
 }

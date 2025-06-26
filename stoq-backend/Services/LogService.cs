@@ -2,6 +2,7 @@ using Stoq.Data;
 using Stoq.Models;
 using Microsoft.EntityFrameworkCore;
 using Stoq.IServices;
+using Stoq.DTOs;
 
 namespace Stoq.Services
 {
@@ -24,13 +25,26 @@ namespace Stoq.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Log>> ListarTodosAsync()
+        public async Task<List<LogDTO>> ListarTodosAsync()
         {
-            return await _context.Log
+            var logs = await _context.Log
                 .Include(l => l.Usuario)
                 .OrderByDescending(l => l.DataHora)
+                .Take(50)
+                .Select(l => new LogDTO
+                {
+                    Id = l.Id,
+                    Entidade = l.Entidade,
+                    Acao = l.Acao,
+                    UsuarioNome = l.Usuario.Nome,
+                    DataHora = l.DataHora,
+                    Detalhes = l.Detalhes
+                })
                 .ToListAsync();
+
+            return logs;
         }
+
 
         public async Task<List<Log>> ListarPorUsuarioAsync(int usuarioId)
         {

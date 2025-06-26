@@ -189,5 +189,22 @@ namespace Stoq.Services
             return true;
         }
 
+        public async Task<IEnumerable<EstoqueBaixoDTO>> GetEstoqueBaixoAsync()
+        {
+            // Busca estoque junto com nome do produto
+            var itensComEstoqueBaixo = await (
+                from estoque in _context.Estoque
+                join produto in _context.Produto on estoque.ProdutoId equals produto.Id
+                where estoque.Quantidade <= 5 // Defina aqui o critério de "baixo"
+                select new EstoqueBaixoDTO
+                {
+                    Nome = produto.Nome,
+                    Quantidade = estoque.Quantidade
+                }
+            ).ToListAsync();
+
+            return itensComEstoqueBaixo;
+        }
+
     }
 }

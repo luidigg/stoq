@@ -11,7 +11,7 @@ namespace Stoq.Controllers
         private readonly ILogService _logService = logService;
 
         [HttpGet]
-        public async Task<ActionResult<List<Log>>> GetTodos()
+        public async Task<IActionResult> GetTodos()
         {
             var logs = await _logService.ListarTodosAsync();
             return Ok(logs);

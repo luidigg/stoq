@@ -138,12 +138,12 @@ export const ModalOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1003;
+  z-index: 1403;
   padding: 15px;
 `
 export const ModalContent = styled.div`
   background: #ffffff;
-  padding: 25px;
+  padding: 25px 30px;
   border-radius: 16px;
   width: 500px;
   display: flex;
@@ -151,7 +151,7 @@ export const ModalContent = styled.div`
   gap: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   position: relative; 
-  max-height: 90vh;
+  max-height: 95vh;
   overflow-y: auto;
 
   @media (max-width: ${breakpoints.mobile}) {
@@ -297,7 +297,7 @@ export const ModalButtons = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 15px;
-  margin-top: 1.5rem;
+  margin-top: 10px;
 `;
 
 export const QuantidadeWrapper = styled.div`

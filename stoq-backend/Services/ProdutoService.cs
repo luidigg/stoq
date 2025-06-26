@@ -101,5 +101,22 @@ namespace Stoq.Services
 
             return true;
         }
+
+        public async Task<List<ProdutoNomeDTO>> BuscarPorNomeAsync(string nomeParcial)
+        {
+            if (string.IsNullOrWhiteSpace(nomeParcial))
+                return [];
+
+            return await _context.Produto
+                .Where(p => EF.Functions.ILike(p.Nome, $"{nomeParcial}%"))
+                .OrderBy(p => p.Nome)
+                .Select(p => new ProdutoNomeDTO
+                {
+                    Id = p.Id,
+                    Nome = p.Nome
+                })
+                .Take(5)
+                .ToListAsync();
+        }
     }
 }

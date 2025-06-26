@@ -8,6 +8,7 @@ export const Head = styled.header`
   justify-content: center;
   position: sticky;
   top: 0;
+  z-index: 1300;
 `;
 
 export const Container = styled.div`
@@ -50,10 +51,6 @@ export const UserBlock = styled.div`
   align-items: center;
   gap: 20px;
   color: #fff;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 export const Username = styled.span`
@@ -80,10 +77,13 @@ export const LogoutButton = styled.button`
 export const MenuButton = styled.button`
   background: transparent;
   border: none;
-  transition: 0.3s  ease all;
+  transition: 0.3s ease all;
   cursor: pointer;
-  
+  position: relative;  /* precisa para que o z-index funcione */
+  z-index: 1300;       /* maior que o overlay, que era 1100 */
+
   &:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
   }
-`
+`;
+

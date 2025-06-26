@@ -16,7 +16,7 @@ namespace Stoq.Services
             return new TotaisInicioDTO
             {
                 TotalProdutos = await _context.Estoque.CountAsync(),
-                ItensComEstoqueBaixo = await _context.Estoque.CountAsync(e => e.Quantidade <= 5),
+                ItensComEstoqueBaixo = await _context.Estoque.CountAsync(e => e.Quantidade <= 5), //verificar depois
                 EntradasDoDia = await _context.EntradaDoacao.CountAsync(e => e.DataRecebimento.Date == hoje),
                 SaidasDoDia = await _context.SaidaDoacao.CountAsync(s => s.DataSaida.Date == hoje)
             };

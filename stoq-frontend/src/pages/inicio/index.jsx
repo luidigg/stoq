@@ -30,6 +30,8 @@ function Inicio() {
   const [itensComEstoqueBaixo, setItensComEstoqueBaixo] = useState(0);
   const [entradasDoDia, setEntradasDoDia] = useState(0);
   const [saidasDoDia, setSaidasDoDia] = useState(0);
+  const [estoqueBaixo, setEstoqueBaixo] = useState([]);
+
 
   // estados do modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,11 +40,6 @@ function Inicio() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   }
-
-  //  Função para abrir o modal 
-  const handleOpenLowStockModal = () => {
-    setIsModalOpen(true);
-  };
 
   // Função para buscar movimentações
   const fetchMovimentacoes = async () => {
@@ -66,6 +63,21 @@ function Inicio() {
       console.error('Erro ao buscar totais:', error);
     }
   };
+
+  const fetchEstoqueBaixo = async () => {
+    try {
+      const response = await axios.get('/api/estoque/estoque-baixo', { withCredentials: true });
+      setEstoqueBaixo(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar itens com estoque baixo:', error);
+    }
+  };
+
+  const handleOpenLowStockModal = () => {
+    fetchEstoqueBaixo(); // carrega os dados
+    setIsModalOpen(true); // depois abre o modal
+  };
+
 
 
 
@@ -101,26 +113,29 @@ function Inicio() {
       </Main>
 
       <ModalBackdrop isOpen={isModalOpen} onClick={handleCloseModal}>
-        <ModalContent isOpen={isModalOpen}>
+        <ModalContent isOpen={isModalOpen} onClick={(e) => e.stopPropagation()}>
           <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
-          <ModalTitle>Itens com Estoque Baixo</ModalTitle>
-          <ItemList>
+          <ModalTitle>Itens Com Estoque Baixo</ModalTitle>
 
+          <ItemList>
             <ListHeader>
               <span>Produto</span>
               <span>Quantidade</span>
             </ListHeader>
-            <ListItem >
-              <span>Feijao</span>
-              <strong>Restam: 2</strong>
-            </ListItem>
-            <ListItem >
-              <span>Arroz</span>
-              <strong>Restam: 2</strong>
-            </ListItem>
 
+            {estoqueBaixo.length > 0 ? (
+              estoqueBaixo.map((item, index) => (
+                <ListItem key={index}>
+                  <span>{item.nome}</span>
+                  <strong>Restam: {item.quantidade}</strong>
+                </ListItem>
+              ))
+            ) : (
+              <ListItem>
+                <span>Nenhum item com estoque crítico</span>
+              </ListItem>
+            )}
           </ItemList>
-
         </ModalContent>
       </ModalBackdrop>
     </Layout>

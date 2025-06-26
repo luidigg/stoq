@@ -53,3 +53,11 @@ export const Value = styled.p`
     font-size: 30px;
   }
 `;
+
+export const SubText = styled.span`
+  display: block;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.7); /* cinza opaco */
+  margin-top: 4px;
+  text-align: left;
+`;
