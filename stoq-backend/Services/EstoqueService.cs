@@ -86,7 +86,7 @@ namespace Stoq.Services
 
             Produto? produtoParaUsar = null;
 
-            // Para cada produto com mesmo nome, buscar a entrada de doação para ver validade
+            // Verificar se há produto com o mesmo nome e mesma validade
             foreach (var p in produtosComMesmoNome)
             {
                 var entradaExistente = await _context.EntradaDoacao
@@ -106,40 +106,42 @@ namespace Stoq.Services
 
             if (produtoParaUsar == null)
             {
-                // Criar novo produto com sufixo de lote se for necessário
-                int maiorLote = 1;
-                string nomeBase = dto.NomeProduto;
-
-                // Procurar produtos com o prefixo igual para descobrir maior lote
-                var produtosComPrefixo = await _context.Produto
-                    .Where(p => p.Nome.StartsWith(nomeBase))
-                    .ToListAsync();
-
-                foreach (var p in produtosComPrefixo)
-                {
-                    string sufixo = p.Nome.Substring(nomeBase.Length).Trim();
-                    if (sufixo.StartsWith("L"))
-                    {
-                        if (int.TryParse(sufixo.Substring(1), out int loteNum))
-                        {
-                            if (loteNum > maiorLote)
-                                maiorLote = loteNum;
-                        }
-                    }
-                }
-
-                int novoLote = maiorLote + 1;
-                string nomeComLote = novoLote == 1 ? nomeBase : $"{nomeBase} L{novoLote}";
-
+                // Criar novo produto
                 produtoParaUsar = new Produto
                 {
-                    Nome = nomeComLote,
+                    Nome = dto.NomeProduto,
                     CategoriaId = categoria.Id,
                     CriadoEm = DateTime.UtcNow
                 };
 
                 _context.Produto.Add(produtoParaUsar);
                 await _context.SaveChangesAsync(); // Para gerar ID
+            }
+
+            // Verificar se precisamos adicionar sufixo de lote
+            var produtosComPrefixo = await _context.Produto
+                .Where(p => p.Nome.StartsWith(dto.NomeProduto))
+                .ToListAsync();
+
+            int maiorLote = 0;
+            foreach (var p in produtosComPrefixo)
+            {
+                string sufixo = p.Nome.Substring(dto.NomeProduto.Length).Trim();
+                if (sufixo.StartsWith("L") && int.TryParse(sufixo.Substring(1), out int loteNum))
+                {
+                    if (loteNum > maiorLote)
+                        maiorLote = loteNum;
+                }
+            }
+
+            int novoLote = maiorLote + 1;
+            string nomeComLote = novoLote == 1 ? dto.NomeProduto : $"{dto.NomeProduto} L{novoLote}";
+
+            // Atualizar nome do produto se for necessário adicionar sufixo de lote
+            if (novoLote > 1)
+            {
+                produtoParaUsar.Nome = nomeComLote;
+                await _context.SaveChangesAsync(); // Atualizar nome do produto no banco
             }
 
             // Criar entrada de doação vinculada ao produto selecionado/criado
@@ -181,6 +183,7 @@ namespace Stoq.Services
                 detalhes: $"Produto '{produtoParaUsar.Nome}' adicionado com {dto.Quantidade} unidades."
             );
         }
+
 
 
 

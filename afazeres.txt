@@ -1,28 +1,14 @@
 <<< Lista de Afazeres >>>
 
-1. Apagar Services e Telas / Código inútil
-2. Configurar API para gerar relatórios em PDF
-3. Dar um repasse geral pelo código e melhorar organização / refatorar
-4. Aplicar cabeçalho [Authorize] aos endpoints
-5. Reaplicar validações de formulário
-7. Deletar produtos da tabela 'produto' quando não tiver mais estoque deles
-8. Verificar todas as partes que fazem requisições / caçar bugs
-9. Ajustar componente 'produto-input'
-   Caminho: C:\Users\Luidi\Desktop\Trabalhos Unijuí\stoq-web-app\stoq\stoq-frontend\src\components\produto-input\index.jsx
-   Objetivo: Ajustar para pegar os produtos do banco
-10. Exibir erros mais informativos para o usuário (evitar exibir só no console)
+0. Revisar todas as Services
+1. Refatorar
+2. Aplicar cabeçalho [Authorize] aos endpoints
+3. Ajustar as validações de formulário
+4. Deletar produtos da tabela 'produto' quando não tiver mais estoque deles
+5. Verificar todas as partes que fazem requisições / caçar bugs
+6. Ajustar a inclusão de produtos por lote (verificar/ajustar)
+7. Exibir erros mais informativos para o usuário (evitar exibir só no console)
 
 
 
 <<< FEITO >>>
-3- Adicionar ícone de loading na tela de login
-1- Integrar a tela de registrar saída com o banco 
-11- Fazer funcionar o botão de logout
-12- Verificar tempo de expiração dos tokens e cookie de autenticação
-2- Ajustar o visual da tela de registrar saída
-5- Ajustar o design da tela de Meu Perfil e tornar funcional
-4- Mover o formulário de cadastro de pessoas para a página Meu Perfil
-8 - Dar uma ajustada no design da tela de administração, alinhar os botoes, ajustar tamanho
-da fonte, etc, deixar bacana 👍
-7- Ajustar cards da tela de início (Adicionar modal com minitabela de produtos para o card
-de produtos em estoque baixo (somente coluna de nome e quantidade))

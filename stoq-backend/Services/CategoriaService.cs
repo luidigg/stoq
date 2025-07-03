@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Stoq.Data;
 using Stoq.DTOs;
 using Stoq.IServices;
-using Stoq.Models;
 
 namespace Stoq.Services
 {
